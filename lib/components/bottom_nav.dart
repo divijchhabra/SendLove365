@@ -28,11 +28,12 @@ class _BottomNavState extends State<BottomNav> {
         inactiveColorPrimary: Colors.white,
       ),
       PersistentBottomNavBarItem(
-          icon: const Icon(Icons.chat_rounded),
-          title: ("Chat"),
-          activeColorPrimary: kPrimaryColor,
-          activeColorSecondary: Colors.white,
-          inactiveColorPrimary: Colors.white),
+        icon: const Icon(Icons.chat_rounded),
+        title: ("Chat"),
+        activeColorPrimary: kPrimaryColor,
+        activeColorSecondary: Colors.white,
+        inactiveColorPrimary: Colors.white,
+      ),
       PersistentBottomNavBarItem(
         icon: const Icon(Icons.notifications_active),
         title: ("Reminders"),

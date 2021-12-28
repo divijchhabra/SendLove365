@@ -2,11 +2,13 @@ import 'package:bottom_picker/bottom_picker.dart';
 import 'package:bottom_picker/resources/arrays.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:temp/components/bottom_nav.dart';
 import 'package:temp/components/gradient_button.dart';
 import 'package:temp/constants.dart';
 import 'package:temp/screens/send_a_gift_screen.dart';
 import 'package:temp/screens/send_to_friend_screen.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -27,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
       title: 'Choose something',
       titleStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-      //backgroundColor: Colors.yellow.withOpacity(0.6),
+      // backgroundColor: Colors.yellow.withOpacity(0.6),
       bottomPickerTheme: BOTTOM_PICKER_THEME.plumPlate,
       onSubmit: (index) {
         print(index);
@@ -111,10 +113,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           context,
                           screen: SendToFriend(),
                           withNavBar: false, // OPTIONAL VALUE. True by default.
-                          pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                          pageTransitionAnimation:
+                              PageTransitionAnimation.cupertino,
                         );
-
-
                       },
                       child: const Text(
                         "Send to friend",
@@ -143,9 +144,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           context,
                           screen: SendAGift(),
                           withNavBar: false, // OPTIONAL VALUE. True by default.
-                          pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                          pageTransitionAnimation:
+                              PageTransitionAnimation.cupertino,
                         );
-
                       },
                       icon: const Icon(Icons.card_giftcard),
                       label: const Text(
@@ -154,6 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
+                  // BottomNav(),
                 ],
               ),
             ),

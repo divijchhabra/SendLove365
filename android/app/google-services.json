@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "227207482324",
+    "project_id": "sendlove365",
+    "storage_bucket": "sendlove365.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:227207482324:android:b529d86ce29d8802d0e441",
+        "android_client_info": {
+          "package_name": "com.example.temp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "227207482324-h5ksakou9go4tgkoekt296i7cgc2ov8u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.temp",
+            "certificate_hash": "67473227e3b9caff338194a4446ba2c114fbc524"
+          }
+        },
+        {
+          "client_id": "227207482324-kh9rd2ijrh3j3so3fpfjd8ossiqdl0n2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBo4zzIhCqvDLyJTcwG8t5NILVRnEoUcMA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "227207482324-kh9rd2ijrh3j3so3fpfjd8ossiqdl0n2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

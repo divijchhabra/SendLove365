@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:temp/screens/onboarding_screen.dart';
+import 'package:temp/services/get_user_data.dart';
 
 class Splash extends StatefulWidget {
   const Splash({Key? key}) : super(key: key);
@@ -9,6 +11,8 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
+  User? user = FirebaseAuth.instance.currentUser;
+
   @override
   void initState() {
     super.initState();
@@ -17,8 +21,13 @@ class _SplashState extends State<Splash> {
 
   _navigateToOnBoarding() async {
     await Future.delayed(const Duration(milliseconds: 2000), () {});
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => const OnBoarding()));
+    if (user == null) {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const OnBoarding()));
+    } else {
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const GetUserData()));
+    }
   }
 
   @override
@@ -26,6 +35,9 @@ class _SplashState extends State<Splash> {
     return SizedBox(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        child: Image.asset('assets/Splash Screen.png',fit: BoxFit.cover,));
+        child: Image.asset(
+          'assets/Splash Screen.png',
+          fit: BoxFit.cover,
+        ));
   }
 }

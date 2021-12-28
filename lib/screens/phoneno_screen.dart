@@ -1,7 +1,9 @@
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:temp/components/gradient_button.dart';
 import 'package:temp/constants.dart';
+import 'package:temp/helpers/validators.dart';
 import 'package:temp/screens/otp_screen.dart';
 
 class PhoneNo extends StatefulWidget {
@@ -12,6 +14,9 @@ class PhoneNo extends StatefulWidget {
 }
 
 class _PhoneNoState extends State<PhoneNo> {
+  TextEditingController mobileController = TextEditingController();
+  String dialCode = '+91';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,14 +56,42 @@ class _PhoneNoState extends State<PhoneNo> {
                 SizedBox(
                   height: 51,
                   width: 326,
-                  child: TextFormField(
-                    keyboardType: TextInputType.phone,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
+                  child: Row(
+                    children: [
+                      CountryCodePicker(
+                        onChanged: (c) {
+                          print(c.dialCode);
+                          dialCode = c.dialCode!;
+                        },
+
+                        // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
+                        initialSelection: 'IN',
+                        favorite: const ['+91', 'IN'],
+                        // optional. Shows only country name and flag
+                        showCountryOnly: false,
+                        // optional. Shows only country name and flag when popup is closed.
+                        showOnlyCountryWhenClosed: false,
+                        // optional. aligns the flag and the Text left
+                        alignLeft: false,
                       ),
-                      labelText: "Phone Number",
-                    ),
+                      Expanded(
+                        child: TextFormField(
+                          keyboardType: TextInputType.phone,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            labelText: "Phone Number",
+                          ),
+                          controller: mobileController,
+                          onSaved: (mobile) {
+                            mobileController.value =
+                                mobileController.value.copyWith(text: mobile);
+                          },
+                          validator: phoneValidator,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 30),
@@ -67,10 +100,14 @@ class _PhoneNoState extends State<PhoneNo> {
                   width: 168.5,
                   child: GradientButton(
                       onPressed: () {
+                        print('Mobile:- ${mobileController.text}');
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const OtpScreen()),
+                            builder: (context) => OtpScreen(
+                              phoneNo: dialCode + mobileController.text,
+                            ),
+                          ),
                         );
                       },
                       child: const Text(

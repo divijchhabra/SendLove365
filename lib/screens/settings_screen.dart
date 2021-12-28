@@ -1,5 +1,12 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:temp/constants.dart';
+import 'package:temp/screens/phoneno_screen.dart';
+import 'package:temp/services/user_details.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -9,105 +16,135 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  bool showSpinner = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(kDefaultPadding),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Image.asset(
-                      'assets/Send LOve Icon envelope.png',
-                      height: 68,
-                      width: 68,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  children: const [
-                    Text(
-                      "Settings",
-                      textAlign: TextAlign.start,
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Container(
-                  padding: const EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      width: 2,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 5,
+      body: ModalProgressHUD(
+        inAsyncCall: showSpinner,
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(kDefaultPadding),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Image.asset(
+                        'assets/Send LOve Icon envelope.png',
+                        height: 68,
+                        width: 68,
                       ),
                     ],
                   ),
-                  child: const CircleAvatar(
-                    radius: 56,
-                    backgroundImage: NetworkImage(
-                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAsK6oIKzeSCKiqpjv5cuoC4ZC_hJ0FxNkvQ&usqp=CAU'),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                const Text("John Mathew", style: kTextStyle),
-                const SizedBox(height: 10),
-                SizedBox(
-                  height: 500,
-                  child: ListView(
-                    children: const [
-                      ListTile(
-                        leading: Icon(
-                          Icons.person,
-                          color: kPrimaryColor,
-                        ),
-                        title: Text("Profile"),
-                      ),
-
-                      Divider(),
-                      ListTile(
-                        leading: Icon(
-                          Icons.headphones,
-                          color: kPrimaryColor,
-                        ),
-                        title: Text("Contact Us"),
-                      ),
-                      Divider(),
-                      ListTile(
-                        leading: Icon(
-                          Icons.info,
-                          color: kPrimaryColor,
-                        ),
-                        title: Text("About Send Love"),
-                      ),
-                      Divider(),
-                      ListTile(
-                        leading: Icon(
-                          Icons.logout,
-                          color: kPrimaryColor,
-                        ),
-                        title: Text("Log Out"),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Text(
+                        "Settings",
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w500),
                       ),
                     ],
                   ),
-                ),
-              ],
+                  const SizedBox(height: 10),
+                  Container(
+                    padding: const EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        width: 2,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                        ),
+                      ],
+                    ),
+                    child: CircleAvatar(
+                      radius: 56,
+                      backgroundImage:
+                          NetworkImage(UserDetails.imageUrl.toString()),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(UserDetails.name.toString(), style: kTextStyle),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    height: 500,
+                    child: ListView(
+                      children: [
+                        ListTile(
+                          leading: Icon(
+                            Icons.person,
+                            color: kPrimaryColor,
+                          ),
+                          title: Text("Profile"),
+                        ),
+                        Divider(),
+                        ListTile(
+                          leading: Icon(
+                            Icons.headphones,
+                            color: kPrimaryColor,
+                          ),
+                          title: Text("Contact Us"),
+                        ),
+                        Divider(),
+                        ListTile(
+                          leading: Icon(
+                            Icons.info,
+                            color: kPrimaryColor,
+                          ),
+                          title: Text("About Send Love"),
+                        ),
+                        Divider(),
+                        ListTile(
+                          onTap: () async {
+                            await logOut();
+                          },
+                          leading: Icon(
+                            Icons.logout,
+                            color: kPrimaryColor,
+                          ),
+                          title: Text("Log Out"),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
       ),
     );
+  }
+
+  Future<void> logOut() async {
+    setState(() {
+      showSpinner = true;
+    });
+    try {
+      User? firebaseUser = FirebaseAuth.instance.currentUser;
+
+      if (firebaseUser != null) {
+        FirebaseAuth.instance.signOut().then((value) => {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => PhoneNo()),
+                  (route) => false)
+            });
+      }
+    } catch (e) {
+      setState(() {
+        showSpinner = false;
+      });
+      Fluttertoast();
+    }
   }
 }

@@ -5,114 +5,320 @@
 5    android:versionName="1.0.0" >
 6
 7    <uses-sdk
-8        android:minSdkVersion="16"
+8        android:minSdkVersion="20"
 9        android:targetSdkVersion="30" />
 10    <!--
 11         Flutter needs it to communicate with the running application
 12         to allow setting breakpoints, to provide hot reload, etc.
 13    -->
 14    <uses-permission android:name="android.permission.INTERNET" />
-14-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:41:5-66
-14-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:41:22-64
-15
-16    <application
-16-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:3:4-40:19
-17        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-17-->[androidx.core:core:1.1.0] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\2e94107f30f39be366a17347c2bf100b\core-1.1.0\AndroidManifest.xml:24:18-86
-18        android:debuggable="true"
-19        android:icon="@mipmap/ic_launcher"
-19-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:5:9-43
-20        android:label="temp" >
-20-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:4:9-29
-21        <activity
-21-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:6:9-34:20
-22            android:name="com.example.temp.MainActivity"
-22-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:7:13-41
-23            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
-23-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:10:13-163
-24            android:hardwareAccelerated="true"
-24-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:11:13-47
-25            android:launchMode="singleTop"
-25-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:8:13-43
-26            android:theme="@style/LaunchTheme"
-26-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:9:13-47
-27            android:windowSoftInputMode="adjustResize" >
-27-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:12:13-55
-28
-29            <!--
-30                 Specifies an Android theme to apply to this Activity as soon as
-31                 the Android process has started. This theme is visible to the user
-32                 while the Flutter UI initializes. After that, this theme continues
-33                 to determine the Window background behind the Flutter UI.
-34            -->
-35            <meta-data
-35-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:17:13-20:17
-36                android:name="io.flutter.embedding.android.NormalTheme"
-36-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:18:15-70
-37                android:resource="@style/NormalTheme" />
-37-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:19:15-52
-38            <!--
-39                 Displays an Android View that continues showing the launch screen
-40                 Drawable until Flutter paints its first frame, then this splash
-41                 screen fades out. A splash screen is useful to avoid any visual
-42                 gap between the end of Android's launch screen and the painting of
-43                 Flutter's first frame.
-44            -->
-45            <meta-data
-45-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:26:13-29:17
-46                android:name="io.flutter.embedding.android.SplashScreenDrawable"
-46-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:27:15-79
-47                android:resource="@drawable/launch_background" />
-47-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:28:15-61
+14-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:45:5-66
+14-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:45:22-64
+15    <uses-permission android:name="android.permission.READ_CONTACTS" />
+15-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:4:5-72
+15-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:4:22-69
+16    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+16-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:5:5-73
+16-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:5:22-70
+17
+18    <queries>
+18-->[:contacts_service] D:\Android Projects\SendLove365\build\contacts_service\intermediates\library_manifest\debug\AndroidManifest.xml:11:5-24:15
+19        <intent>
+19-->[:contacts_service] D:\Android Projects\SendLove365\build\contacts_service\intermediates\library_manifest\debug\AndroidManifest.xml:12:9-14:18
+20            <action android:name="android.accounts.AccountAuthenticator" />
+20-->[:contacts_service] D:\Android Projects\SendLove365\build\contacts_service\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-76
+20-->[:contacts_service] D:\Android Projects\SendLove365\build\contacts_service\intermediates\library_manifest\debug\AndroidManifest.xml:13:21-73
+21        </intent>
+22        <!-- Allows the app to load an icon corresponding to the custom MIME type. -->
+23        <intent>
+23-->[:contacts_service] D:\Android Projects\SendLove365\build\contacts_service\intermediates\library_manifest\debug\AndroidManifest.xml:16:9-23:18
+24            <action android:name="android.intent.action.VIEW" />
+24-->[:contacts_service] D:\Android Projects\SendLove365\build\contacts_service\intermediates\library_manifest\debug\AndroidManifest.xml:17:13-65
+24-->[:contacts_service] D:\Android Projects\SendLove365\build\contacts_service\intermediates\library_manifest\debug\AndroidManifest.xml:17:21-62
+25
+26            <data
+26-->[:contacts_service] D:\Android Projects\SendLove365\build\contacts_service\intermediates\library_manifest\debug\AndroidManifest.xml:19:13-22:44
+27                android:host="com.android.contacts"
+27-->[:contacts_service] D:\Android Projects\SendLove365\build\contacts_service\intermediates\library_manifest\debug\AndroidManifest.xml:20:17-52
+28                android:mimeType="vnd.android.cursor.item/*"
+28-->[:contacts_service] D:\Android Projects\SendLove365\build\contacts_service\intermediates\library_manifest\debug\AndroidManifest.xml:21:17-61
+29                android:scheme="content" />
+29-->[:contacts_service] D:\Android Projects\SendLove365\build\contacts_service\intermediates\library_manifest\debug\AndroidManifest.xml:22:17-41
+30        </intent>
+31    </queries>
+32
+33    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+33-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:24:5-79
+33-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:24:22-76
+34
+35    <application
+35-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:7:4-44:19
+36        android:name="androidx.multidex.MultiDexApplication"
+37        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+37-->[androidx.core:core:1.1.0] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\3c8fd1bfddb99a7a7e21faa1397acdb4\core-1.1.0\AndroidManifest.xml:24:18-86
+38        android:debuggable="true"
+39        android:icon="@mipmap/ic_launcher"
+39-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:9:9-43
+40        android:label="temp" >
+40-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:8:9-29
+41        <activity
+41-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:10:9-38:20
+42            android:name="com.example.temp.MainActivity"
+42-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:11:13-41
+43            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+43-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:14:13-163
+44            android:hardwareAccelerated="true"
+44-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:15:13-47
+45            android:launchMode="singleTop"
+45-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:12:13-43
+46            android:theme="@style/LaunchTheme"
+46-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:13:13-47
+47            android:windowSoftInputMode="adjustResize" >
+47-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:16:13-55
 48
-49            <intent-filter>
-49-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:30:13-33:29
-50                <action android:name="android.intent.action.MAIN" />
-50-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:31:17-68
-50-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:31:25-66
-51
-52                <category android:name="android.intent.category.LAUNCHER" />
-52-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:32:17-76
-52-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:32:27-74
-53            </intent-filter>
-54        </activity>
-55        <!--
-56             Don't delete the meta-data below.
-57             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
-58        -->
-59        <meta-data
-59-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:37:9-39:33
-60            android:name="flutterEmbedding"
-60-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:38:13-44
-61            android:value="2" />
-61-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:39:13-30
-62
-63        <provider
-63-->[:image_picker] D:\Android Projects\SendLove365\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:8:9-16:20
-64            android:name="io.flutter.plugins.imagepicker.ImagePickerFileProvider"
-64-->[:image_picker] D:\Android Projects\SendLove365\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-82
-65            android:authorities="com.example.temp.flutter.image_provider"
-65-->[:image_picker] D:\Android Projects\SendLove365\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:10:13-74
-66            android:exported="false"
-66-->[:image_picker] D:\Android Projects\SendLove365\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:11:13-37
-67            android:grantUriPermissions="true" >
-67-->[:image_picker] D:\Android Projects\SendLove365\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:12:13-47
-68            <meta-data
-68-->[:image_picker] D:\Android Projects\SendLove365\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-15:75
-69                android:name="android.support.FILE_PROVIDER_PATHS"
-69-->[:image_picker] D:\Android Projects\SendLove365\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:14:17-67
-70                android:resource="@xml/flutter_image_picker_file_paths" />
-70-->[:image_picker] D:\Android Projects\SendLove365\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:15:17-72
-71        </provider>
-72
-73        <activity
-73-->[:url_launcher_android] D:\Android Projects\SendLove365\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:8:9-11:74
-74            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
-74-->[:url_launcher_android] D:\Android Projects\SendLove365\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-74
-75            android:exported="false"
-75-->[:url_launcher_android] D:\Android Projects\SendLove365\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:10:13-37
-76            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-76-->[:url_launcher_android] D:\Android Projects\SendLove365\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:11:13-71
-77    </application>
-78
-79</manifest>
+49            <!--
+50                 Specifies an Android theme to apply to this Activity as soon as
+51                 the Android process has started. This theme is visible to the user
+52                 while the Flutter UI initializes. After that, this theme continues
+53                 to determine the Window background behind the Flutter UI.
+54            -->
+55            <meta-data
+55-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:21:13-24:17
+56                android:name="io.flutter.embedding.android.NormalTheme"
+56-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:22:15-70
+57                android:resource="@style/NormalTheme" />
+57-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:23:15-52
+58            <!--
+59                 Displays an Android View that continues showing the launch screen
+60                 Drawable until Flutter paints its first frame, then this splash
+61                 screen fades out. A splash screen is useful to avoid any visual
+62                 gap between the end of Android's launch screen and the painting of
+63                 Flutter's first frame.
+64            -->
+65            <meta-data
+65-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:30:13-33:17
+66                android:name="io.flutter.embedding.android.SplashScreenDrawable"
+66-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:31:15-79
+67                android:resource="@drawable/launch_background" />
+67-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:32:15-61
+68
+69            <intent-filter>
+69-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:34:13-37:29
+70                <action android:name="android.intent.action.MAIN" />
+70-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:35:17-68
+70-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:35:25-66
+71
+72                <category android:name="android.intent.category.LAUNCHER" />
+72-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:36:17-76
+72-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:36:27-74
+73            </intent-filter>
+74        </activity>
+75        <!--
+76             Don't delete the meta-data below.
+77             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
+78        -->
+79        <meta-data
+79-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:41:9-43:33
+80            android:name="flutterEmbedding"
+80-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:42:13-44
+81            android:value="2" />
+81-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:43:13-30
+82
+83        <service
+83-->[:firebase_auth] D:\Android Projects\SendLove365\build\firebase_auth\intermediates\library_manifest\debug\AndroidManifest.xml:8:9-12:19
+84            android:name="com.google.firebase.components.ComponentDiscoveryService"
+84-->[:firebase_auth] D:\Android Projects\SendLove365\build\firebase_auth\intermediates\library_manifest\debug\AndroidManifest.xml:8:18-89
+85            android:directBootAware="true"
+85-->[com.google.firebase:firebase-common:20.0.0] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\e8c12af64c0d197211b7d090cb61cdf8\jetified-firebase-common-20.0.0\AndroidManifest.xml:35:13-43
+86            android:exported="false" >
+86-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:76:13-37
+87            <meta-data
+87-->[:firebase_auth] D:\Android Projects\SendLove365\build\firebase_auth\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-11:85
+88                android:name="com.google.firebase.components:io.flutter.plugins.firebase.auth.FlutterFirebaseAuthRegistrar"
+88-->[:firebase_auth] D:\Android Projects\SendLove365\build\firebase_auth\intermediates\library_manifest\debug\AndroidManifest.xml:10:17-124
+89                android:value="com.google.firebase.components.ComponentRegistrar" />
+89-->[:firebase_auth] D:\Android Projects\SendLove365\build\firebase_auth\intermediates\library_manifest\debug\AndroidManifest.xml:11:17-82
+90            <meta-data
+90-->[:firebase_storage] D:\Android Projects\SendLove365\build\firebase_storage\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-11:85
+91                android:name="com.google.firebase.components:io.flutter.plugins.firebase.storage.FlutterFirebaseAppRegistrar"
+91-->[:firebase_storage] D:\Android Projects\SendLove365\build\firebase_storage\intermediates\library_manifest\debug\AndroidManifest.xml:10:17-126
+92                android:value="com.google.firebase.components.ComponentRegistrar" />
+92-->[:firebase_storage] D:\Android Projects\SendLove365\build\firebase_storage\intermediates\library_manifest\debug\AndroidManifest.xml:11:17-82
+93            <meta-data
+93-->[:cloud_firestore] D:\Android Projects\SendLove365\build\cloud_firestore\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-11:85
+94                android:name="com.google.firebase.components:io.flutter.plugins.firebase.firestore.FlutterFirebaseFirestoreRegistrar"
+94-->[:cloud_firestore] D:\Android Projects\SendLove365\build\cloud_firestore\intermediates\library_manifest\debug\AndroidManifest.xml:10:17-134
+95                android:value="com.google.firebase.components.ComponentRegistrar" />
+95-->[:cloud_firestore] D:\Android Projects\SendLove365\build\cloud_firestore\intermediates\library_manifest\debug\AndroidManifest.xml:11:17-82
+96            <meta-data
+96-->[:firebase_core] D:\Android Projects\SendLove365\build\firebase_core\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-11:85
+97                android:name="com.google.firebase.components:io.flutter.plugins.firebase.core.FlutterFirebaseCoreRegistrar"
+97-->[:firebase_core] D:\Android Projects\SendLove365\build\firebase_core\intermediates\library_manifest\debug\AndroidManifest.xml:10:17-124
+98                android:value="com.google.firebase.components.ComponentRegistrar" />
+98-->[:firebase_core] D:\Android Projects\SendLove365\build\firebase_core\intermediates\library_manifest\debug\AndroidManifest.xml:11:17-82
+99            <meta-data
+99-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:77:13-79:85
+100                android:name="com.google.firebase.components:com.google.firebase.auth.FirebaseAuthRegistrar"
+100-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:78:17-109
+101                android:value="com.google.firebase.components.ComponentRegistrar" />
+101-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:79:17-82
+102            <meta-data
+102-->[com.google.firebase:firebase-firestore:24.0.0] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\875fba2a3c7d150fb639a449876b754f\jetified-firebase-firestore-24.0.0\AndroidManifest.xml:20:13-22:85
+103                android:name="com.google.firebase.components:com.google.firebase.firestore.FirestoreRegistrar"
+103-->[com.google.firebase:firebase-firestore:24.0.0] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\875fba2a3c7d150fb639a449876b754f\jetified-firebase-firestore-24.0.0\AndroidManifest.xml:21:17-111
+104                android:value="com.google.firebase.components.ComponentRegistrar" />
+104-->[com.google.firebase:firebase-firestore:24.0.0] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\875fba2a3c7d150fb639a449876b754f\jetified-firebase-firestore-24.0.0\AndroidManifest.xml:22:17-82
+105            <meta-data
+105-->[com.google.firebase:firebase-storage:20.0.0] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\aac17191751d9819c4ba4efa4c4713d8\jetified-firebase-storage-20.0.0\AndroidManifest.xml:33:13-35:85
+106                android:name="com.google.firebase.components:com.google.firebase.storage.StorageRegistrar"
+106-->[com.google.firebase:firebase-storage:20.0.0] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\aac17191751d9819c4ba4efa4c4713d8\jetified-firebase-storage-20.0.0\AndroidManifest.xml:34:17-107
+107                android:value="com.google.firebase.components.ComponentRegistrar" />
+107-->[com.google.firebase:firebase-storage:20.0.0] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\aac17191751d9819c4ba4efa4c4713d8\jetified-firebase-storage-20.0.0\AndroidManifest.xml:35:17-82
+108        </service>
+109
+110        <provider
+110-->[:image_picker] D:\Android Projects\SendLove365\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:8:9-16:20
+111            android:name="io.flutter.plugins.imagepicker.ImagePickerFileProvider"
+111-->[:image_picker] D:\Android Projects\SendLove365\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-82
+112            android:authorities="com.example.temp.flutter.image_provider"
+112-->[:image_picker] D:\Android Projects\SendLove365\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:10:13-74
+113            android:exported="false"
+113-->[:image_picker] D:\Android Projects\SendLove365\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:11:13-37
+114            android:grantUriPermissions="true" >
+114-->[:image_picker] D:\Android Projects\SendLove365\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:12:13-47
+115            <meta-data
+115-->[:image_picker] D:\Android Projects\SendLove365\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-15:75
+116                android:name="android.support.FILE_PROVIDER_PATHS"
+116-->[:image_picker] D:\Android Projects\SendLove365\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:14:17-67
+117                android:resource="@xml/flutter_image_picker_file_paths" />
+117-->[:image_picker] D:\Android Projects\SendLove365\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:15:17-72
+118        </provider>
+119
+120        <activity
+120-->[:url_launcher_android] D:\Android Projects\SendLove365\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:8:9-11:74
+121            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
+121-->[:url_launcher_android] D:\Android Projects\SendLove365\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-74
+122            android:exported="false"
+122-->[:url_launcher_android] D:\Android Projects\SendLove365\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:10:13-37
+123            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+123-->[:url_launcher_android] D:\Android Projects\SendLove365\build\url_launcher_android\intermediates\library_manifest\debug\AndroidManifest.xml:11:13-71
+124        <activity
+124-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:27:9-44:20
+125            android:name="com.google.firebase.auth.internal.GenericIdpActivity"
+125-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:28:13-80
+126            android:excludeFromRecents="true"
+126-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:29:13-46
+127            android:exported="true"
+127-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:30:13-36
+128            android:launchMode="singleTask"
+128-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:31:13-44
+129            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+129-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:32:13-72
+130            <intent-filter>
+130-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:33:13-43:29
+131                <action android:name="android.intent.action.VIEW" />
+131-->[:contacts_service] D:\Android Projects\SendLove365\build\contacts_service\intermediates\library_manifest\debug\AndroidManifest.xml:17:13-65
+131-->[:contacts_service] D:\Android Projects\SendLove365\build\contacts_service\intermediates\library_manifest\debug\AndroidManifest.xml:17:21-62
+132
+133                <category android:name="android.intent.category.DEFAULT" />
+133-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:36:17-76
+133-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:36:27-73
+134                <category android:name="android.intent.category.BROWSABLE" />
+134-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:37:17-78
+134-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:37:27-75
+135
+136                <data
+136-->[:contacts_service] D:\Android Projects\SendLove365\build\contacts_service\intermediates\library_manifest\debug\AndroidManifest.xml:19:13-22:44
+137                    android:host="firebase.auth"
+137-->[:contacts_service] D:\Android Projects\SendLove365\build\contacts_service\intermediates\library_manifest\debug\AndroidManifest.xml:20:17-52
+138                    android:path="/"
+139                    android:scheme="genericidp" />
+139-->[:contacts_service] D:\Android Projects\SendLove365\build\contacts_service\intermediates\library_manifest\debug\AndroidManifest.xml:22:17-41
+140            </intent-filter>
+141        </activity>
+142        <activity
+142-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:45:9-62:20
+143            android:name="com.google.firebase.auth.internal.RecaptchaActivity"
+143-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:46:13-79
+144            android:excludeFromRecents="true"
+144-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:47:13-46
+145            android:exported="true"
+145-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:48:13-36
+146            android:launchMode="singleTask"
+146-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:49:13-44
+147            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+147-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:50:13-72
+148            <intent-filter>
+148-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:51:13-61:29
+149                <action android:name="android.intent.action.VIEW" />
+149-->[:contacts_service] D:\Android Projects\SendLove365\build\contacts_service\intermediates\library_manifest\debug\AndroidManifest.xml:17:13-65
+149-->[:contacts_service] D:\Android Projects\SendLove365\build\contacts_service\intermediates\library_manifest\debug\AndroidManifest.xml:17:21-62
+150
+151                <category android:name="android.intent.category.DEFAULT" />
+151-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:36:17-76
+151-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:36:27-73
+152                <category android:name="android.intent.category.BROWSABLE" />
+152-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:37:17-78
+152-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:37:27-75
+153
+154                <data
+154-->[:contacts_service] D:\Android Projects\SendLove365\build\contacts_service\intermediates\library_manifest\debug\AndroidManifest.xml:19:13-22:44
+155                    android:host="firebase.auth"
+155-->[:contacts_service] D:\Android Projects\SendLove365\build\contacts_service\intermediates\library_manifest\debug\AndroidManifest.xml:20:17-52
+156                    android:path="/"
+157                    android:scheme="recaptcha" />
+157-->[:contacts_service] D:\Android Projects\SendLove365\build\contacts_service\intermediates\library_manifest\debug\AndroidManifest.xml:22:17-41
+158            </intent-filter>
+159        </activity>
+160
+161        <service
+161-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:64:9-73:19
+162            android:name="com.google.firebase.auth.api.fallback.service.FirebaseAuthFallbackService"
+162-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:65:13-101
+163            android:enabled="true"
+163-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:66:13-35
+164            android:exported="false" >
+164-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:67:13-37
+165            <intent-filter>
+165-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:68:13-72:29
+166                <action android:name="com.google.firebase.auth.api.gms.service.START" />
+166-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:69:17-89
+166-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:69:25-86
+167
+168                <category android:name="android.intent.category.DEFAULT" />
+168-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:36:17-76
+168-->[com.google.firebase:firebase-auth:21.0.1] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\cb85e813550ceb859d5d8655b705694f\jetified-firebase-auth-21.0.1\AndroidManifest.xml:36:27-73
+169            </intent-filter>
+170        </service>
+171
+172        <provider
+172-->[com.google.firebase:firebase-common:20.0.0] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\e8c12af64c0d197211b7d090cb61cdf8\jetified-firebase-common-20.0.0\AndroidManifest.xml:26:9-31:39
+173            android:name="com.google.firebase.provider.FirebaseInitProvider"
+173-->[com.google.firebase:firebase-common:20.0.0] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\e8c12af64c0d197211b7d090cb61cdf8\jetified-firebase-common-20.0.0\AndroidManifest.xml:27:13-77
+174            android:authorities="com.example.temp.firebaseinitprovider"
+174-->[com.google.firebase:firebase-common:20.0.0] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\e8c12af64c0d197211b7d090cb61cdf8\jetified-firebase-common-20.0.0\AndroidManifest.xml:28:13-72
+175            android:directBootAware="true"
+175-->[com.google.firebase:firebase-common:20.0.0] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\e8c12af64c0d197211b7d090cb61cdf8\jetified-firebase-common-20.0.0\AndroidManifest.xml:29:13-43
+176            android:exported="false"
+176-->[com.google.firebase:firebase-common:20.0.0] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\e8c12af64c0d197211b7d090cb61cdf8\jetified-firebase-common-20.0.0\AndroidManifest.xml:30:13-37
+177            android:initOrder="100" />
+177-->[com.google.firebase:firebase-common:20.0.0] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\e8c12af64c0d197211b7d090cb61cdf8\jetified-firebase-common-20.0.0\AndroidManifest.xml:31:13-36
+178
+179        <activity
+179-->[com.google.android.gms:play-services-base:17.1.0] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\0813e45a0b3806629b40dbeb70c75a60\jetified-play-services-base-17.1.0\AndroidManifest.xml:23:9-26:75
+180            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+180-->[com.google.android.gms:play-services-base:17.1.0] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\0813e45a0b3806629b40dbeb70c75a60\jetified-play-services-base-17.1.0\AndroidManifest.xml:24:13-79
+181            android:exported="false"
+181-->[com.google.android.gms:play-services-base:17.1.0] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\0813e45a0b3806629b40dbeb70c75a60\jetified-play-services-base-17.1.0\AndroidManifest.xml:25:13-37
+182            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+182-->[com.google.android.gms:play-services-base:17.1.0] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\0813e45a0b3806629b40dbeb70c75a60\jetified-play-services-base-17.1.0\AndroidManifest.xml:26:13-72
+183
+184        <meta-data
+184-->[com.google.android.gms:play-services-basement:17.1.0] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\14e561dfe998324f0993f7eed2935f20\jetified-play-services-basement-17.1.0\AndroidManifest.xml:23:9-25:69
+185            android:name="com.google.android.gms.version"
+185-->[com.google.android.gms:play-services-basement:17.1.0] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\14e561dfe998324f0993f7eed2935f20\jetified-play-services-basement-17.1.0\AndroidManifest.xml:24:13-58
+186            android:value="@integer/google_play_services_version" />
+186-->[com.google.android.gms:play-services-basement:17.1.0] C:\Users\Suyog Patil\.gradle\caches\transforms-2\files-2.1\14e561dfe998324f0993f7eed2935f20\jetified-play-services-basement-17.1.0\AndroidManifest.xml:25:13-66
+187    </application>
+188
+189</manifest>
