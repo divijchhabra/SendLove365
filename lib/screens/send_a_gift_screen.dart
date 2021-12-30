@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:temp/components/gradient_button.dart';
 import 'package:temp/constants.dart';
@@ -33,21 +35,16 @@ class _SendAGiftState extends State<SendAGift> {
           padding: const EdgeInsets.all(kDefaultPadding),
           child: Center(
             child: Column(
-
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-
-
-
                 SizedBox(
-                  height : 500,
+                  height: 500,
                   child: ListView(
-
                     scrollDirection: Axis.vertical,
                     physics: const BouncingScrollPhysics(),
                     children: [
                       Align(
-                        alignment : Alignment.center,
+                        alignment: Alignment.center,
                         child: const Text(
                           "Select A Gift",
                           style: TextStyle(fontSize: 23),
@@ -55,8 +52,9 @@ class _SendAGiftState extends State<SendAGift> {
                       ),
                       const SizedBox(height: 20),
                       GestureDetector(
-                        onTap: () async{
-                          if (!await launch("https://sendlove365.co/")) throw 'Could not launch';
+                        onTap: () async {
+                          if (!await launch("https://sendlove365.co/"))
+                            throw 'Could not launch';
                         },
                         child: Image.asset(
                           'assets/Mask Group 1.png',
@@ -64,10 +62,10 @@ class _SendAGiftState extends State<SendAGift> {
                           width: 294,
                         ),
                       ),
-
                       GestureDetector(
-                        onTap: () async{
-                          if (!await launch("https://sendlove365.co/")) throw 'Could not launch';
+                        onTap: () async {
+                          if (!await launch("https://sendlove365.co/"))
+                            throw 'Could not launch';
                         },
                         child: Image.asset(
                           'assets/Mask Group 1.png',
@@ -77,7 +75,6 @@ class _SendAGiftState extends State<SendAGift> {
                       ),
                     ],
                   ),
-
                   width: 294,
                 ),
                 const SizedBox(height: 20),

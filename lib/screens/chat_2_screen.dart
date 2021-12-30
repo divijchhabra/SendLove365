@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:temp/constants.dart';
 import 'package:temp/models/message_model.dart';
@@ -6,6 +8,7 @@ import 'package:temp/screens/send_a_gift_screen.dart';
 
 class SecondChatScreen extends StatefulWidget {
   final User user;
+
   const SecondChatScreen({required this.user, Key? key}) : super(key: key);
 
   @override
@@ -13,6 +16,8 @@ class SecondChatScreen extends StatefulWidget {
 }
 
 class _SecondChatScreenState extends State<SecondChatScreen> {
+  TextEditingController messageSendController = TextEditingController();
+
   _chatBubble(Message message, bool isMe, bool isSameUser) {
     if (isMe) {
       return Column(
@@ -149,11 +154,10 @@ class _SecondChatScreenState extends State<SecondChatScreen> {
         borderRadius: BorderRadius.only(
           topRight: Radius.circular(40),
           topLeft: Radius.circular(40),
-        ),color: Colors.white,
-
+        ),
+        color: Colors.white,
       ),
       height: 74,
-
       child: Row(
         children: <Widget>[
           IconButton(
@@ -226,19 +230,16 @@ class _SecondChatScreenState extends State<SecondChatScreen> {
               child: TextFormField(
                 cursorHeight: 30,
                 style: TextStyle(
-                  fontSize: 14,height: 1,
-
+                  fontSize: 14,
+                  height: 1,
                 ),
-
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.fromLTRB(8, 2, 2, 2),
                   fillColor: const Color(0xffD9D9D9).withOpacity(0.3),
                   filled: true,
-
-
                   enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(50),
-                borderSide: const BorderSide(color: Colors.white)),
+                      borderRadius: BorderRadius.circular(50),
+                      borderSide: const BorderSide(color: Colors.white)),
                   focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(50),
                       borderSide: const BorderSide(color: Colors.white)),
@@ -250,6 +251,11 @@ class _SecondChatScreenState extends State<SecondChatScreen> {
                   hintText: 'Type Something',
                 ),
                 textCapitalization: TextCapitalization.sentences,
+                controller: messageSendController,
+                onSaved: (msg) {
+                  messageSendController.value =
+                      messageSendController.value.copyWith(text: msg);
+                },
               ),
             ),
           ),

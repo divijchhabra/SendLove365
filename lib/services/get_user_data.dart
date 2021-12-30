@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:temp/components/bottom_nav.dart';
+import 'package:temp/screens/home_screen.dart';
 import 'package:temp/screens/settings_screen.dart';
-import 'package:temp/services/user_details.dart';
+import 'package:temp/models/user_details_model.dart';
 
 class GetUserData extends StatelessWidget {
   const GetUserData({Key? key}) : super(key: key);
@@ -14,8 +16,6 @@ class GetUserData extends StatelessWidget {
     String documentId = uid;
     CollectionReference users = FirebaseFirestore.instance.collection('users');
 
-    print(uid);
-    print(users);
     return FutureBuilder<DocumentSnapshot>(
       future: users.doc(documentId).get(),
       builder:
@@ -35,13 +35,13 @@ class GetUserData extends StatelessWidget {
 
           Map<String, dynamic> data =
               snapshot.data!.data() as Map<String, dynamic>;
-          UserDetails.name = data['userName'].toString();
-          UserDetails.email = data['email'].toString();
-          UserDetails.phone = data['phoneNo'].toString();
-          UserDetails.uid = data['uid'];
-          UserDetails.imageUrl = data['imageUrl'];
+          UserDetailsModel.name = data['userName'].toString();
+          UserDetailsModel.email = data['email'].toString();
+          UserDetailsModel.phone = data['phoneNo'].toString();
+          UserDetailsModel.uid = data['uid'];
+          UserDetailsModel.imageUrl = data['imageUrl'];
 
-          return const SettingsScreen();
+          return const BottomNav();
         }
         return const Scaffold(
           body: Center(

@@ -1,6 +1,10 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:temp/components/gradient_button.dart';
 import 'package:temp/constants.dart';
 import 'package:temp/helpers/validators.dart';
@@ -16,6 +20,29 @@ class PhoneNo extends StatefulWidget {
 class _PhoneNoState extends State<PhoneNo> {
   TextEditingController mobileController = TextEditingController();
   String dialCode = '+91';
+
+  Future<void> checkPermissionPhoneLogs() async {
+    if (await Permission.phone.request().isGranted &&
+        await Permission.contacts.request().isGranted) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          settings: RouteSettings(name: 'phone'),
+          builder: (context) => OtpScreen(
+            phoneNo: dialCode + mobileController.text,
+          ),
+        ),
+      );
+    } else {
+      await Permission.phone.request();
+
+      await Permission.contacts.request();
+
+      Fluttertoast.showToast(
+        msg: 'Provide Phone permission to make a call and view logs.',
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,16 +126,9 @@ class _PhoneNoState extends State<PhoneNo> {
                   height: 48,
                   width: 168.5,
                   child: GradientButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        await checkPermissionPhoneLogs();
                         print('Mobile:- ${mobileController.text}');
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => OtpScreen(
-                              phoneNo: dialCode + mobileController.text,
-                            ),
-                          ),
-                        );
                       },
                       child: const Text(
                         "Next",

@@ -8,10 +8,6 @@
         "source": "D:\\Android Projects\\SendLove365\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png"
     },
     {
-        "merged": "D:\\Android Projects\\SendLove365\\build\\app\\intermediates\\res\\merged\\debug\\drawable_launch_background.xml.flat",
-        "source": "D:\\Android Projects\\SendLove365\\android\\app\\src\\main\\res\\drawable\\launch_background.xml"
-    },
-    {
         "merged": "D:\\Android Projects\\SendLove365\\build\\app\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher.png.flat",
         "source": "D:\\Android Projects\\SendLove365\\android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.png"
     },

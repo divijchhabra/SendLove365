@@ -6,7 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:temp/constants.dart';
 import 'package:temp/screens/phoneno_screen.dart';
-import 'package:temp/services/user_details.dart';
+import 'package:temp/models/user_details_model.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -69,11 +69,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     child: CircleAvatar(
                       radius: 56,
                       backgroundImage:
-                          NetworkImage(UserDetails.imageUrl.toString()),
+                          NetworkImage(UserDetailsModel.imageUrl.toString()),
                     ),
                   ),
                   const SizedBox(height: 10),
-                  Text(UserDetails.name.toString(), style: kTextStyle),
+                  Text(UserDetailsModel.name.toString(), style: kTextStyle),
                   const SizedBox(height: 10),
                   SizedBox(
                     height: 500,
@@ -134,10 +134,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
       if (firebaseUser != null) {
         FirebaseAuth.instance.signOut().then((value) => {
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => PhoneNo()),
-                  (route) => false)
+              Navigator.of(context, rootNavigator: true).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => PhoneNo(),
+                ),
+              )
             });
       }
     } catch (e) {

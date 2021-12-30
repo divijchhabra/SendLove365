@@ -206,9 +206,11 @@ class _OtpScreenState extends State<OtpScreen> {
           );
         },
         codeSent: (String verficationID, int? resendToken) {
+          Fluttertoast.showToast(msg: 'OTP Sent successfully');
           setState(() {
             _verificationCode = verficationID;
           });
+          print(verficationID);
         },
         codeAutoRetrievalTimeout: (String verificationID) {
           setState(() {

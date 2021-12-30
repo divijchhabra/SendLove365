@@ -33,11 +33,12 @@ class _SplashState extends State<Splash> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        child: Image.asset(
-          'assets/Splash Screen.png',
-          fit: BoxFit.cover,
-        ));
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      child: Image.asset(
+        'assets/Splash Screen.png',
+        fit: BoxFit.cover,
+      ),
+    );
   }
 }

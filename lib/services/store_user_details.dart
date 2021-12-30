@@ -3,7 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class StoreUserInfo {
   //getUserDetails
-  Future<void> storeUserDetails(userName, email, urlDownload, phoneNo) async {
+  Future<void> storeUserDetails(
+      userName, email, urlDownload, phoneNo, timeStamp) async {
     final CollectionReference userCollection =
         FirebaseFirestore.instance.collection('users');
     FirebaseAuth auth = FirebaseAuth.instance;
@@ -17,6 +18,7 @@ class StoreUserInfo {
           "phoneNo": phoneNo,
           "imageUrl": urlDownload,
           "uid": uid,
+          "timeStamp": timeStamp,
         }, SetOptions(merge: true))
         .then((value) => print("User Details Added"))
         .catchError((error) => print("Failed to add user: $error"));
