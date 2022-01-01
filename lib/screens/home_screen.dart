@@ -12,6 +12,8 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:temp/components/gradient_button.dart';
 import 'package:temp/constants.dart';
 import 'package:temp/models/user_details_model.dart';
+import 'package:temp/screens/invite_friends_screen.dart';
+import 'package:temp/screens/invite_screen.dart';
 import 'package:temp/screens/send_a_gift_screen.dart';
 import 'package:temp/screens/send_to_friend_screen.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
@@ -31,7 +33,9 @@ class _HomeScreenState extends State<HomeScreen> {
       print('Hello ${contacts.length}');
       pushNewScreen(
         context,
-        screen: SendToFriend(contacts: contacts),
+        screen: contacts.isNotEmpty
+            ? InviteScreen(contacts: contacts)
+            : InviteFriends(),
         withNavBar: false,
         // OPTIONAL VALUE. True by default.
         pageTransitionAnimation: PageTransitionAnimation.cupertino,

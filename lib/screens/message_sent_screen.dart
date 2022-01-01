@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables
+
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:temp/components/gradient_button.dart';
@@ -36,14 +38,7 @@ class _MessageSentState extends State<MessageSent> {
             child: Column(
               children: [
                 Row(
-                  children: [
-
-
-
-
-
-
-                  ],
+                  children: [],
                 ),
                 const Padding(
                   padding: EdgeInsets.fromLTRB(70, 0, 70, 0),
@@ -61,7 +56,6 @@ class _MessageSentState extends State<MessageSent> {
                 ),
                 const SizedBox(height: 20),
                 SizedBox(
-
                   child: ListView(
                     scrollDirection: Axis.vertical,
                     physics: const BouncingScrollPhysics(),
@@ -71,7 +65,7 @@ class _MessageSentState extends State<MessageSent> {
                         height: 321,
                         width: 294,
                       ),
-                      const SizedBox(height:0),
+                      const SizedBox(height: 0),
                       Image.asset(
                         'assets/Mask Group 1.png',
                         height: 421,

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">227207482324-kh9rd2ijrh3j3so3fpfjd8ossiqdl0n2.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">227207482324</string>
+    <string name="google_api_key" translatable="false">AIzaSyBo4zzIhCqvDLyJTcwG8t5NILVRnEoUcMA</string>
+    <string name="google_app_id" translatable="false">1:227207482324:android:b529d86ce29d8802d0e441</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBo4zzIhCqvDLyJTcwG8t5NILVRnEoUcMA</string>
+    <string name="google_storage_bucket" translatable="false">sendlove365.appspot.com</string>
+    <string name="project_id" translatable="false">sendlove365</string>
+</resources>

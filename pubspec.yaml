@@ -55,6 +55,7 @@ dependencies:
   path: ^1.8.0
   permission_handler: ^8.3.0
   firebase_dynamic_links: ^4.0.3
+#  flutter_chat_bubble: ^2.0.0
 
 dev_dependencies:
   flutter_test:

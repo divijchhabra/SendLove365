@@ -1,3 +1,4 @@
+import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:temp/components/gradient_button.dart';
 import 'package:temp/constants.dart';
@@ -6,7 +7,9 @@ import 'package:temp/models/user_model.dart';
 import 'package:temp/screens/message_sent_screen.dart';
 
 class InviteScreen extends StatefulWidget {
-  const InviteScreen({Key? key}) : super(key: key);
+  const InviteScreen({Key? key, required this.contacts}) : super(key: key);
+
+  final List<Contact> contacts;
 
   @override
   _InviteScreen createState() => _InviteScreen();
@@ -14,7 +17,7 @@ class InviteScreen extends StatefulWidget {
 
 class _InviteScreen extends State<InviteScreen> {
   User? user;
-  final List<int> _selectedItems = [0];
+  final List<int> _selectedItems = [-1];
 
   @override
   Widget build(BuildContext context) {
@@ -249,18 +252,16 @@ class _InviteScreen extends State<InviteScreen> {
                   height: 48,
                   width: 149.85,
                   child: GradientButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const MessageSent()),
-                        );
-                      },
-                      child: const Text(
-                        "Send",
-                        style: kButtonTextStyle,
-                      ),
-                      gradient: gradient1),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MessageSent()),
+                      );
+                    },
+                    child: const Text("Send", style: kButtonTextStyle),
+                    gradient: gradient1,
+                  ),
                 ),
               ],
             ),

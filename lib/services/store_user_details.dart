@@ -10,12 +10,16 @@ class StoreUserInfo {
     FirebaseAuth auth = FirebaseAuth.instance;
     String uid = auth.currentUser!.uid.toString();
 
+    String phone = phoneNo.toString();
+    int n = phone.length;
+    phone = phone.substring(n - 10);
+
     userCollection
         .doc(uid)
         .set({
           "userName": userName,
           "email": email,
-          "phoneNo": phoneNo,
+          "phoneNo": phone,
           "imageUrl": urlDownload,
           "uid": uid,
           "timeStamp": timeStamp,

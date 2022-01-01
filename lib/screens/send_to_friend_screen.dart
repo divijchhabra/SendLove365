@@ -1,14 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:contacts_service/contacts_service.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:temp/models/user_details_model.dart';
 import 'package:temp/models/user_model.dart';
-import 'package:temp/screens/chat_2_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SendToFriend extends StatefulWidget {
@@ -23,25 +19,9 @@ class SendToFriend extends StatefulWidget {
 class _SendToFriendState extends State<SendToFriend> {
   User? user;
 
-  // final List firebaseUsers = [];
   dynamic filtered;
 
   dynamic querySnapshot;
-
-  // getData() async {
-  //   var collection = FirebaseFirestore.instance.collection('users');
-  //   var querySnapshot = await collection.get();
-  //   for (var queryDocumentSnapshot in querySnapshot.docs) {
-  //     Map<String, dynamic> data = queryDocumentSnapshot.data();
-  //     var name = data['userName'].toString();
-  //     var phone = data['phoneNo'].toString();
-  //
-  //     int pn = phone.length;
-  //     setState(() {
-  //       UserDetailsModel.firebaseUsersPhone.add(phone.substring(pn - 10));
-  //     });
-  //   }
-  // }
 
   Future<void> sendSms(phone) async {
     // print("SendSMS");
@@ -57,18 +37,7 @@ class _SendToFriendState extends State<SendToFriend> {
   String number = '';
 
   @override
-  void initState() {
-    super.initState();
-    // getData();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    // print("Phone no list");
-    // for (int i = 0; i < UserDetailsModel.firebaseUsers.length; i++) {
-    //   print(UserDetailsModel.firebaseUsers[i]);
-    // }
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Temp'),
@@ -87,20 +56,29 @@ class _SendToFriendState extends State<SendToFriend> {
           number = number.replaceAll(' ', '');
           int n = number.length;
           n >= 10 ? number = number.substring(n - 10) : number = invalidNumber;
-          // print('------------------------');
-          // if (UserDetailsModel.firebaseUsersPhone.contains(number)) {
-          //   Friends.displayContact = number;
-          //   Friends.displayName = contact.displayName!;
-          //   FriendModel.friends.add(Friends());
-          // }
-          // print('------------------------');
 
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Column(
               children: [
-                if (!UserDetailsModel.firebaseUsersPhone.contains(number))
+                if (UserDetailsModel.firebaseUsersPhone.contains(number))
                   ListTile(
+                    onTap: () {
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => SecondChatScreen(
+                      //       user: User(
+                      //         id: 1,
+                      //         name: contact.displayName.toString(),
+                      //         imageUrl: contact.avatar.toString(),
+                      //         isOnline: true,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // );
+                      // todo something
+                    },
                     title: Text(contact.displayName ?? 'Contact Name'),
                     subtitle: Text(number),
                     leading:
@@ -111,63 +89,53 @@ class _SendToFriendState extends State<SendToFriend> {
                             : CircleAvatar(
                                 child: Text(contact.initials()),
                               ),
-                    // 9579699645
-                    trailing: InkWell(
-                      onTap: () async {
-                        print(index);
-                        widget.contacts.elementAt(index).phones!.isEmpty
-                            ? Fluttertoast.showToast(
-                                msg: 'Invalid Contact Number')
-                            : await sendSms(
-                                widget.contacts
-                                    .elementAt(index)
-                                    .phones!
-                                    .elementAt(0)
-                                    .value,
-                              );
-                      },
-                      child: Text('Invite'),
-                    ),
-                  )
-                else
-                  ListTile(
-                    title: Text(contact.displayName ?? 'Contact Name'),
-                    subtitle: Text(number),
-                    leading:
-                        (contact.avatar != null && contact.avatar!.isNotEmpty)
-                            ? CircleAvatar(
-                                backgroundImage: MemoryImage(contact.avatar!),
-                              )
-                            : CircleAvatar(
-                                child: Text(contact.initials()),
-                              ),
-                    // 9579699645
-                    trailing: InkWell(
-                      onTap: () async {
-                        print(index);
-                        widget.contacts.elementAt(index).phones!.isEmpty
-                            ? Fluttertoast.showToast(
-                                msg: 'Invalid Contact Number')
-                            : Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => SecondChatScreen(
-                                    user: User(
-                                        id: 1,
-                                        name: contact.displayName.toString(),
-                                        imageUrl: contact.avatar.toString(),
-                                        isOnline: false),
-                                  ),
-                                ),
-                              );
-                      },
-                      child: Text(
-                        'Chat',
-                        style: TextStyle(color: Colors.red),
-                      ),
-                    ),
                   ),
-                Divider(thickness: 2, indent: 20, endIndent: 10),
+                if (UserDetailsModel.firebaseUsersPhone.contains(number))
+                  Divider(
+                    thickness: 2,
+                    indent: 20,
+                    endIndent: 10,
+                    color: Color(0xff7A3496).withOpacity(0.3),
+                  ),
+                // else
+                //   ListTile(
+                //     title: Text(contact.displayName ?? 'Contact Name'),
+                //     subtitle: Text(number),
+                //     leading:
+                //         (contact.avatar != null && contact.avatar!.isNotEmpty)
+                //             ? CircleAvatar(
+                //                 backgroundImage: MemoryImage(contact.avatar!),
+                //               )
+                //             : CircleAvatar(
+                //                 child: Text(contact.initials()),
+                //               ),
+                //     // 9579699645
+                //     trailing: InkWell(
+                //       onTap: () async {
+                //         print(index);
+                //         widget.contacts.elementAt(index).phones!.isEmpty
+                //             ? Fluttertoast.showToast(
+                //                 msg: 'Invalid Contact Number')
+                //             : Navigator.push(
+                //                 context,
+                //                 MaterialPageRoute(
+                //                   builder: (context) => SecondChatScreen(
+                //                     user: User(
+                //                         id: 1,
+                //                         name: contact.displayName.toString(),
+                //                         imageUrl: contact.avatar.toString(),
+                //                         isOnline: false),
+                //                   ),
+                //                 ),
+                //               );
+                //       },
+                //       child: Text(
+                //         'Chat',
+                //         style: TextStyle(color: Colors.red),
+                //       ),
+                //     ),
+                //   ),
+                // Divider(thickness: 2, indent: 20, endIndent: 10),
               ],
             ),
           );

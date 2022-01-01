@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:temp/constants.dart';
-import 'package:temp/screens/chat_screen.dart';
+import 'package:temp/screens/chat/chat_screen.dart';
 import 'package:temp/screens/home_screen.dart';
 import 'package:temp/screens/reminder_screen.dart';
 import 'package:temp/screens/settings_screen.dart';
