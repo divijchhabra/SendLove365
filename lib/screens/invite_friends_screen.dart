@@ -4,7 +4,6 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:temp/models/user_details_model.dart';
-import 'package:temp/models/user_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class InviteFriendScreen extends StatefulWidget {
@@ -18,8 +17,6 @@ class InviteFriendScreen extends StatefulWidget {
 }
 
 class _InviteFriendScreen extends State<InviteFriendScreen> {
-  User? user;
-
   dynamic filtered;
 
   dynamic querySnapshot;
@@ -41,7 +38,7 @@ class _InviteFriendScreen extends State<InviteFriendScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Temp'),
+        title: const Text('Invite friends'),
       ),
       body: ListView.builder(
         physics: BouncingScrollPhysics(),

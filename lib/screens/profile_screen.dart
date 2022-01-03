@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
@@ -23,6 +25,8 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  final GlobalKey<FormState> _formFieldKey = GlobalKey();
+
   // image source
   File? _image;
 
@@ -45,119 +49,133 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Padding(
             padding: const EdgeInsets.all(kDefaultPadding),
             child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Image.asset(
-                        'assets/Send LOve Icon envelope.png',
-                        height: 68,
-                        width: 68,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    children: const [
-                      Text(
-                        "Setup Profile",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w500),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  InkWell(
-                    onTap: () {
-                      getImage();
-                    },
-                    child: _image == null
-                        ? Image.asset(
-                            'assets/profile.png',
-                            height: 107.91,
-                            width: 107.91,
-                          )
-                        : Image.file(
-                            _image!,
-                            // alignment: Alignment.center,
-                            height: 107.91,
-                            width: 107.91,
-                            // fit: BoxFit.fitWidth,
+              child: Form(
+                key: _formFieldKey,
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Image.asset(
+                          'assets/Send LOve Icon envelope.png',
+                          height: 68,
+                          width: 68,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: const [
+                        Text(
+                          "Setup Profile",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    InkWell(
+                      onTap: () {
+                        getImage();
+                      },
+                      child: _image == null
+                          ? Image.asset(
+                              'assets/profile.png',
+                              height: 107.91,
+                              width: 107.91,
+                            )
+                          : Image.file(
+                              _image!,
+                              // alignment: Alignment.center,
+                              height: 107.91,
+                              width: 107.91,
+                              // fit: BoxFit.fitWidth,
+                            ),
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      // height: 51,
+                      width: 326,
+                      child: TextFormField(
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(
+                            vertical: 10.0,
+                            horizontal: 10.0,
                           ),
-                  ),
-                  const SizedBox(height: 20),
-                  SizedBox(
-                    height: 51,
-                    width: 326,
-                    child: TextFormField(
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          labelText: "Username",
                         ),
-                        labelText: "Username",
+                        controller: userNameController,
+                        onSaved: (userName) {
+                          userNameController.value =
+                              userNameController.value.copyWith(text: userName);
+                        },
+                        validator: userNameValidator,
                       ),
-                      controller: userNameController,
-                      onSaved: (userName) {
-                        userNameController.value =
-                            userNameController.value.copyWith(text: userName);
-                      },
-                      validator: userNameValidator,
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  SizedBox(
-                    height: 51,
-                    width: 326,
-                    child: TextFormField(
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      // height: 51,
+                      width: 326,
+                      child: TextFormField(
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(
+                            vertical: 10.0,
+                            horizontal: 10.0,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          labelText: "Email",
                         ),
-                        labelText: "Email",
+                        controller: emailController,
+                        onSaved: (email) {
+                          emailController.value =
+                              emailController.value.copyWith(text: email);
+                        },
+                        validator: emailValidator,
                       ),
-                      controller: emailController,
-                      onSaved: (email) {
-                        emailController.value =
-                            emailController.value.copyWith(text: email);
-                      },
-                      validator: emailValidator,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  SizedBox(
-                    height: 48,
-                    width: 168.5,
-                    child: GradientButton(
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    SizedBox(
+                      height: 48,
+                      width: 168.5,
+                      child: GradientButton(
                         onPressed: () async {
-                          setState(() {
-                            showSpinner = true;
-                          });
-                          await uploadImage();
-                          await StoreUserInfo().storeUserDetails(
-                            userNameController.text,
-                            emailController.text,
-                            urlDownload,
-                            widget.phoneNo,
-                            DateTime.now().toUtc().millisecondsSinceEpoch,
-                          );
+                          if (_formFieldKey.currentState!.validate()) {
+                            setState(() {
+                              showSpinner = true;
+                            });
+                            await uploadImage();
+                            await StoreUserInfo().storeUserDetails(
+                              userNameController.text,
+                              emailController.text,
+                              urlDownload,
+                              widget.phoneNo,
+                              DateTime.now().toUtc().millisecondsSinceEpoch,
+                            );
 
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const GetUserData()),
-                          );
-                          setState(() {
-                            showSpinner = false;
-                          });
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const GetUserData()),
+                            );
+                            setState(() {
+                              showSpinner = false;
+                            });
+                          }
                         },
                         child: const Text("Next", style: kButtonTextStyle),
-                        gradient: gradient1),
-                  )
-                ],
+                        gradient: gradient1,
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ),
@@ -185,7 +203,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   // Upload image
   Future uploadImage() async {
-    print('image $_image');
+    // print('image $_image');
     if (_image == null) return;
 
     final imageName = path.basename(_image!.path);
@@ -198,6 +216,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final snapshot = await task!.whenComplete(() {});
     urlDownload = await snapshot.ref.getDownloadURL();
 
-    print('urlDownload $urlDownload');
+    // print('urlDownload $urlDownload');
   }
 }

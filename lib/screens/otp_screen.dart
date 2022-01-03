@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -28,8 +30,36 @@ class _OtpScreenState extends State<OtpScreen> {
 
   String? otp;
 
+  late Timer _timer;
+  int _start = 45;
+
+  void startTimer() {
+    const oneSec = Duration(seconds: 1);
+    _timer = Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        if (_start == 0) {
+          setState(() {
+            timer.cancel();
+          });
+        } else {
+          setState(() {
+            _start--;
+          });
+        }
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
   @override
   void initState() {
+    startTimer();
     _verifyPhone();
     super.initState();
   }
@@ -99,9 +129,14 @@ class _OtpScreenState extends State<OtpScreen> {
                     },
                     validator: otpValidator,
                   ),
-                  const Text("00:44"),
+                  (_start != 0) ? Text('00:$_start') : Text('00:00'),
                   const SizedBox(height: 8),
-                  TextButton(onPressed: () {}, child: const Text("Send Again")),
+                  TextButton(
+                    onPressed: () async {
+                      await _verifyPhone();
+                    },
+                    child: const Text("Send Again"),
+                  ),
                   const SizedBox(height: 8),
                   SizedBox(
                     height: 48,
@@ -111,8 +146,8 @@ class _OtpScreenState extends State<OtpScreen> {
                           setState(() {
                             showSpinner = true;
                           });
-                          print('otp1 $_verificationCode');
-                          print('otp2 $otp');
+                          // print('otp1 $_verificationCode');
+                          // print('otp2 $otp');
                           try {
                             await _auth
                                 .signInWithCredential(
@@ -120,9 +155,9 @@ class _OtpScreenState extends State<OtpScreen> {
                                         verificationId: _verificationCode!,
                                         smsCode: otp!))
                                 .then((value) async {
-                              print('User Logged In');
+                              // print('User Logged In');
                               if (value.additionalUserInfo!.isNewUser) {
-                                print('New User');
+                                // print('New User');
                                 Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
@@ -132,7 +167,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                   (route) => false,
                                 );
                               } else {
-                                print('Old User');
+                                // print('Old User');
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
@@ -170,9 +205,9 @@ class _OtpScreenState extends State<OtpScreen> {
         phoneNumber: widget.phoneNo,
         verificationCompleted: (PhoneAuthCredential credential) async {
           await _auth.signInWithCredential(credential).then((value) async {
-            print('User Logged In');
+            // print('User Logged In');
             if (value.additionalUserInfo!.isNewUser) {
-              print('New User');
+              // print('New User');
               Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
@@ -181,7 +216,7 @@ class _OtpScreenState extends State<OtpScreen> {
                           )),
                   (route) => false);
             } else {
-              print('Old User');
+              // print('Old User');
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
@@ -195,7 +230,7 @@ class _OtpScreenState extends State<OtpScreen> {
           setState(() {
             showSpinner = false;
           });
-          print(e.message);
+          // print(e.message);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
@@ -210,7 +245,7 @@ class _OtpScreenState extends State<OtpScreen> {
           setState(() {
             _verificationCode = verficationID;
           });
-          print(verficationID);
+          // print(verficationID);
         },
         codeAutoRetrievalTimeout: (String verificationID) {
           setState(() {

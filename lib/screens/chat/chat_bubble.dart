@@ -1,8 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:temp/models/message_model.dart';
 
 class ChatBubble extends StatelessWidget {
   const ChatBubble({
@@ -22,9 +20,9 @@ class ChatBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('avatar $avatar');
-    print('isMsg $isMsg');
-    print('message $message');
+    // print('avatar $avatar');
+    // print('isMsg $isMsg');
+    // print('message $message');
 
     return (isMe)
         ? Column(

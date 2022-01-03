@@ -30,9 +30,9 @@ class _HomeScreenState extends State<HomeScreen> {
     if (await Permission.phone.request().isGranted &&
         await Permission.contacts.request().isGranted) {
       await getContacts();
-      print('Hello ${contacts.length}');
-      print('_index');
-      print(_index);
+      // print('Hello ${contacts.length}');
+      // print('_index');
+      // print(_index);
 
       pushNewScreen(
         context,
@@ -284,7 +284,7 @@ class _ImagesState extends State<Images> {
         ),
       ),
       onSwipeEnd: (offSet, value) {
-        print(_index);
+        // print(_index);
         setState(() {
           _index -= 1;
         });

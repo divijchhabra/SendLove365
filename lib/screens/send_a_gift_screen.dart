@@ -6,7 +6,6 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:temp/components/bottom_nav.dart';
 import 'package:temp/components/gradient_button.dart';
 import 'package:temp/constants.dart';
-import 'package:temp/screens/home_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SendAGift extends StatefulWidget {
@@ -40,7 +39,7 @@ class _SendAGiftState extends State<SendAGift> {
         }
 
         if (snapshot.hasData) {
-          var data;
+          dynamic data;
 
           return Scaffold(
             appBar: PreferredSize(
@@ -70,22 +69,23 @@ class _SendAGiftState extends State<SendAGift> {
                         height: 400,
                         child: PageView(
                           onPageChanged: (value) {
-                            print('value');
-                            print(value);
+                            // print('value');
+                            // print(value);
                           },
                           scrollDirection: Axis.vertical,
                           children: snapshot.data!.docs.map(
                             (DocumentSnapshot document) {
                               data = document.data()!;
-                              print(document.toString());
-                              print('data');
-                              print(data['imageSrc']);
+                              // print(document.toString());
+                              // print('data');
+                              // print(data['imageSrc']);
                               String imageSrc = data['imageSrc'];
 
                               return InkWell(
                                 onTap: () async {
-                                  if (!await launch(imageSrc))
+                                  if (!await launch(imageSrc)) {
                                     throw 'Could not launch';
+                                  }
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(

@@ -2,8 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:temp/components/bottom_nav.dart';
-import 'package:temp/screens/home_screen.dart';
-import 'package:temp/screens/settings_screen.dart';
 import 'package:temp/models/user_details_model.dart';
 
 class GetUserData extends StatelessWidget {
@@ -21,17 +19,17 @@ class GetUserData extends StatelessWidget {
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.hasError) {
-          print('Error');
+          // print('Error');
 
           return const Center(child: CircularProgressIndicator());
         }
         if (snapshot.hasData && !snapshot.data!.exists) {
-          print('Error');
+          // print('Error');
 
           return const Center(child: CircularProgressIndicator());
         }
         if (snapshot.connectionState == ConnectionState.done) {
-          print('All ok');
+          // print('All ok');
 
           Map<String, dynamic> data =
               snapshot.data!.data() as Map<String, dynamic>;

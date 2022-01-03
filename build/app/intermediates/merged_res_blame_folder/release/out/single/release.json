@@ -12,12 +12,12 @@
         "source": "C:\\Users\\Suyog Patil\\.gradle\\caches\\transforms-2\\files-2.1\\8ec5a4192b12a309556d408337153575\\core-1.6.0\\res\\drawable-hdpi-v4\\notify_panel_notification_icon_bg.png"
     },
     {
-        "merged": "D:\\Android Projects\\SendLove365\\build\\app\\intermediates\\res\\merged\\release\\drawable-mdpi-v4_common_google_signin_btn_text_dark_normal_background.9.png.flat",
-        "source": "C:\\Users\\Suyog Patil\\.gradle\\caches\\transforms-2\\files-2.1\\26336bfb65dffa70efa6a7e60bdeb254\\jetified-play-services-base-17.6.0\\res\\drawable-mdpi-v4\\common_google_signin_btn_text_dark_normal_background.9.png"
-    },
-    {
         "merged": "D:\\Android Projects\\SendLove365\\build\\app\\intermediates\\res\\merged\\release\\drawable-hdpi-v4_common_full_open_on_phone.png.flat",
         "source": "C:\\Users\\Suyog Patil\\.gradle\\caches\\transforms-2\\files-2.1\\26336bfb65dffa70efa6a7e60bdeb254\\jetified-play-services-base-17.6.0\\res\\drawable-hdpi-v4\\common_full_open_on_phone.png"
+    },
+    {
+        "merged": "D:\\Android Projects\\SendLove365\\build\\app\\intermediates\\res\\merged\\release\\drawable-mdpi-v4_common_google_signin_btn_text_dark_normal_background.9.png.flat",
+        "source": "C:\\Users\\Suyog Patil\\.gradle\\caches\\transforms-2\\files-2.1\\26336bfb65dffa70efa6a7e60bdeb254\\jetified-play-services-base-17.6.0\\res\\drawable-mdpi-v4\\common_google_signin_btn_text_dark_normal_background.9.png"
     },
     {
         "merged": "D:\\Android Projects\\SendLove365\\build\\app\\intermediates\\res\\merged\\release\\drawable_common_google_signin_btn_text_disabled.xml.flat",

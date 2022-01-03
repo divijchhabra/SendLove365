@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:contacts_service/contacts_service.dart';
@@ -30,7 +30,7 @@ class _SendImageScreen extends State<SendImageScreen> {
   CollectionReference chats = FirebaseFirestore.instance.collection('chats');
 
   String currentUserId = UserDetailsModel.phone.toString();
-  var chatDocId;
+  dynamic chatDocId;
 
   String friendPhoneUid = '';
 
@@ -41,15 +41,15 @@ class _SendImageScreen extends State<SendImageScreen> {
         .get()
         .then(
           (QuerySnapshot querySnapshot) async {
-            print(querySnapshot.docs.isEmpty);
+            // print(querySnapshot.docs.isEmpty);
             if (querySnapshot.docs.isNotEmpty) {
               setState(() {
                 chatDocId = querySnapshot.docs.single.id;
               });
 
-              print('value $chatDocId');
+              // print('value $chatDocId');
             } else {
-              print('I am here');
+              // print('I am here');
               await chats.add({
                 'users': {currentUserId: null, friendPhoneUid: null}
               }).then(
@@ -59,7 +59,7 @@ class _SendImageScreen extends State<SendImageScreen> {
                     showSpinner = false;
                   });
 
-                  print('value $chatDocId');
+                  // print('value $chatDocId');
                 },
               );
             }
@@ -67,7 +67,7 @@ class _SendImageScreen extends State<SendImageScreen> {
         )
         .catchError((error) {
           Fluttertoast.showToast(msg: error.toString());
-          print('bad $error');
+          // print('bad $error');
           setState(() {
             showSpinner = false;
           });
@@ -85,13 +85,14 @@ class _SendImageScreen extends State<SendImageScreen> {
       'message': msg,
       'isMsg': isMsg,
     }).then((value) {
-      print(value);
+      // print(value);
     }).catchError((error) {
       Fluttertoast.showToast(msg: error.message);
     });
   }
 
   late List<Contact> contacts = [];
+  late List<String> myFriends = [];
 
   Future<void> getContacts() async {
     List<Contact> _contacts = await ContactsService.getContacts();
@@ -110,7 +111,7 @@ class _SendImageScreen extends State<SendImageScreen> {
       setState(() {
         showSpinner = false;
       });
-      print('Hello ${contacts.length}');
+      // print('Hello ${contacts.length}');
     } else {
       setState(() {
         showSpinner = false;
@@ -137,6 +138,30 @@ class _SendImageScreen extends State<SendImageScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // print('contacts');
+    // print(contacts.length);
+
+    for (int i = 0; i < contacts.length; i++) {
+      Contact contact = contacts.elementAt(i);
+
+      String number;
+      contact.phones!.isEmpty
+          ? number = "No info"
+          : number = contact.phones!.elementAt(0).value!;
+
+      String invalidNumber = number;
+      number = number.replaceAll(' ', '');
+      int n = number.length;
+      n >= 10 ? number = number.substring(n - 10) : number = invalidNumber;
+
+      if (UserDetailsModel.firebaseUsersPhone.contains(number) &&
+          number != UserDetailsModel.phone) {
+        setState(() {
+          myFriends.add(number);
+        });
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 90,
@@ -175,10 +200,8 @@ class _SendImageScreen extends State<SendImageScreen> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  contacts.isNotEmpty
+                  const SizedBox(height: 10),
+                  (contacts.isNotEmpty && myFriends.isNotEmpty)
                       ? ListView.builder(
                           shrinkWrap: true,
                           physics: const BouncingScrollPhysics(),
@@ -251,13 +274,16 @@ class _SendImageScreen extends State<SendImageScreen> {
                           },
                         )
                       : Center(
-                          child: Text(
-                            "Please invite your friends to send them images.",
-                            style: TextStyle(fontSize: 20),
-                            textAlign: TextAlign.center,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              "Please invite your friends to send them images.",
+                              style: TextStyle(fontSize: 20),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ),
-                  const SizedBox(height: 35),
+                  SizedBox(height: 35),
                   SizedBox(
                     height: 48,
                     width: 149.85,

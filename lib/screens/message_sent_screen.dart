@@ -1,7 +1,6 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:temp/components/bottom_nav.dart';
 import 'package:temp/components/gradient_button.dart';

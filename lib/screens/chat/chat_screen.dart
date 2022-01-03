@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
@@ -6,9 +6,12 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:temp/components/gradient_button.dart';
 import 'package:temp/constants.dart';
 import 'package:temp/models/user_details_model.dart';
 import 'package:temp/screens/chat/chat.dart';
+
+import '../invite_friends_screen.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -19,6 +22,7 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   late List<Contact> contacts = [];
+  late List<String> myFriends = [];
 
   Future<void> getContacts() async {
     List<Contact> _contacts = await ContactsService.getContacts();
@@ -37,7 +41,7 @@ class _ChatScreenState extends State<ChatScreen> {
       setState(() {
         showSpinner = false;
       });
-      print('Hello ${contacts.length}');
+      // print('Hello ${contacts.length}');
     } else {
       setState(() {
         showSpinner = false;
@@ -65,7 +69,28 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     for (int i = 0; i < UserDetailsModel.firebaseUsersPhone.length; i++) {
-      print(UserDetailsModel.firebaseUsersPhone[i]);
+      // print(UserDetailsModel.firebaseUsersPhone[i]);
+    }
+
+    for (int i = 0; i < contacts.length; i++) {
+      Contact contact = contacts.elementAt(i);
+
+      String number;
+      contact.phones!.isEmpty
+          ? number = "No info"
+          : number = contact.phones!.elementAt(0).value!;
+
+      String invalidNumber = number;
+      number = number.replaceAll(' ', '');
+      int n = number.length;
+      n >= 10 ? number = number.substring(n - 10) : number = invalidNumber;
+
+      if (UserDetailsModel.firebaseUsersPhone.contains(number) &&
+          number != UserDetailsModel.phone) {
+        setState(() {
+          myFriends.add(number);
+        });
+      }
     }
 
     return Scaffold(
@@ -102,79 +127,114 @@ class _ChatScreenState extends State<ChatScreen> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  SizedBox(
-                    height: 600,
-                    child: ListView.builder(
-                      physics: BouncingScrollPhysics(),
-                      itemCount: contacts.length,
-                      itemBuilder: (context, index) {
-                        Contact contact = contacts.elementAt(index);
+                  const SizedBox(height: 10),
+                  (contacts.isNotEmpty && myFriends.isNotEmpty)
+                      ? SizedBox(
+                          height: 600,
+                          child: ListView.builder(
+                            physics: BouncingScrollPhysics(),
+                            itemCount: contacts.length,
+                            itemBuilder: (context, index) {
+                              Contact contact = contacts.elementAt(index);
 
-                        String number;
-                        contact.phones!.isEmpty
-                            ? number = "No info"
-                            : number = contact.phones!.elementAt(0).value!;
+                              String number;
+                              contact.phones!.isEmpty
+                                  ? number = "No info"
+                                  : number =
+                                      contact.phones!.elementAt(0).value!;
 
-                        String invalidNumber = number;
-                        number = number.replaceAll(' ', '');
-                        int n = number.length;
-                        n >= 10
-                            ? number = number.substring(n - 10)
-                            : number = invalidNumber;
+                              String invalidNumber = number;
+                              number = number.replaceAll(' ', '');
+                              int n = number.length;
+                              n >= 10
+                                  ? number = number.substring(n - 10)
+                                  : number = invalidNumber;
 
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Column(
-                            children: [
-                              if (firebaseUserPhone.contains(number) &&
-                                  number != UserDetailsModel.phone)
-                                ListTile(
-                                  onTap: () {
-                                    pushNewScreen(
-                                      context,
-                                      screen: Chat(
-                                        friendPhoneUid: number,
-                                        avatar: contact.avatar.toString(),
-                                        isOnline: true,
-                                        friendName:
-                                            contact.displayName.toString(),
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20.0),
+                                child: Column(
+                                  children: [
+                                    if (firebaseUserPhone.contains(number) &&
+                                        number != UserDetailsModel.phone)
+                                      ListTile(
+                                        onTap: () {
+                                          pushNewScreen(
+                                            context,
+                                            screen: Chat(
+                                              friendPhoneUid: number,
+                                              avatar: contact.avatar.toString(),
+                                              isOnline: true,
+                                              friendName: contact.displayName
+                                                  .toString(),
+                                            ),
+                                            withNavBar: false,
+                                            // OPTIONAL VALUE. True by default.
+                                            pageTransitionAnimation:
+                                                PageTransitionAnimation
+                                                    .cupertino,
+                                          );
+                                        },
+                                        title: Text(contact.displayName ??
+                                            'Contact Name'),
+                                        subtitle: Text(number),
+                                        leading: (contact.avatar != null &&
+                                                contact.avatar!.isNotEmpty)
+                                            ? CircleAvatar(
+                                                backgroundImage: MemoryImage(
+                                                    contact.avatar!),
+                                              )
+                                            : CircleAvatar(
+                                                child: Text(contact.initials()),
+                                              ),
                                       ),
-                                      withNavBar: false,
-                                      // OPTIONAL VALUE. True by default.
-                                      pageTransitionAnimation:
-                                          PageTransitionAnimation.cupertino,
-                                    );
-                                  },
-                                  title: Text(
-                                      contact.displayName ?? 'Contact Name'),
-                                  subtitle: Text(number),
-                                  leading: (contact.avatar != null &&
-                                          contact.avatar!.isNotEmpty)
-                                      ? CircleAvatar(
-                                          backgroundImage:
-                                              MemoryImage(contact.avatar!),
-                                        )
-                                      : CircleAvatar(
-                                          child: Text(contact.initials()),
-                                        ),
+                                    if (UserDetailsModel.firebaseUsersPhone
+                                            .contains(number) &&
+                                        number != UserDetailsModel.phone)
+                                      Divider(
+                                        thickness: 2,
+                                        indent: 20,
+                                        endIndent: 10,
+                                      ),
+                                  ],
                                 ),
-                              if (UserDetailsModel.firebaseUsersPhone
-                                      .contains(number) &&
-                                  number != UserDetailsModel.phone)
-                                Divider(
-                                  thickness: 2,
-                                  indent: 20,
-                                  endIndent: 10,
-                                ),
-                            ],
+                              );
+                            },
                           ),
-                        );
-                      },
-                    ),
-                  ),
+                        )
+                      : Column(
+                          children: [
+                            Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Please invite your friends to chat with them.",
+                                  style: TextStyle(fontSize: 20),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 35),
+                            SizedBox(
+                              height: 48,
+                              width: 149.85,
+                              child: GradientButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => InviteFriendScreen(
+                                          contacts: contacts),
+                                    ),
+                                  );
+                                },
+                                child:
+                                    Text('Invite +', style: kButtonTextStyle),
+                                gradient: gradient1,
+                              ),
+                            ),
+                          ],
+                        )
                 ],
               ),
             ),

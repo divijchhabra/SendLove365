@@ -5,14 +5,12 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_swipable/flutter_swipable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:temp/constants.dart';
 import 'package:temp/models/user_details_model.dart';
 import 'package:temp/screens/chat/chat_bubble.dart';
 import 'package:temp/screens/send_a_gift_screen.dart';
-import 'package:temp/services/firebase_upload.dart';
 import 'package:path/path.dart' as path;
 
 class Chat extends StatefulWidget {
@@ -31,6 +29,8 @@ class Chat extends StatefulWidget {
   _ChatState createState() => _ChatState();
 }
 
+int _index = 2;
+
 class _ChatState extends State<Chat> {
   // image source
   File? _image;
@@ -45,7 +45,7 @@ class _ChatState extends State<Chat> {
   final _textController = TextEditingController();
 
   String currentUserId = UserDetailsModel.phone.toString();
-  var chatDocId;
+  dynamic chatDocId;
 
   Future<void> checkUser() async {
     await chats
@@ -55,15 +55,15 @@ class _ChatState extends State<Chat> {
         .get()
         .then(
           (QuerySnapshot querySnapshot) async {
-            print(querySnapshot.docs.isEmpty);
+            // print(querySnapshot.docs.isEmpty);
             if (querySnapshot.docs.isNotEmpty) {
               setState(() {
                 chatDocId = querySnapshot.docs.single.id;
               });
 
-              print('value $chatDocId');
+              // print('value $chatDocId');
             } else {
-              print('I am here');
+              // print('I am here');
               await chats.add({
                 'users': {currentUserId: null, widget.friendPhoneUid: null}
               }).then(
@@ -72,7 +72,7 @@ class _ChatState extends State<Chat> {
                     chatDocId = value.id;
                   });
 
-                  print('value $chatDocId');
+                  // print('value $chatDocId');
                 },
               );
             }
@@ -80,7 +80,7 @@ class _ChatState extends State<Chat> {
         )
         .catchError((error) {
           Fluttertoast.showToast(msg: error.toString());
-          print('bad $error');
+          // print('bad $error');
         });
   }
 
@@ -95,9 +95,22 @@ class _ChatState extends State<Chat> {
     return Alignment.topLeft;
   }
 
+  List<String> imageUrl = [
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyWLsRHTJd8vXnQWVOd7k_N1pOkD9T_1oOAw&usqp=CAU',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb17jkNYYV09jEwBn4Xujo4-xpV66mDr74Mg&usqp=CAU',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSy0pxXVnc-vsxBbOByNPqBtw394iWBT2H-YQ&usqp=CAU',
+  ];
+
+  List<Images> cards = [];
+
   @override
   void initState() {
     super.initState();
+    _index = 2;
+
+    for (int i = 0; i < imageUrl.length; i++) {
+      cards.add(Images(imageLink: imageUrl[i]));
+    }
     checkUser();
   }
 
@@ -126,7 +139,7 @@ class _ChatState extends State<Chat> {
         }
 
         if (snapshot.hasData) {
-          var data;
+          dynamic data;
           return Scaffold(
             appBar: AppBar(
               toolbarHeight: 90,
@@ -187,71 +200,11 @@ class _ChatState extends State<Chat> {
                       children: snapshot.data!.docs.map(
                         (DocumentSnapshot document) {
                           data = document.data()!;
-                          print(document.toString());
-                          print(data['msg']);
+                          // print(document.toString());
+                          // print(data['msg']);
                           return Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 18.0),
-                            // child: ChatBubble(
-                            //   clipper: ChatBubbleClipper6(
-                            //     nipSize: 0,
-                            //     radius: 0,
-                            //     type: isSender(data['senderPhoneId'].toString())
-                            //         ? BubbleType.sendBubble
-                            //         : BubbleType.receiverBubble,
-                            //   ),
-                            //   alignment: getAlignment(
-                            //       data['senderPhoneId'].toString()),
-                            //   margin: EdgeInsets.only(top: 20),
-                            //   backGroundColor:
-                            //       isSender(data['senderPhoneId'].toString())
-                            //           ? Color(0xFF08C187)
-                            //           : Color(0xffE7E7ED),
-                            //   child: Container(
-                            //     constraints: BoxConstraints(
-                            //       maxWidth:
-                            //           MediaQuery.of(context).size.width * 0.7,
-                            //     ),
-                            //     child: Column(
-                            //       children: [
-                            //         Row(
-                            //           mainAxisAlignment:
-                            //               MainAxisAlignment.start,
-                            //           children: [
-                            //             Text(data['message'],
-                            //                 style: TextStyle(
-                            //                     color: isSender(
-                            //                             data['senderPhoneId']
-                            //                                 .toString())
-                            //                         ? Colors.white
-                            //                         : Colors.black),
-                            //                 maxLines: 100,
-                            //                 overflow: TextOverflow.ellipsis)
-                            //           ],
-                            //         ),
-                            //         Row(
-                            //           mainAxisAlignment: MainAxisAlignment.end,
-                            //           children: [
-                            //             Text(
-                            //               data['createdOn'] == null
-                            //                   ? DateTime.now().toString()
-                            //                   : data['createdOn']
-                            //                       .toDate()
-                            //                       .toString(),
-                            //               style: TextStyle(
-                            //                   fontSize: 10,
-                            //                   color: isSender(
-                            //                           data['senderPhoneId']
-                            //                               .toString())
-                            //                       ? Colors.white
-                            //                       : Colors.black),
-                            //             )
-                            //           ],
-                            //         )
-                            //       ],
-                            //     ),
-                            //   ),
-                            // ),
                             child: ChatBubble(
                               message: data['message'],
                               isMe: isSender(data['senderPhoneId']),
@@ -306,71 +259,71 @@ class _ChatState extends State<Chat> {
               );
             },
           ),
-          // IconButton(
-          //   icon: const Icon(Icons.attach_file),
-          //   iconSize: 25,
-          //   color: Theme.of(context).primaryColor,
-          //   onPressed: () {
-          //     showModalBottomSheet(
-          //       context: context,
-          //       isScrollControlled: true,
-          //       shape: const RoundedRectangleBorder(
-          //         borderRadius:
-          //             BorderRadius.vertical(top: Radius.circular(25.0)),
-          //       ),
-          //       builder: (builder) {
-          //         return Container(
-          //           height: MediaQuery.of(context).size.height * 0.6,
-          //           padding: const EdgeInsets.all(8),
-          //           child: Column(
-          //             children: [
-          //               const SizedBox(height: 5),
-          //               const Text(
-          //                 "Select an image to send to your loved ones",
-          //                 textAlign: TextAlign.center,
-          //                 style: TextStyle(fontSize: 14),
-          //               ),
-          //               const SizedBox(height: 20),
-          //               Container(
-          //                 height: 300,
-          //                 width: 300,
-          //                 decoration: BoxDecoration(
-          //                   borderRadius: BorderRadius.circular(10.0),
-          //                   image: DecorationImage(
-          //                       image: AssetImage('assets/jk.png')),
-          //                   color: kPrimaryColor,
-          //                 ),
-          //               ),
-          //               const SizedBox(height: 20),
-          //               InkWell(
-          //                 onTap: () {
-          //                   Navigator.pop(context);
-          //                 },
-          //                 child: Container(
-          //                   height: 47,
-          //                   width: 47,
-          //                   decoration: BoxDecoration(
-          //                     borderRadius: BorderRadius.circular(50.0),
-          //                     color: kPrimaryColor,
-          //                   ),
-          //                   child: Image.asset('assets/Group 229.png'),
-          //                 ),
-          //               ),
-          //             ],
-          //           ),
-          //         );
-          //       },
-          //     );
-          //   },
-          // ),
-          InkWell(
-            onTap: () async {
-              print('Hello');
-              await getImage();
-              await uploadImage();
+          IconButton(
+            icon: const Icon(Icons.attach_file),
+            iconSize: 25,
+            color: Theme.of(context).primaryColor,
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                shape: const RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.vertical(top: Radius.circular(25.0)),
+                ),
+                builder: (builder) {
+                  return Container(
+                    height: MediaQuery.of(context).size.height * 0.6,
+                    padding: const EdgeInsets.all(8),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 5),
+                        const Text(
+                          "Select an image to send to your loved ones",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        const SizedBox(height: 20),
+                        Container(
+                          height: MediaQuery.of(context).size.height * 0.4,
+                          width: MediaQuery.of(context).size.width * 0.6,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            color: kPrimaryColor,
+                          ),
+                          child: Stack(children: cards),
+                        ),
+                        const SizedBox(height: 20),
+                        InkWell(
+                          onTap: () async {
+                            await _sendMessage(imageUrl[_index], false);
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            height: 47,
+                            width: 47,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50.0),
+                              color: kPrimaryColor,
+                            ),
+                            child: Image.asset('assets/Group 229.png'),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
             },
-            child: Icon(Icons.attach_file_outlined),
           ),
+          // InkWell(
+          //   onTap: () async {
+          //     // print('Hello');
+          //     await getImage();
+          //     await uploadImage();
+          //   },
+          //   child: Icon(Icons.attach_file_outlined),
+          // ),
           Expanded(
             child: SizedBox(
               height: 40,
@@ -407,8 +360,8 @@ class _ChatState extends State<Chat> {
             icon: const Icon(Icons.send),
             iconSize: 25,
             color: Theme.of(context).primaryColor,
-            onPressed: () {
-              _sendMessage(_textController.text, true);
+            onPressed: () async {
+              await _sendMessage(_textController.text, true);
             },
           ),
         ],
@@ -416,7 +369,7 @@ class _ChatState extends State<Chat> {
     );
   }
 
-  void _sendMessage(String msg, bool isMsg) {
+  Future _sendMessage(String msg, bool isMsg) async {
     if (msg == '' && isMsg) return;
 
     chats.doc(chatDocId).collection('messages').add({
@@ -425,45 +378,54 @@ class _ChatState extends State<Chat> {
       'message': msg,
       'isMsg': isMsg,
     }).then((value) {
-      _textController.text = '';
+      if (!isMsg) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) => super.widget,
+          ),
+        );
+        // Navigator.pop(context);
+      } else {
+        _textController.text = '';
+      }
     }).catchError((error) {
       Fluttertoast.showToast(msg: error.message);
     });
   }
+}
 
-  // Pick image
-  Future getImage() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+class Images extends StatefulWidget {
+  const Images({Key? key, required this.imageLink}) : super(key: key);
 
-      if (image == null) return;
+  final String imageLink;
 
-      final imgTemp = File(image.path);
+  @override
+  State<Images> createState() => _ImagesState();
+}
 
-      setState(() {
-        _image = imgTemp;
-      });
-    } on PlatformException catch (e) {
-      Fluttertoast.showToast(msg: 'Failed to pick image $e');
-    }
-  }
-
-  // Upload image
-  Future uploadImage() async {
-    print('image $_image');
-    if (_image == null) return;
-
-    final imageName = path.basename(_image!.path);
-    final destination = 'chats/$imageName';
-
-    task = FirebaseUpload.uploadFile(destination, _image!);
-
-    if (task == null) return null;
-
-    final snapshot = await task!.whenComplete(() {});
-    urlDownload = await snapshot.ref.getDownloadURL();
-
-    print('urlDownload $urlDownload');
-    _sendMessage(urlDownload!, false);
+class _ImagesState extends State<Images> {
+  @override
+  Widget build(BuildContext context) {
+    return Swipable(
+      child: Container(
+        height: MediaQuery.of(context).size.height * 0.45,
+        width: 368,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16.0),
+          image: DecorationImage(
+            image: NetworkImage(widget.imageLink),
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+      onSwipeEnd: (offSet, value) {
+        print('_index');
+        print(_index);
+        setState(() {
+          _index -= 1;
+        });
+      },
+    );
   }
 }

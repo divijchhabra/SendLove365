@@ -87,8 +87,8 @@
 44        android:extractNativeLibs="false"
 45        android:icon="@mipmap/ic_launcher"
 45-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:17:9-43
-46        android:label="temp" >
-46-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:18:9-29
+46        android:label="Send Love 365" >
+46-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:18:9-38
 47        <activity
 47-->D:\Android Projects\SendLove365\android\app\src\main\AndroidManifest.xml:19:9-45:20
 48            android:name="com.example.temp.MainActivity"

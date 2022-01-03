@@ -106,7 +106,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      labelText: "Recipient\'s Name",
+                      labelText: "Recipient's Name",
                     ),
                   ),
                 ),

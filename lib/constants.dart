@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 const kPrimaryColor = Color(0xFF7A3496);
 const kSecondaryColor = Color(0xFFC267E7);
-const kTertioryCOlor = Color.fromRGBO(100, 34, 126, 0.18);
+const kTertiaryColor = Color.fromRGBO(100, 34, 126, 0.18);
 const kTextColor = Color(0xFF3C4046);
 
 Gradient gradient1 = const LinearGradient(

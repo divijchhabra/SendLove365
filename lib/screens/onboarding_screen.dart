@@ -1,4 +1,5 @@
-import 'package:carousel_slider/carousel_slider.dart';
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:temp/constants.dart';
@@ -18,6 +19,7 @@ class _OnBoardingState extends State<OnBoarding> {
     'assets/3 screen gifts 10 sec.gif',
     'assets/4 Screen reminders Jpeg.jpg'
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,30 +49,27 @@ class _OnBoardingState extends State<OnBoarding> {
           //     ),
           //   ],
           // ),
-          Container(
+          SizedBox(
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height *0.93,
+            height: MediaQuery.of(context).size.height * 0.93,
             child: PageView.builder(
-              itemCount: 3,
-                onPageChanged: (int val){
+                itemCount: 3,
+                onPageChanged: (int val) {
                   setState(() => activeIndex = val);
                 },
-
-                itemBuilder: (c,i ) {
-              return Container(
-
-                child: Image.asset(
-                  urlImages[i],
-                  fit: BoxFit.fitWidth,
-
-                ),
-              );
-            }),
+                itemBuilder: (c, i) {
+                  return Image.asset(
+                    urlImages[i],
+                    fit: BoxFit.fitWidth,
+                  );
+                }),
           ),
-          Container(
+          SizedBox(
             height: 40,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20,),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,32 +79,35 @@ class _OnBoardingState extends State<OnBoarding> {
                     padding: const EdgeInsets.only(left: 50),
                     child: buildIndicator(),
                   ),
-                  activeIndex==2?
-                  GestureDetector(
-                    behavior : HitTestBehavior.translucent,
-                    onTap: (){
-                      print('dc');
-                      Navigator.pushReplacement(
-                          context, MaterialPageRoute(builder: (context) => const PhoneNo()));
-                      // Navigator.push(
-                      //               context,
-                      //               MaterialPageRoute(
-                      //                   builder: (context) => const PhoneNo()));
-                    },
-                    child: Container(
-                      height: 40,
-                      width: 40,
-
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      child: Icon(Icons.arrow_forward_ios_outlined,color: kPrimaryColor,),
-                    ),
-                  ) : Container(
-                    height: 40,
-                    width: 40,
-                  )
+                  activeIndex == 2
+                      ? GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onTap: () {
+                            // print('dc');
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const PhoneNo(),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            height: 40,
+                            width: 40,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                            child: Icon(
+                              Icons.arrow_forward_ios_outlined,
+                              color: kPrimaryColor,
+                            ),
+                          ),
+                        )
+                      : SizedBox(
+                          height: 40,
+                          width: 40,
+                        )
                 ],
               ),
             ),
@@ -155,10 +157,9 @@ class _OnBoardingState extends State<OnBoarding> {
         ),
       );
 
-
-  Widget buildIndicator() => Container(
-    height: 30,
-    child: AnimatedSmoothIndicator(
+  Widget buildIndicator() => SizedBox(
+        height: 30,
+        child: AnimatedSmoothIndicator(
           activeIndex: activeIndex,
           count: urlImages.length,
           effect: const ExpandingDotsEffect(
@@ -168,5 +169,5 @@ class _OnBoardingState extends State<OnBoarding> {
             activeDotColor: Colors.white,
           ),
         ),
-  );
+      );
 }
