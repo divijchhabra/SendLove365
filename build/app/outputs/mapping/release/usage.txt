@@ -18850,5 +18850,5 @@ kotlin.KotlinVersion:
 io.grpc.ClientInterceptors:
     private static final io.grpc.ClientCall NOOP_CALL
 io.flutter.plugin.platform.PlatformView$-CC
-io.flutter.plugin.common.BinaryMessenger$-CC
 androidx.lifecycle.DefaultLifecycleObserver$-CC
+io.flutter.plugin.common.BinaryMessenger$-CC
