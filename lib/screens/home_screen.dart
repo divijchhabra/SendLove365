@@ -4,18 +4,16 @@ import 'package:bottom_picker/bottom_picker.dart';
 import 'package:bottom_picker/resources/arrays.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:contacts_service/contacts_service.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_swipable/flutter_swipable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:temp/components/gradient_button.dart';
 import 'package:temp/constants.dart';
 import 'package:temp/models/user_details_model.dart';
-import 'package:temp/screens/invite_friends_screen.dart';
-import 'package:temp/screens/invite_screen.dart';
+import 'package:temp/screens/send_image_screen.dart';
 import 'package:temp/screens/send_a_gift_screen.dart';
-import 'package:temp/screens/send_to_friend_screen.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -25,17 +23,23 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
+int _index = 2;
+
 class _HomeScreenState extends State<HomeScreen> {
   Future<void> checkPermissionPhoneLogs() async {
     if (await Permission.phone.request().isGranted &&
         await Permission.contacts.request().isGranted) {
       await getContacts();
       print('Hello ${contacts.length}');
+      print('_index');
+      print(_index);
+
       pushNewScreen(
         context,
-        screen: contacts.isNotEmpty
-            ? InviteScreen(contacts: contacts)
-            : InviteFriends(),
+        screen: SendImageScreen(
+          contacts: contacts,
+          imageUrl: imageUrl[_index],
+        ),
         withNavBar: false,
         // OPTIONAL VALUE. True by default.
         pageTransitionAnimation: PageTransitionAnimation.cupertino,
@@ -48,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
       await Permission.phone.request();
 
       Fluttertoast.showToast(
-        msg: 'Provide Phone permission to make a call and view logs.',
+        msg: 'Provide Phone permission to view logs.',
       );
     }
   }
@@ -58,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> getContacts() async {
     List<Contact> _contacts = await ContactsService.getContacts();
     setState(() {
-      contacts = _contacts;
+      contacts = _contacts.toSet().toList();
     });
   }
 
@@ -67,7 +71,6 @@ class _HomeScreenState extends State<HomeScreen> {
     var querySnapshot = await collection.get();
     for (var queryDocumentSnapshot in querySnapshot.docs) {
       Map<String, dynamic> data = queryDocumentSnapshot.data();
-      var name = data['userName'].toString();
       var phone = data['phoneNo'].toString();
 
       int pn = phone.length;
@@ -76,6 +79,8 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     }
   }
+
+  List<Contact> friendUser = [];
 
   int selectedItem = 0;
 
@@ -98,15 +103,30 @@ class _HomeScreenState extends State<HomeScreen> {
 
   bool showSpinner = false;
 
+  List<String> imageUrl = [
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqVXglCrfVQ49UGqSKU9vxn5UXrFJ0YtYajw&usqp=CAU',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeabp77mU5vv3wQbzUnQ_b4Ii0HnR5ZRlSrGvrXihraWEv3qLUPDQFdLo9UUdyV9K13z0&usqp=CAU',
+    'https://images.pexels.com/photos/1461974/pexels-photo-1461974.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
+  ];
+
+  List<Images> cards = [];
+
   @override
   void initState() {
-    // TODO: implement initState
+    _index = 2;
+
     super.initState();
     getData();
+
+    for (int i = 0; i < imageUrl.length; i++) {
+      cards.add(Images(imageLink: imageUrl[i]));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return ModalProgressHUD(
       inAsyncCall: showSpinner,
       child: Container(
@@ -161,12 +181,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     const SizedBox(height: 20),
                     Container(
+                      height: size.height * 0.45,
+                      width: 368,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
+                        borderRadius: BorderRadius.circular(15),
                         color: kPrimaryColor,
                       ),
-                      height: 350,
-                      width: 368,
+                      child: Stack(children: cards),
                     ),
                     const SizedBox(height: 20),
                     // GradientIconButton(
@@ -234,6 +255,40 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class Images extends StatefulWidget {
+  const Images({Key? key, required this.imageLink}) : super(key: key);
+
+  final String imageLink;
+
+  @override
+  State<Images> createState() => _ImagesState();
+}
+
+class _ImagesState extends State<Images> {
+  @override
+  Widget build(BuildContext context) {
+    return Swipable(
+      child: Container(
+        height: MediaQuery.of(context).size.height * 0.45,
+        width: 368,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16.0),
+          image: DecorationImage(
+            image: NetworkImage(widget.imageLink),
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+      onSwipeEnd: (offSet, value) {
+        print(_index);
+        setState(() {
+          _index -= 1;
+        });
+      },
     );
   }
 }

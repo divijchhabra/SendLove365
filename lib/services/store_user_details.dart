@@ -30,6 +30,21 @@ class StoreUserInfo {
     return;
   }
 
+  Future<void> storeUserFriends(List users) async {
+    final CollectionReference userCollection =
+        FirebaseFirestore.instance.collection('users');
+    FirebaseAuth auth = FirebaseAuth.instance;
+    String uid = auth.currentUser!.uid.toString();
+
+    userCollection
+        .doc(uid)
+        .collection('friends')
+        .doc()
+        .set({'friends': users}, SetOptions(merge: true))
+        .then((value) => null)
+        .catchError((error) => {print('failed to add friends')});
+  }
+
   Future<void> storeUserDetailsUpdated(
       userName, email, urlDownload, phoneNo) async {
     final CollectionReference userCollection =

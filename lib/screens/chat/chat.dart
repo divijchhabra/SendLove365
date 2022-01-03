@@ -1,18 +1,19 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'dart:io';
 
-// import 'package:flutter_chat_bubble/bubble_type.dart';
-// import 'package:flutter_chat_bubble/chat_bubble.dart';
-// import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_6.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:temp/constants.dart';
 import 'package:temp/models/user_details_model.dart';
 import 'package:temp/screens/chat/chat_bubble.dart';
 import 'package:temp/screens/send_a_gift_screen.dart';
+import 'package:temp/services/firebase_upload.dart';
+import 'package:path/path.dart' as path;
 
 class Chat extends StatefulWidget {
   const Chat({
@@ -31,64 +32,73 @@ class Chat extends StatefulWidget {
 }
 
 class _ChatState extends State<Chat> {
+  // image source
+  File? _image;
+
+  // upload task
+  UploadTask? task;
+
+  String? urlDownload;
+
   CollectionReference chats = FirebaseFirestore.instance.collection('chats');
 
   final _textController = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
-    checkUser();
-  }
+  String currentUserId = UserDetailsModel.phone.toString();
+  var chatDocId;
 
-  String currentUserPhoneId = UserDetailsModel.phone.toString();
-  dynamic chatDocId;
-
-  void checkUser() async {
+  Future<void> checkUser() async {
     await chats
         .where('users',
-            isEqualTo: {widget.friendPhoneUid: null, currentUserPhoneId: null})
+            isEqualTo: {widget.friendPhoneUid: null, currentUserId: null})
         .limit(1)
         .get()
         .then(
           (QuerySnapshot querySnapshot) async {
+            print(querySnapshot.docs.isEmpty);
             if (querySnapshot.docs.isNotEmpty) {
               setState(() {
                 chatDocId = querySnapshot.docs.single.id;
               });
 
-              print(chatDocId);
+              print('value $chatDocId');
             } else {
+              print('I am here');
               await chats.add({
-                'users': {currentUserPhoneId: null, widget.friendPhoneUid: null}
-              }).then((value) => {chatDocId = value});
+                'users': {currentUserId: null, widget.friendPhoneUid: null}
+              }).then(
+                (value) async {
+                  setState(() {
+                    chatDocId = value.id;
+                  });
+
+                  print('value $chatDocId');
+                },
+              );
             }
           },
         )
-        .catchError((error) {});
-  }
-
-  void sendMessage(String msg) {
-    if (msg == '') return;
-
-    chats.doc(chatDocId).collection('messages').add({
-      'createdOn': FieldValue.serverTimestamp(),
-      'senderPhoneId': currentUserPhoneId,
-      'message': msg
-    }).then((value) {
-      _textController.text = '';
-    });
+        .catchError((error) {
+          Fluttertoast.showToast(msg: error.toString());
+          print('bad $error');
+        });
   }
 
   bool isSender(String friend) {
-    return friend == currentUserPhoneId;
+    return friend == currentUserId;
   }
 
   Alignment getAlignment(friend) {
-    if (friend == currentUserPhoneId) {
+    if (friend == currentUserId) {
       return Alignment.topRight;
     }
     return Alignment.topLeft;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    checkUser();
   }
 
   @override
@@ -250,6 +260,8 @@ class _ChatState extends State<Chat> {
                                   ? DateTime.now().toString()
                                   : data['createdOn'].toDate().toString(),
                               avatar: widget.avatar,
+                              isMsg: data['isMsg'],
+                              urlDownload: data['message'].toString(),
                             ),
                           );
                         },
@@ -294,55 +306,70 @@ class _ChatState extends State<Chat> {
               );
             },
           ),
-          IconButton(
-            icon: const Icon(Icons.attach_file),
-            iconSize: 25,
-            color: Theme.of(context).primaryColor,
-            onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                shape: const RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.vertical(top: Radius.circular(25.0)),
-                ),
-                builder: (builder) {
-                  return Container(
-                    height: MediaQuery.of(context).size.height * 0.6,
-                    padding: const EdgeInsets.all(8),
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 5),
-                        const Text(
-                          "Select an image to send to your loved ones",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        const SizedBox(height: 20),
-                        Container(
-                          height: 300,
-                          width: 300,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            color: kPrimaryColor,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        Container(
-                          height: 47,
-                          width: 47,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50.0),
-                            color: kPrimaryColor,
-                          ),
-                          child: Image.asset('assets/Group 229.png'),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              );
+          // IconButton(
+          //   icon: const Icon(Icons.attach_file),
+          //   iconSize: 25,
+          //   color: Theme.of(context).primaryColor,
+          //   onPressed: () {
+          //     showModalBottomSheet(
+          //       context: context,
+          //       isScrollControlled: true,
+          //       shape: const RoundedRectangleBorder(
+          //         borderRadius:
+          //             BorderRadius.vertical(top: Radius.circular(25.0)),
+          //       ),
+          //       builder: (builder) {
+          //         return Container(
+          //           height: MediaQuery.of(context).size.height * 0.6,
+          //           padding: const EdgeInsets.all(8),
+          //           child: Column(
+          //             children: [
+          //               const SizedBox(height: 5),
+          //               const Text(
+          //                 "Select an image to send to your loved ones",
+          //                 textAlign: TextAlign.center,
+          //                 style: TextStyle(fontSize: 14),
+          //               ),
+          //               const SizedBox(height: 20),
+          //               Container(
+          //                 height: 300,
+          //                 width: 300,
+          //                 decoration: BoxDecoration(
+          //                   borderRadius: BorderRadius.circular(10.0),
+          //                   image: DecorationImage(
+          //                       image: AssetImage('assets/jk.png')),
+          //                   color: kPrimaryColor,
+          //                 ),
+          //               ),
+          //               const SizedBox(height: 20),
+          //               InkWell(
+          //                 onTap: () {
+          //                   Navigator.pop(context);
+          //                 },
+          //                 child: Container(
+          //                   height: 47,
+          //                   width: 47,
+          //                   decoration: BoxDecoration(
+          //                     borderRadius: BorderRadius.circular(50.0),
+          //                     color: kPrimaryColor,
+          //                   ),
+          //                   child: Image.asset('assets/Group 229.png'),
+          //                 ),
+          //               ),
+          //             ],
+          //           ),
+          //         );
+          //       },
+          //     );
+          //   },
+          // ),
+          InkWell(
+            onTap: () async {
+              print('Hello');
+              await getImage();
+              await uploadImage();
             },
+            child: Icon(Icons.attach_file_outlined),
           ),
           Expanded(
             child: SizedBox(
@@ -381,7 +408,7 @@ class _ChatState extends State<Chat> {
             iconSize: 25,
             color: Theme.of(context).primaryColor,
             onPressed: () {
-              _sendMessage(_textController.text);
+              _sendMessage(_textController.text, true);
             },
           ),
         ],
@@ -389,17 +416,54 @@ class _ChatState extends State<Chat> {
     );
   }
 
-  void _sendMessage(String msg) {
-    // if (msg == '') return;
+  void _sendMessage(String msg, bool isMsg) {
+    if (msg == '' && isMsg) return;
 
     chats.doc(chatDocId).collection('messages').add({
       'createdOn': FieldValue.serverTimestamp(),
-      'senderPhoneId': currentUserPhoneId,
+      'senderPhoneId': currentUserId,
       'message': msg,
+      'isMsg': isMsg,
     }).then((value) {
       _textController.text = '';
     }).catchError((error) {
       Fluttertoast.showToast(msg: error.message);
     });
+  }
+
+  // Pick image
+  Future getImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+      if (image == null) return;
+
+      final imgTemp = File(image.path);
+
+      setState(() {
+        _image = imgTemp;
+      });
+    } on PlatformException catch (e) {
+      Fluttertoast.showToast(msg: 'Failed to pick image $e');
+    }
+  }
+
+  // Upload image
+  Future uploadImage() async {
+    print('image $_image');
+    if (_image == null) return;
+
+    final imageName = path.basename(_image!.path);
+    final destination = 'chats/$imageName';
+
+    task = FirebaseUpload.uploadFile(destination, _image!);
+
+    if (task == null) return null;
+
+    final snapshot = await task!.whenComplete(() {});
+    urlDownload = await snapshot.ref.getDownloadURL();
+
+    print('urlDownload $urlDownload');
+    _sendMessage(urlDownload!, false);
   }
 }

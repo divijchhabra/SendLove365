@@ -1,89 +1,119 @@
-import 'package:flutter/material.dart';
-import 'package:temp/constants.dart';
+// ignore_for_file: prefer_const_constructors
 
-class InviteFriends extends StatefulWidget {
-  const InviteFriends({Key? key}) : super(key: key);
+import 'package:contacts_service/contacts_service.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:temp/models/user_details_model.dart';
+import 'package:temp/models/user_model.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+class InviteFriendScreen extends StatefulWidget {
+  const InviteFriendScreen({Key? key, required this.contacts})
+      : super(key: key);
+
+  final List<Contact> contacts;
 
   @override
-  _InviteFriendsState createState() => _InviteFriendsState();
+  _InviteFriendScreen createState() => _InviteFriendScreen();
 }
 
-class _InviteFriendsState extends State<InviteFriends> {
+class _InviteFriendScreen extends State<InviteFriendScreen> {
+  User? user;
+
+  dynamic filtered;
+
+  dynamic querySnapshot;
+
+  Future<void> sendSms(phone) async {
+    // print("SendSMS");
+
+    // Todo :- Add your app play store link here
+    String link = 'www.google.com';
+
+    var uri =
+        'sms:$phone?body=Hello there! Download the app SendLove365 by using this $link';
+    await launch(uri);
+  }
+
+  String number = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 90,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(30),
-          ),
-        ),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: gradient2,
-            borderRadius: BorderRadius.circular(15.0),
-          ),
-        ),
-        title: const Text("Send To"),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new),
-          onPressed: () {},
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.search, size: 30),
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.person, size: 30),
-          ),
-        ],
+        title: const Text('Temp'),
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(40),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Text(
-                "You have no friends.",
-                style: TextStyle(fontSize: 20),
-              ),
-              const SizedBox(height: 35),
-              const Text(
-                "Please invite your friends to send them images.",
-                style: TextStyle(fontSize: 20),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 45),
-              SizedBox(
-                height: 48,
-                width: 223.5,
-                child: OutlinedButton.icon(
-                  style: OutlinedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
+      body: ListView.builder(
+        physics: BouncingScrollPhysics(),
+        itemCount: widget.contacts.length,
+        itemBuilder: (context, index) {
+          Contact contact = widget.contacts.elementAt(index);
+
+          contact.phones!.isEmpty
+              ? number = "No info"
+              : number = contact.phones!.elementAt(0).value!;
+
+          String invalidNumber = number;
+          number = number.replaceAll(' ', '');
+          int n = number.length;
+          n >= 10 ? number = number.substring(n - 10) : number = invalidNumber;
+
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Column(
+              children: [
+                if (!UserDetailsModel.firebaseUsersPhone.contains(number))
+                  ListTile(
+                    onTap: () {
+                      // todo something
+                    },
+                    title: Text(contact.displayName ?? 'Contact Name'),
+                    subtitle: Text(number),
+                    trailing: InkWell(
+                      onTap: () {
+                        if (widget.contacts.elementAt(index).phones!.isEmpty) {
+                          Fluttertoast.showToast(msg: 'Invalid Contact Number');
+                        } else {
+                          String numTp = widget.contacts
+                              .elementAt(index)
+                              .phones!
+                              .elementAt(0)
+                              .value!;
+
+                          String invalidNumber2 = numTp;
+                          numTp = numTp.replaceAll(' ', '');
+                          int n = numTp.length;
+                          n >= 10
+                              ? number = number.substring(n - 10)
+                              : number = invalidNumber2;
+                          sendSms(numTp);
+                        } // sendSms();
+                      },
+                      child: Text(
+                        'Invite',
+                        style: TextStyle(color: Color(0xFF7A3496)),
+                      ),
                     ),
-                    side: const BorderSide(
-                      width: 2,
-                      color: kPrimaryColor,
-                      style: BorderStyle.solid,
-                    ),
+                    leading:
+                        (contact.avatar != null && contact.avatar!.isNotEmpty)
+                            ? CircleAvatar(
+                                backgroundImage: MemoryImage(contact.avatar!),
+                              )
+                            : CircleAvatar(
+                                child: Text(contact.initials()),
+                              ),
                   ),
-                  onPressed: () {},
-                  icon: const Icon(Icons.person_add),
-                  label: const Text(
-                    "Invite Friends",
-                    style: TextStyle(fontSize: 20),
+                if (!UserDetailsModel.firebaseUsersPhone.contains(number))
+                  Divider(
+                    thickness: 2,
+                    indent: 20,
+                    endIndent: 10,
+                    color: Color(0xff7A3496).withOpacity(0.3),
                   ),
-                ),
-              ),
-            ],
-          ),
-        ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

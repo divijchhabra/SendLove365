@@ -1,3 +1,6 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:temp/models/message_model.dart';
 
@@ -9,17 +12,20 @@ class ChatBubble extends StatelessWidget {
     required this.isSameUser,
     required this.createdOn,
     required this.avatar,
+    required this.isMsg,
+    required this.urlDownload,
   }) : super(key: key);
 
   final String message, avatar;
-  final bool isMe, isSameUser;
-  final String createdOn;
+  final bool isMe, isSameUser, isMsg;
+  final String createdOn, urlDownload;
 
   @override
   Widget build(BuildContext context) {
-    int n = createdOn.length;
-
     print('avatar $avatar');
+    print('isMsg $isMsg');
+    print('message $message');
+
     return (isMe)
         ? Column(
             children: <Widget>[
@@ -46,10 +52,19 @@ class ChatBubble extends StatelessWidget {
                           ),
                         ],
                       ),
-                      child: Text(
-                        message,
-                        style: const TextStyle(color: Colors.white),
-                      ),
+                      child: isMsg
+                          ? Text(
+                              message,
+                              style: const TextStyle(color: Colors.white),
+                            )
+                          : SizedBox(
+                              height: 200,
+                              child: Image(
+                                image: NetworkImage(urlDownload),
+                                width: MediaQuery.of(context).size.width * 0.3,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                     ),
                   ),
                   Text(
@@ -120,10 +135,19 @@ class ChatBubble extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: Text(
-                    message,
-                    style: const TextStyle(color: Colors.black54),
-                  ),
+                  child: isMsg
+                      ? Text(
+                          message,
+                          style: const TextStyle(color: Colors.purple),
+                        )
+                      : SizedBox(
+                          height: 200,
+                          child: Image(
+                            image: NetworkImage(urlDownload),
+                            width: MediaQuery.of(context).size.width * 0.3,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                 ),
               ),
               !isSameUser

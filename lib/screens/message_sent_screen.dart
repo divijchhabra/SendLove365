@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:temp/components/bottom_nav.dart';
 import 'package:temp/components/gradient_button.dart';
 import 'package:temp/constants.dart';
 import 'package:temp/screens/send_a_gift_screen.dart';
@@ -91,6 +93,28 @@ class _MessageSentState extends State<MessageSent> {
                     },
                     child: const Text(
                       "Send A Gift",
+                      style: kButtonTextStyle,
+                    ),
+                    gradient: gradient1,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  height: 48,
+                  width: 223.5,
+                  child: GradientButton(
+                    onPressed: () {
+                      pushNewScreen(
+                        context,
+                        screen: BottomNav(),
+                        // withNavBar: true,
+                        // OPTIONAL VALUE. True by default.
+                        pageTransitionAnimation:
+                            PageTransitionAnimation.cupertino,
+                      );
+                    },
+                    child: const Text(
+                      "Go to Home",
                       style: kButtonTextStyle,
                     ),
                     gradient: gradient1,

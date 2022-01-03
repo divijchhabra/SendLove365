@@ -56,7 +56,6 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
-    // showSpinner=true;
     checkPermissionPhoneLogs();
     firebaseUserPhone = UserDetailsModel.firebaseUsersPhone.toSet().toList();
   }
@@ -110,7 +109,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     height: 600,
                     child: ListView.builder(
                       physics: BouncingScrollPhysics(),
-                      itemCount: contacts.toSet().toList().length,
+                      itemCount: contacts.length,
                       itemBuilder: (context, index) {
                         Contact contact = contacts.elementAt(index);
 
