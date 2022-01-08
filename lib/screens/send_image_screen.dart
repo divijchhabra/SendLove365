@@ -141,6 +141,8 @@ class _SendImageScreen extends State<SendImageScreen> {
     // print('contacts');
     // print(contacts.length);
 
+    Size size = MediaQuery.of(context).size;
+
     for (int i = 0; i < contacts.length; i++) {
       Contact contact = contacts.elementAt(i);
 
@@ -273,40 +275,77 @@ class _SendImageScreen extends State<SendImageScreen> {
                             );
                           },
                         )
-                      : Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              "Please invite your friends to send them images.",
-                              style: TextStyle(fontSize: 20),
-                              textAlign: TextAlign.center,
-                            ),
+                      : SizedBox(
+                          width: size.width,
+                          height: size.height - 200,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "Please invite your friends to send them images.",
+                                    style: TextStyle(fontSize: 20),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 15),
+                              SizedBox(
+                                height: 48,
+                                width: 149.85,
+                                child: GradientButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            InviteFriendScreen(
+                                                contacts: contacts),
+                                      ),
+                                    );
+                                  },
+                                  child: showSpinner2
+                                      ? Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: CircularProgressIndicator(
+                                              color: Colors.white),
+                                        )
+                                      : Text('Invite +',
+                                          style: kButtonTextStyle),
+                                  gradient: gradient1,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                   SizedBox(height: 35),
-                  SizedBox(
-                    height: 48,
-                    width: 149.85,
-                    child: GradientButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                InviteFriendScreen(contacts: contacts),
+                  (contacts.isNotEmpty && myFriends.isNotEmpty)
+                      ? SizedBox(
+                          height: 48,
+                          width: 149.85,
+                          child: GradientButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      InviteFriendScreen(contacts: contacts),
+                                ),
+                              );
+                            },
+                            child: showSpinner2
+                                ? Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: CircularProgressIndicator(
+                                        color: Colors.white),
+                                  )
+                                : Text('Invite +', style: kButtonTextStyle),
+                            gradient: gradient1,
                           ),
-                        );
-                      },
-                      child: showSpinner2
-                          ? Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: CircularProgressIndicator(
-                                  color: Colors.white),
-                            )
-                          : Text('Invite +', style: kButtonTextStyle),
-                      gradient: gradient1,
-                    ),
-                  ),
+                        )
+                      : Container(),
                 ],
               ),
             ),

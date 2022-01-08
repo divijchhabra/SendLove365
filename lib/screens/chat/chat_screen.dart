@@ -65,9 +65,12 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   bool showSpinner = false;
+  String lastMsg = '';
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     for (int i = 0; i < UserDetailsModel.firebaseUsersPhone.length; i++) {
       // print(UserDetailsModel.firebaseUsersPhone[i]);
     }
@@ -122,87 +125,94 @@ class _ChatScreenState extends State<ChatScreen> {
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
         child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(0),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  const SizedBox(height: 10),
-                  (contacts.isNotEmpty && myFriends.isNotEmpty)
-                      ? SizedBox(
-                          height: 600,
-                          child: ListView.builder(
-                            physics: BouncingScrollPhysics(),
-                            itemCount: contacts.length,
-                            itemBuilder: (context, index) {
-                              Contact contact = contacts.elementAt(index);
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(height: 10),
+                (contacts.isNotEmpty && myFriends.isNotEmpty)
+                    ? SizedBox(
+                        height: 600,
+                        child: ListView.builder(
+                          physics: BouncingScrollPhysics(),
+                          itemCount: contacts.length,
+                          itemBuilder: (context, index) {
+                            Contact contact = contacts.elementAt(index);
 
-                              String number;
-                              contact.phones!.isEmpty
-                                  ? number = "No info"
-                                  : number =
-                                      contact.phones!.elementAt(0).value!;
+                            String number;
+                            contact.phones!.isEmpty
+                                ? number = "No info"
+                                : number = contact.phones!.elementAt(0).value!;
 
-                              String invalidNumber = number;
-                              number = number.replaceAll(' ', '');
-                              int n = number.length;
-                              n >= 10
-                                  ? number = number.substring(n - 10)
-                                  : number = invalidNumber;
+                            String invalidNumber = number;
+                            number = number.replaceAll(' ', '');
+                            int n = number.length;
+                            n >= 10
+                                ? number = number.substring(n - 10)
+                                : number = invalidNumber;
 
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20.0),
-                                child: Column(
-                                  children: [
-                                    if (firebaseUserPhone.contains(number) &&
-                                        number != UserDetailsModel.phone)
-                                      ListTile(
-                                        onTap: () {
-                                          pushNewScreen(
-                                            context,
-                                            screen: Chat(
-                                              friendPhoneUid: number,
-                                              avatar: contact.avatar.toString(),
-                                              isOnline: true,
-                                              friendName: contact.displayName
-                                                  .toString(),
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20.0),
+                              child: Column(
+                                children: [
+                                  if (firebaseUserPhone.contains(number) &&
+                                      number != UserDetailsModel.phone)
+                                    ListTile(
+                                      onTap: () {
+                                        pushNewScreen(
+                                          context,
+                                          screen: Chat(
+                                            friendPhoneUid: number,
+                                            contact: contact,
+                                            isOnline: true,
+                                            friendName:
+                                                contact.displayName.toString(),
+                                          ),
+                                          withNavBar: false,
+                                          // OPTIONAL VALUE. True by default.
+                                          pageTransitionAnimation:
+                                              PageTransitionAnimation.cupertino,
+                                        );
+                                      },
+                                      title: Text(contact.displayName ??
+                                          'Contact Name'),
+                                      subtitle: Text(
+                                        lastMsg != ''
+                                            ? lastMsg.length > 30
+                                                ? lastMsg.substring(0, 30)
+                                                : lastMsg
+                                            : number,
+                                      ),
+                                      leading: (contact.avatar != null &&
+                                              contact.avatar!.isNotEmpty)
+                                          ? CircleAvatar(
+                                              backgroundImage:
+                                                  MemoryImage(contact.avatar!),
+                                            )
+                                          : CircleAvatar(
+                                              child: Text(contact.initials()),
                                             ),
-                                            withNavBar: false,
-                                            // OPTIONAL VALUE. True by default.
-                                            pageTransitionAnimation:
-                                                PageTransitionAnimation
-                                                    .cupertino,
-                                          );
-                                        },
-                                        title: Text(contact.displayName ??
-                                            'Contact Name'),
-                                        subtitle: Text(number),
-                                        leading: (contact.avatar != null &&
-                                                contact.avatar!.isNotEmpty)
-                                            ? CircleAvatar(
-                                                backgroundImage: MemoryImage(
-                                                    contact.avatar!),
-                                              )
-                                            : CircleAvatar(
-                                                child: Text(contact.initials()),
-                                              ),
-                                      ),
-                                    if (UserDetailsModel.firebaseUsersPhone
-                                            .contains(number) &&
-                                        number != UserDetailsModel.phone)
-                                      Divider(
-                                        thickness: 2,
-                                        indent: 20,
-                                        endIndent: 10,
-                                      ),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
-                        )
-                      : Column(
+                                    ),
+                                  if (UserDetailsModel.firebaseUsersPhone
+                                          .contains(number) &&
+                                      number != UserDetailsModel.phone)
+                                    Divider(
+                                      thickness: 2,
+                                      indent: 20,
+                                      endIndent: 10,
+                                    ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      )
+                    : SizedBox(
+                        width: size.width,
+                        height: size.height - 200,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Center(
                               child: Padding(
@@ -234,9 +244,9 @@ class _ChatScreenState extends State<ChatScreen> {
                               ),
                             ),
                           ],
-                        )
-                ],
-              ),
+                        ),
+                      )
+              ],
             ),
           ),
         ),

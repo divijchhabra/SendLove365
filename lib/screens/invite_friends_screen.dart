@@ -61,9 +61,6 @@ class _InviteFriendScreen extends State<InviteFriendScreen> {
               children: [
                 if (!UserDetailsModel.firebaseUsersPhone.contains(number))
                   ListTile(
-                    onTap: () {
-                      // todo something
-                    },
                     title: Text(contact.displayName ?? 'Contact Name'),
                     subtitle: Text(number),
                     trailing: InkWell(

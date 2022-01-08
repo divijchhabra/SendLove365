@@ -230,7 +230,7 @@ class _OtpScreenState extends State<OtpScreen> {
           setState(() {
             showSpinner = false;
           });
-          // print(e.message);
+          print(e.message);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(

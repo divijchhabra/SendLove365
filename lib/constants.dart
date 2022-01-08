@@ -22,6 +22,7 @@ final kElevatedButtonStyle = ElevatedButton.styleFrom(
     padding: const EdgeInsets.all(8));
 
 const kTextStyle = TextStyle(fontSize: 18, fontWeight: FontWeight.w400);
+const kBottomText = TextStyle(fontSize: 16, fontWeight: FontWeight.w400);
 const kButtonTextStyle = TextStyle(fontSize: 20, color: Color(0xFFFFFFFF));
 
 const kTextFieldDecoration = InputDecoration(

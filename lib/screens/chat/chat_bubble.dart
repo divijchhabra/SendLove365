@@ -9,12 +9,11 @@ class ChatBubble extends StatelessWidget {
     required this.isMe,
     required this.isSameUser,
     required this.createdOn,
-    required this.avatar,
     required this.isMsg,
     required this.urlDownload,
   }) : super(key: key);
 
-  final String message, avatar;
+  final String message;
   final bool isMe, isSameUser, isMsg;
   final String createdOn, urlDownload;
 

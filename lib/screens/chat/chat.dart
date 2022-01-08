@@ -1,8 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:contacts_service/contacts_service.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swipable/flutter_swipable.dart';
@@ -11,18 +10,18 @@ import 'package:temp/constants.dart';
 import 'package:temp/models/user_details_model.dart';
 import 'package:temp/screens/chat/chat_bubble.dart';
 import 'package:temp/screens/send_a_gift_screen.dart';
-import 'package:path/path.dart' as path;
 
 class Chat extends StatefulWidget {
-  const Chat({
+  Chat({
     Key? key,
     required this.friendPhoneUid,
-    required this.avatar,
+    required this.contact,
     required this.isOnline,
     required this.friendName,
   }) : super(key: key);
 
-  final String friendPhoneUid, friendName, avatar;
+  final String friendPhoneUid, friendName;
+  Contact contact;
   final bool isOnline;
 
   @override
@@ -33,7 +32,7 @@ int _index = 2;
 
 class _ChatState extends State<Chat> {
   // image source
-  File? _image;
+  // File? _image;
 
   // upload task
   UploadTask? task;
@@ -165,31 +164,36 @@ class _ChatState extends State<Chat> {
                         fontWeight: FontWeight.w400,
                       ),
                     ),
-                    const TextSpan(text: '\n'),
-                    widget.isOnline
-                        ? const TextSpan(
-                            text: 'Online',
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          )
-                        : const TextSpan(
-                            text: 'Offline',
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
                   ],
                 ),
               ),
-              leading: IconButton(
-                  icon: const Icon(Icons.arrow_back_ios),
-                  color: Colors.white,
-                  onPressed: () {
-                    Navigator.pop(context);
-                  }),
+              leadingWidth: MediaQuery.of(context).size.width * 0.22,
+              leading: Row(
+                children: [
+                  IconButton(
+                      icon: const Icon(Icons.arrow_back_ios),
+                      color: Colors.white,
+                      onPressed: () {
+                        Navigator.pop(context);
+                      }),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.white, width: 1),
+                      shape: BoxShape.circle,
+                    ),
+                    child: (widget.contact.avatar != null &&
+                            widget.contact.avatar!.isNotEmpty)
+                        ? CircleAvatar(
+                            backgroundImage:
+                                MemoryImage(widget.contact.avatar!),
+                          )
+                        : CircleAvatar(
+                            child: Text(widget.contact.initials()),
+                          ),
+                  ),
+                ],
+              ),
             ),
             body: SafeArea(
               child: Column(
@@ -212,7 +216,6 @@ class _ChatState extends State<Chat> {
                               createdOn: data['createdOn'] == null
                                   ? DateTime.now().toString()
                                   : data['createdOn'].toDate().toString(),
-                              avatar: widget.avatar,
                               isMsg: data['isMsg'],
                               urlDownload: data['message'].toString(),
                             ),

@@ -23,7 +23,7 @@ class _OnBoardingState extends State<OnBoarding> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kPrimaryColor,
+      backgroundColor: activeIndex == 2 ? Color(0xff7A3496) : Color(0xff753394),
       body: Column(
         children: [
           // Row(

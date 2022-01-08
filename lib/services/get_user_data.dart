@@ -19,17 +19,17 @@ class GetUserData extends StatelessWidget {
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.hasError) {
-          // print('Error');
+          print('Error');
 
           return const Center(child: CircularProgressIndicator());
         }
         if (snapshot.hasData && !snapshot.data!.exists) {
-          // print('Error');
+          print('Error');
 
           return const Center(child: CircularProgressIndicator());
         }
         if (snapshot.connectionState == ConnectionState.done) {
-          // print('All ok');
+          print('All ok');
 
           Map<String, dynamic> data =
               snapshot.data!.data() as Map<String, dynamic>;

@@ -22,11 +22,10 @@ class StoreUserInfo {
       "uid": uid,
       "timeStamp": timeStamp,
     }, SetOptions(merge: true)).then((value) {
-      // print("User Details Added");
+      print("User Details Added");
     }).catchError((error) {
-      // print("Failed to add user: $error");
+      print("Failed to add user: $error");
     });
-
     return;
   }
 }

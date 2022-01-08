@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:provider/provider.dart';
 import 'package:temp/constants.dart';
+import 'package:temp/providers/bottom_nav_provider.dart';
 import 'package:temp/screens/chat/chat_screen.dart';
 import 'package:temp/screens/home_screen.dart';
 import 'package:temp/screens/reminder_screen.dart';
@@ -60,6 +62,8 @@ class _BottomNavState extends State<BottomNav> {
 
   @override
   Widget build(BuildContext context) {
+    bool showNav = Provider.of<BottomNavProvider>(context).isNav;
+
     return Scaffold(
       body: PersistentTabView(
         context,
@@ -72,7 +76,7 @@ class _BottomNavState extends State<BottomNav> {
         confineInSafeArea: false,
         resizeToAvoidBottomInset: true,
         hideNavigationBarWhenKeyboardShows: true,
-        hideNavigationBar: false,
+        hideNavigationBar: !showNav,
 
         //backgroundColor: kPrimaryColor,
         decoration: NavBarDecoration(
