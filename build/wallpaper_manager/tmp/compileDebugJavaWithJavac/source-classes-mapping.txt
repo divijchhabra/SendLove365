@@ -1,2 +1,0 @@
-com/mulgundkar/wallpaper_manager/EmbeddingV1Activity.java
- com.mulgundkar.wallpaper_manager.EmbeddingV1Activity

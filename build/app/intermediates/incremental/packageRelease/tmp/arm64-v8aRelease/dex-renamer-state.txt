@@ -1,4 +1,0 @@
-#Fri Jan 07 18:52:09 IST 2022
-base.0=D\:\\Android Projects\\SendLove365\\build\\app\\intermediates\\dex\\release\\minifyReleaseWithR8\\classes.dex
-renamed.0=classes.dex
-path.0=classes.dex
