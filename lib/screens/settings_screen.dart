@@ -100,7 +100,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             Icons.info,
                             color: kPrimaryColor,
                           ),
-                          title: Text("About Send Love"),
+                          title: Text("About Likeu"),
                         ),
                         Divider(),
                         ListTile(

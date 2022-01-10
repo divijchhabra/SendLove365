@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swipable/flutter_swipable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:temp/constants.dart';
+import 'package:temp/models/UserLastMessage.dart';
 import 'package:temp/models/user_details_model.dart';
 import 'package:temp/screens/chat/chat_bubble.dart';
 import 'package:temp/screens/send_a_gift_screen.dart';
@@ -33,6 +34,7 @@ int _index = 2;
 class _ChatState extends State<Chat> {
   // image source
   // File? _image;
+  List<Map<String, String>> lastMsg = [];
 
   // upload task
   UploadTask? task;
@@ -291,7 +293,7 @@ class _ChatState extends State<Chat> {
                           height: MediaQuery.of(context).size.height * 0.4,
                           width: MediaQuery.of(context).size.width * 0.6,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(16.0),
                             color: kPrimaryColor,
                           ),
                           child: Stack(children: cards),
@@ -328,28 +330,30 @@ class _ChatState extends State<Chat> {
           //   child: Icon(Icons.attach_file_outlined),
           // ),
           Expanded(
-            child: SizedBox(
+            child: Container(
+              alignment: Alignment.center,
               height: 40,
               width: 24,
               child: TextField(
-                cursorHeight: 30,
-                style: TextStyle(
-                  fontSize: 14,
-                  height: 1,
-                ),
+                cursorHeight: 17,
+                showCursor: true,
+                style: TextStyle(fontSize: 14, height: 1),
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.fromLTRB(8, 2, 2, 2),
                   fillColor: const Color(0xffD9D9D9).withOpacity(0.3),
                   filled: true,
                   enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(50),
-                      borderSide: const BorderSide(color: Colors.white)),
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: const BorderSide(color: Colors.white),
+                  ),
                   focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(50),
-                      borderSide: const BorderSide(color: Colors.white)),
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: const BorderSide(color: Colors.white),
+                  ),
                   border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(50),
-                      borderSide: const BorderSide(color: Colors.white)),
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: const BorderSide(color: Colors.white),
+                  ),
                   focusColor: const Color(0xFFEEEEEE),
                   hoverColor: const Color(0xFFEEEEEE),
                   hintText: 'Type Something',
@@ -364,6 +368,10 @@ class _ChatState extends State<Chat> {
             iconSize: 25,
             color: Theme.of(context).primaryColor,
             onPressed: () async {
+              // todo shared preference
+              lastMsg.add(
+                  {widget.friendPhoneUid.toString(): _textController.text});
+              await UserLastMessage.setLastMsg(lastMsg);
               await _sendMessage(_textController.text, true);
             },
           ),

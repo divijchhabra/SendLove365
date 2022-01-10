@@ -1,0 +1,4 @@
+com/pk/wallpapermanager/flutter_wallpaper_manager/FlutterWallpaperManagerPlugin.java
+ com.pk.wallpapermanager.flutter_wallpaper_manager.FlutterWallpaperManagerPlugin
+com/pk/wallpapermanager/flutter_wallpaper_manager/BuildConfig.java
+ com.pk.wallpapermanager.flutter_wallpaper_manager.BuildConfig

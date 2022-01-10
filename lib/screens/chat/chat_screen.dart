@@ -8,6 +8,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:temp/components/gradient_button.dart';
 import 'package:temp/constants.dart';
+import 'package:temp/models/UserLastMessage.dart';
 import 'package:temp/models/user_details_model.dart';
 import 'package:temp/screens/chat/chat.dart';
 
@@ -56,24 +57,25 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   List firebaseUserPhone = [];
+  var lastMsg;
 
   @override
   void initState() {
     super.initState();
     checkPermissionPhoneLogs();
     firebaseUserPhone = UserDetailsModel.firebaseUsersPhone.toSet().toList();
+
+    lastMsg = UserLastMessage.getLastMsg();
   }
 
   bool showSpinner = false;
-  String lastMsg = '';
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    for (int i = 0; i < UserDetailsModel.firebaseUsersPhone.length; i++) {
-      // print(UserDetailsModel.firebaseUsersPhone[i]);
-    }
+    print('lastMsg');
+    print(lastMsg);
 
     for (int i = 0; i < contacts.length; i++) {
       Contact contact = contacts.elementAt(i);
@@ -176,13 +178,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                       },
                                       title: Text(contact.displayName ??
                                           'Contact Name'),
-                                      subtitle: Text(
-                                        lastMsg != ''
-                                            ? lastMsg.length > 30
-                                                ? lastMsg.substring(0, 30)
-                                                : lastMsg
-                                            : number,
-                                      ),
+                                      subtitle: Text(number),
                                       leading: (contact.avatar != null &&
                                               contact.avatar!.isNotEmpty)
                                           ? CircleAvatar(
