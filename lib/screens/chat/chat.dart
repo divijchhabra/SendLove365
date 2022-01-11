@@ -169,7 +169,7 @@ class _ChatState extends State<Chat> {
                   ],
                 ),
               ),
-              leadingWidth: MediaQuery.of(context).size.width * 0.22,
+              leadingWidth: MediaQuery.of(context).size.width * 0.25,
               leading: Row(
                 children: [
                   IconButton(

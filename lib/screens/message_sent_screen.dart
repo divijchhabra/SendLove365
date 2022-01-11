@@ -34,7 +34,7 @@ class _MessageSentState extends State<MessageSent> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(kDefaultPadding),
+          padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -42,7 +42,7 @@ class _MessageSentState extends State<MessageSent> {
                   children: [],
                 ),
                 const Padding(
-                  padding: EdgeInsets.fromLTRB(70, 0, 70, 0),
+                  padding: EdgeInsets.fromLTRB(70, 20, 70, 0),
                   child: Text(
                     "Your message has been sent!",
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
@@ -57,6 +57,7 @@ class _MessageSentState extends State<MessageSent> {
                 ),
                 const SizedBox(height: 20),
                 SizedBox(
+
                   child: ListView(
                     scrollDirection: Axis.vertical,
                     physics: const BouncingScrollPhysics(),
@@ -66,7 +67,6 @@ class _MessageSentState extends State<MessageSent> {
                         height: 321,
                         width: 294,
                       ),
-                      const SizedBox(height: 0),
                       Image.asset(
                         'assets/Mask Group 1.png',
                         height: 421,
@@ -74,29 +74,29 @@ class _MessageSentState extends State<MessageSent> {
                       )
                     ],
                   ),
-                  height: 380,
+                  height: 450,
                   width: 294,
                 ),
                 const SizedBox(height: 20),
-                SizedBox(
-                  height: 48,
-                  width: 223.5,
-                  child: GradientButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const SendAGift(),
-                        ),
-                      );
-                    },
-                    child: const Text(
-                      "Send A Gift",
-                      style: kButtonTextStyle,
-                    ),
-                    gradient: gradient1,
-                  ),
-                ),
+                // SizedBox(
+                //   height: 48,
+                //   width: 223.5,
+                //   child: GradientButton(
+                //     onPressed: () {
+                //       Navigator.push(
+                //         context,
+                //         MaterialPageRoute(
+                //           builder: (_) => const SendAGift(),
+                //         ),
+                //       );
+                //     },
+                //     child: const Text(
+                //       "Send A Gift",
+                //       style: kButtonTextStyle,
+                //     ),
+                //     gradient: gradient1,
+                //   ),
+                // ),
                 const SizedBox(height: 20),
                 SizedBox(
                   height: 48,

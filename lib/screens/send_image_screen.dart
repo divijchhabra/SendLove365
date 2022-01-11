@@ -11,7 +11,7 @@ import 'package:temp/constants.dart';
 import 'package:temp/models/user_details_model.dart';
 import 'package:temp/screens/invite_friends_screen.dart';
 import 'package:temp/screens/message_sent_screen.dart';
-
+import 'dart:io';
 class SendImageScreen extends StatefulWidget {
   const SendImageScreen({
     Key? key,
@@ -105,8 +105,9 @@ class _SendImageScreen extends State<SendImageScreen> {
     setState(() {
       showSpinner = true;
     });
-    if (await Permission.phone.request().isGranted &&
-        await Permission.contacts.request().isGranted) {
+    if (Platform.isIOS ? await Permission.contacts.request().isGranted
+        : await Permission.phone.request().isGranted
+        && await Permission.contacts.request().isGranted) {
       await getContacts();
       setState(() {
         showSpinner = false;
@@ -116,8 +117,12 @@ class _SendImageScreen extends State<SendImageScreen> {
       setState(() {
         showSpinner = false;
       });
-      await Permission.contacts.request();
-      await Permission.phone.request();
+      if( Platform.isIOS )
+        await Permission.contacts.request();
+      else{
+        await Permission.phone.request();
+        await Permission.contacts.request();
+      }
 
       Fluttertoast.showToast(
         msg: 'Provide Phone permission to make a call and view logs.',

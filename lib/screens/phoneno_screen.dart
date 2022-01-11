@@ -1,5 +1,5 @@
 // ignore_for_file: prefer_const_constructors
-
+import 'package:flutter/services.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -8,7 +8,7 @@ import 'package:temp/components/gradient_button.dart';
 import 'package:temp/constants.dart';
 import 'package:temp/helpers/validators.dart';
 import 'package:temp/screens/otp_screen.dart';
-
+import 'dart:io';
 class PhoneNo extends StatefulWidget {
   const PhoneNo({Key? key}) : super(key: key);
 
@@ -24,8 +24,9 @@ class _PhoneNoState extends State<PhoneNo> {
 
   Future<void> checkPermissionPhoneLogs() async {
     if (_formFieldKey.currentState!.validate()) {
-      if (await Permission.phone.request().isGranted &&
-          await Permission.contacts.request().isGranted) {
+      if (Platform.isIOS ? await Permission.contacts.request().isGranted
+          : await Permission.phone.request().isGranted
+    && await Permission.contacts.request().isGranted) {
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -36,9 +37,13 @@ class _PhoneNoState extends State<PhoneNo> {
           ),
         );
       } else {
-        await Permission.phone.request();
-
+        if( Platform.isIOS )
         await Permission.contacts.request();
+        else{
+           await Permission.phone.request();
+         await Permission.contacts.request();
+        }
+
 
         Fluttertoast.showToast(
           msg: 'Provide Phone permission to make a call and view logs.',
@@ -49,7 +54,9 @@ class _PhoneNoState extends State<PhoneNo> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.dark,
+        child : Scaffold(
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(kDefaultPadding),
@@ -59,7 +66,7 @@ class _PhoneNoState extends State<PhoneNo> {
                 Row(
                   children: [
                     Image.asset(
-                      'assets/Send LOve Icon envelope.png',
+                      'assets/logo1.jpg',
                       height: 68,
                       width: 68,
                     ),
@@ -149,6 +156,7 @@ class _PhoneNoState extends State<PhoneNo> {
           ),
         ),
       ),
+    )
     );
   }
 }

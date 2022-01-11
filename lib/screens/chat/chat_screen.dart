@@ -13,7 +13,7 @@ import 'package:temp/models/user_details_model.dart';
 import 'package:temp/screens/chat/chat.dart';
 
 import '../invite_friends_screen.dart';
-
+import 'dart:io';
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
 
@@ -36,8 +36,9 @@ class _ChatScreenState extends State<ChatScreen> {
     setState(() {
       showSpinner = true;
     });
-    if (await Permission.phone.request().isGranted &&
-        await Permission.contacts.request().isGranted) {
+    if (Platform.isIOS ? await Permission.contacts.request().isGranted
+        : await Permission.phone.request().isGranted
+        && await Permission.contacts.request().isGranted) {
       await getContacts();
       setState(() {
         showSpinner = false;
@@ -47,8 +48,12 @@ class _ChatScreenState extends State<ChatScreen> {
       setState(() {
         showSpinner = false;
       });
-      await Permission.contacts.request();
-      await Permission.phone.request();
+      if( Platform.isIOS )
+        await Permission.contacts.request();
+      else{
+        await Permission.phone.request();
+        await Permission.contacts.request();
+      }
 
       Fluttertoast.showToast(
         msg: 'Provide Phone permission to make a call and view logs.',

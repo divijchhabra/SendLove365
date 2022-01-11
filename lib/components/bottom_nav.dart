@@ -64,31 +64,40 @@ class _BottomNavState extends State<BottomNav> {
   Widget build(BuildContext context) {
     bool showNav = Provider.of<BottomNavProvider>(context).isNav;
 
-    return Scaffold(
-      body: PersistentTabView(
-        context,
-        controller: _controller,
-        screens: _widgetOptions,
-        items: _navBarsItems(),
-        // popAllScreensOnTapOfSelectedTab: true,
-        // popActionScreens: PopActionScreensType.all,
+    return Container(
+      color: kPrimaryColor,
+      child: SafeArea(
+        top: false,
+        bottom: true,
+        child: Scaffold(
 
-        confineInSafeArea: false,
-        resizeToAvoidBottomInset: true,
-        hideNavigationBarWhenKeyboardShows: true,
-        hideNavigationBar: !showNav,
+          body: PersistentTabView(
+            context,
+            navBarHeight: 55,
+            controller: _controller,
+            screens: _widgetOptions,
+            items: _navBarsItems(),
+            // popAllScreensOnTapOfSelectedTab: true,
+            // popActionScreens: PopActionScreensType.all,
 
-        //backgroundColor: kPrimaryColor,
-        decoration: NavBarDecoration(
-          adjustScreenBottomPaddingOnCurve: true,
-          gradient: gradient2,
-          borderRadius: const BorderRadius.vertical(
-            top: Radius.circular(10),
-            bottom: Radius.circular(0),
+            confineInSafeArea: false,
+            resizeToAvoidBottomInset: true,
+            hideNavigationBarWhenKeyboardShows: true,
+            hideNavigationBar: !showNav,
+
+            //backgroundColor: kPrimaryColor,
+            decoration: NavBarDecoration(
+              adjustScreenBottomPaddingOnCurve: true,
+              gradient: gradient2,
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(0),
+                bottom: Radius.circular(0),
+              ),
+              colorBehindNavBar: kPrimaryColor,
+            ),
+            navBarStyle: NavBarStyle.style10,
           ),
-          colorBehindNavBar: kPrimaryColor,
         ),
-        navBarStyle: NavBarStyle.style10,
       ),
     );
   }

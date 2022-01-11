@@ -7,7 +7,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:temp/constants.dart';
 import 'package:temp/screens/phoneno_screen.dart';
 import 'package:temp/models/user_details_model.dart';
-
+import 'package:flutter/services.dart';
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
 
@@ -20,7 +20,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.dark,
+        child : Scaffold(
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
         child: SafeArea(
@@ -79,13 +81,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     height: 500,
                     child: ListView(
                       children: [
-                        ListTile(
-                          leading: Icon(
-                            Icons.person,
-                            color: kPrimaryColor,
-                          ),
-                          title: Text("Profile"),
-                        ),
+                        // ListTile(
+                        //   leading: Icon(
+                        //     Icons.person,
+                        //     color: kPrimaryColor,
+                        //   ),
+                        //   title: Text("Profile"),
+                        // ),
                         Divider(),
                         ListTile(
                           leading: Icon(
@@ -122,7 +124,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
         ),
       ),
-    );
+    ) ) ;
   }
 
   Future<void> logOut() async {

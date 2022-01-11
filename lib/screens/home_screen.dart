@@ -39,8 +39,9 @@ class _HomeScreenState extends State<HomeScreen> {
   int _choice = 0;
 
   Future<void> checkPermissionPhoneLogs() async {
-    if (await Permission.phone.request().isGranted &&
-        await Permission.contacts.request().isGranted) {
+    if (Platform.isIOS ? await Permission.contacts.request().isGranted
+        : await Permission.phone.request().isGranted
+        && await Permission.contacts.request().isGranted) {
       await getContacts();
       // print('Hello ${contacts.length}');
       print('_index');
@@ -72,8 +73,12 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         showSpinner = false;
       });
-      await Permission.contacts.request();
-      await Permission.phone.request();
+      if( Platform.isIOS )
+        await Permission.contacts.request();
+      else{
+        await Permission.phone.request();
+        await Permission.contacts.request();
+      }
 
       Fluttertoast.showToast(
         msg: 'Provide Phone permission to view logs.',
@@ -119,6 +124,9 @@ class _HomeScreenState extends State<HomeScreen> {
         Text("Love", style: kBottomText),
         Text("Friends", style: kBottomText),
       ],
+
+
+
       onClose: () {
         print('value');
         Provider.of<BottomNavProvider>(context, listen: false)
@@ -338,148 +346,152 @@ class _HomeScreenState extends State<HomeScreen> {
     return ModalProgressHUD(
       inAsyncCall: showSpinner,
       child: Container(
-        color: kSecondaryColor,
-        child: Scaffold(
-          appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(70),
-            child: AppBar(
-              centerTitle: true,
-              flexibleSpace: Container(
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/homeAppbar.jpg'),
-                    fit: BoxFit.fill,
+        color: kPrimaryColor,
+        child: SafeArea(
+          bottom: false,
+          child: Scaffold(
+            appBar: PreferredSize(
+              preferredSize: const Size.fromHeight(110),
+              child: AppBar(
+                centerTitle: true,
+                flexibleSpace: Container(
+
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/homeAppbar.jpg'),
+                      fit: BoxFit.fitWidth,
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          body: SafeArea(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(kDefaultPadding),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        WillPopScope(
-                          onWillPop: () {
-                            print('Pressed');
-                            // ToDo implement willPop
-                            Provider.of<BottomNavProvider>(context,
-                                    listen: false)
-                                .changeNavStatus();
-                            return Future.value(true);
-                          },
-                          child: Container(
-                            height: 40,
-                            width: 40,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50.0),
-                              color: kPrimaryColor,
-                            ),
-                            child: IconButton(
-                              // alignment: const Alignment(85, 3),
-                              onPressed: () {
-                                Provider.of<BottomNavProvider>(context,
-                                        listen: false)
-                                    .changeNavStatus();
+            body: SafeArea(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(kDefaultPadding),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          WillPopScope(
+                            onWillPop: () {
+                              print('Pressed');
+                              // ToDo implement willPop
+                              Provider.of<BottomNavProvider>(context,
+                                      listen: false)
+                                  .changeNavStatus();
+                              return Future.value(true);
+                            },
+                            child: Container(
+                              height: 40,
+                              width: 40,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50.0),
+                                color: kPrimaryColor,
+                              ),
+                              child: IconButton(
+                                // alignment: const Alignment(85, 3),
+                                onPressed: () {
+                                  Provider.of<BottomNavProvider>(context,
+                                          listen: false)
+                                      .changeNavStatus();
 
-                                _openSimpleItemPicker(
-                                  context,
-                                );
-                              },
-                              highlightColor: kPrimaryColor,
+                                  _openSimpleItemPicker(
+                                    context,
+                                  );
+                                },
+                                highlightColor: kPrimaryColor,
 
-                              icon: const Icon(
-                                Icons.menu_rounded,
-                                color: Colors.white,
+                                icon: const Icon(
+                                  Icons.menu_rounded,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Container(
-                      alignment: Alignment.center,
-                      height: size.height * 0.45,
-                      width: 368,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: kPrimaryColor,
+                        ],
                       ),
-                      child: (valentine.isEmpty ||
-                              holiday.isEmpty ||
-                              birthday.isEmpty ||
-                              anniversary.isEmpty ||
-                              all.isEmpty)
-                          ? CircularProgressIndicator(color: Colors.white)
-                          : Stack(children: cards),
-                    ),
-                    const SizedBox(height: 20),
-                    // GradientIconButton(
-                    //     onPressed: () {},
-                    //     child: const Text("Send to friend"),
-                    //     gradient: gradient1,
-                    //     icon: Icon(Icons.arrow_forward)),
-                    SizedBox(
-                      height: 48,
-                      width: 223.5,
-                      child: GradientButton(
-                        onPressed: () async {
-                          setState(() {
-                            showSpinner = true;
-                          });
-                          print('_index1');
-                          print(_index);
-                          await checkPermissionPhoneLogs();
-                          setState(() {
-                            showSpinner = false;
-                          });
-                        },
-                        child: const Text(
-                          "Send to friend",
-                          style: kButtonTextStyle,
+                      const SizedBox(height: 20),
+                      Container(
+                        alignment: Alignment.center,
+                        height: size.height * 0.45,
+                        width: 368,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: kPrimaryColor,
                         ),
-                        gradient: gradient1,
+                        child: (valentine.isEmpty ||
+                                holiday.isEmpty ||
+                                birthday.isEmpty ||
+                                anniversary.isEmpty ||
+                                all.isEmpty)
+                            ? CircularProgressIndicator(color: Colors.white)
+                            : Stack(children: cards),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    SizedBox(
-                      height: 48,
-                      width: 223.5,
-                      child: OutlinedButton.icon(
-                        style: OutlinedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                      const SizedBox(height: 20),
+                      // GradientIconButton(
+                      //     onPressed: () {},
+                      //     child: const Text("Send to friend"),
+                      //     gradient: gradient1,
+                      //     icon: Icon(Icons.arrow_forward)),
+                      SizedBox(
+                        height: 48,
+                        width: 223.5,
+                        child: GradientButton(
+                          onPressed: () async {
+                            setState(() {
+                              showSpinner = true;
+                            });
+                            print('_index1');
+                            print(_index);
+                            await checkPermissionPhoneLogs();
+                            setState(() {
+                              showSpinner = false;
+                            });
+                          },
+                          child: const Text(
+                            "Send postcard",
+                            style: kButtonTextStyle,
                           ),
-                          side: const BorderSide(
-                            width: 2,
-                            color: kPrimaryColor,
-                            style: BorderStyle.solid,
-                          ),
-                        ),
-                        onPressed: () {
-                          pushNewScreen(
-                            context,
-                            screen: SendAGift(),
-                            withNavBar: false,
-                            // OPTIONAL VALUE. True by default.
-                            pageTransitionAnimation:
-                                PageTransitionAnimation.cupertino,
-                          );
-                        },
-                        icon: const Icon(Icons.card_giftcard),
-                        label: const Text(
-                          "Send a gift",
-                          style: TextStyle(fontSize: 20),
+                          gradient: gradient1,
                         ),
                       ),
-                    ),
-                    // BottomNav(),
-                  ],
+                      const SizedBox(height: 20),
+                      SizedBox(
+                        height: 48,
+                        width: 223.5,
+                        child: OutlinedButton.icon(
+                          style: OutlinedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            side: const BorderSide(
+                              width: 2,
+                              color: kPrimaryColor,
+                              style: BorderStyle.solid,
+                            ),
+                          ),
+                          onPressed: () {
+                            pushNewScreen(
+                              context,
+                              screen: SendAGift(),
+                              withNavBar: false,
+                              // OPTIONAL VALUE. True by default.
+                              pageTransitionAnimation:
+                                  PageTransitionAnimation.cupertino,
+                            );
+                          },
+                          icon: const Icon(Icons.card_giftcard),
+                          label: const Text(
+                            "Send a gift",
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ),
+                      ),
+                      // BottomNav(),
+                    ],
+                  ),
                 ),
               ),
             ),

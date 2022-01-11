@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:temp/components/gradient_button.dart';
 import 'package:temp/constants.dart';
+import 'package:flutter/services.dart';
 
 class ReminderScreen extends StatefulWidget {
   const ReminderScreen({Key? key}) : super(key: key);
@@ -15,7 +16,9 @@ class _ReminderScreenState extends State<ReminderScreen> {
   bool isCheckedCustom = false;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.dark,
+        child : Scaffold(
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(kDefaultPadding),
@@ -178,6 +181,6 @@ class _ReminderScreenState extends State<ReminderScreen> {
           ),
         ),
       ),
-    );
+    ) ) ;
   }
 }
