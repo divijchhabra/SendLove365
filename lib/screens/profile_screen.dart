@@ -36,7 +36,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   // upload task
   UploadTask? task;
 
-  String? urlDownload;
+  String urlDownload =
+      'https://thumbs.dreamstime.com/b/solid-purple-gradient-user-icon-web-mobile-design-interface-ui-ux-developer-app-137467998.jpg';
 
   bool showSpinner = false;
   late TextEditingController userNameController;
@@ -58,14 +59,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    bool isChecked = Provider.of<CheckBoxProvider>(context).checked;
-
     return Scaffold(
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(kDefaultPadding),
+            padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
             child: SingleChildScrollView(
               child: Column(
                 children: [
@@ -88,7 +87,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             Text(
                               "Setup Profile",
                               style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.w500),
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ],
                         ),
@@ -125,7 +126,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              labelText: "Username",
+                              labelText: "Name",
                             ),
                             controller: userNameController,
                             onSaved: (userName) {
@@ -166,65 +167,64 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20.0),
-                        child: Row(
-                          children: [
-                            InkWell(
-                              onTap: () async {
-                                if (!await launch(
-                                    'https://www.iubenda.com/terms-and-conditions/98376270')) {
-                                  Fluttertoast.showToast(
-                                      msg: 'Something went wrong');
-                                }
-                              },
-                              child: Text(
-                                'Terms and conditions',
-                                style: TextStyle(color: kSecondaryColor),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Checkbox(
-                              value: isChecked,
-                              onChanged: (value) {
-                                Provider.of<CheckBoxProvider>(context,
-                                        listen: false)
-                                    .changeCheck();
-                              },
-                            ),
-                            Expanded(
-                              child: InkWell(
-                                onTap: () async {
-                                  if (!await launch(
-                                      'https://www.iubenda.com/privacy-policy/98376270')) {
-                                    Fluttertoast.showToast(
-                                        msg: 'Something went wrong');
-                                  }
-                                },
-                                child: Text(
-                                  'I agree to the Likeu Terms of Service and Privacy Policy',
-                                  style: TextStyle(color: kSecondaryColor),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 20),
+                      // Padding(
+                      //   padding: const EdgeInsets.only(left: 20.0),
+                      //   child: Row(
+                      //     children: [
+                      //       InkWell(
+                      //         onTap: () async {
+                      //           if (!await launch(
+                      //               'https://www.iubenda.com/terms-and-conditions/98376270')) {
+                      //             Fluttertoast.showToast(
+                      //                 msg: 'Something went wrong');
+                      //           }
+                      //         },
+                      //         child: Text(
+                      //           'Terms and conditions',
+                      //           style: TextStyle(color: kSecondaryColor),
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+                      // Padding(
+                      //   padding: const EdgeInsets.only(left: 8.0),
+                      //   child: Row(
+                      //     crossAxisAlignment: CrossAxisAlignment.center,
+                      //     children: [
+                      //       Checkbox(
+                      //         value: isChecked,
+                      //         onChanged: (value) {
+                      //           Provider.of<CheckBoxProvider>(context,
+                      //                   listen: false)
+                      //               .changeCheck();
+                      //         },
+                      //       ),
+                      //       Expanded(
+                      //         child: InkWell(
+                      //           onTap: () async {
+                      //             if (!await launch(
+                      //                 'https://www.iubenda.com/privacy-policy/98376270')) {
+                      //               Fluttertoast.showToast(
+                      //                   msg: 'Something went wrong');
+                      //             }
+                      //           },
+                      //           child: Text(
+                      //             'I agree to the Likeu Terms of Service and Privacy Policy',
+                      //             style: TextStyle(color: kSecondaryColor),
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+                      // SizedBox(height: 20),
                       SizedBox(
                         height: 48,
                         width: 168.5,
                         child: GradientButton(
                           onPressed: () async {
-                            if (_formFieldKey.currentState!.validate() &&
-                                isChecked) {
+                            if (_formFieldKey.currentState!.validate()) {
                               setState(() {
                                 showSpinner = true;
                               });
@@ -245,14 +245,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               setState(() {
                                 showSpinner = false;
                               });
-                            } else if (!isChecked) {
-                              try {
-                                Fluttertoast.showToast(
-                                    msg:
-                                        'Please agree to the terms and conditions');
-                              } catch (e, s) {
-                                print(s);
-                              }
                             }
                           },
                           child: const Text("Next", style: kButtonTextStyle),
@@ -260,7 +252,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       )
                     ],
-                  )
+                  ),
+                  SizedBox(height: 15),
                 ],
               ),
             ),

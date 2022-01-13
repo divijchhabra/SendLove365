@@ -5,4 +5,5 @@ class UserDetailsModel {
   static String? uid;
   static String? imageUrl;
   static List firebaseUsersPhone = [];
+  static List firebaseUsersDp = [];
 }

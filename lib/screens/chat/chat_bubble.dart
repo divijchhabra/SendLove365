@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:custom_full_image_screen/custom_full_image_screen.dart';
+
 class ChatBubble extends StatelessWidget {
   const ChatBubble({
     Key? key,
@@ -54,30 +55,30 @@ class ChatBubble extends StatelessWidget {
                               message,
                               style: const TextStyle(color: Colors.white),
                             )
-                          :ImageCachedFullscreen(
-                        imageUrl: urlDownload,
-                        imageBorderRadius: 20,
-                        imageWidth: 200,
-                        imageHeight: 200,
-                        imageDetailsHeight: 450,
-                        imageDetailsWidth: 400,
-                        withHeroAnimation: true,
-                        placeholder: Container(
-                          child: Icon(Icons.check),
-                        ),
-                        errorWidget: Container(
-                          child: Icon(Icons.error),
-                        ),
-                        placeholderDetails: Container(),
-                      ),
-                          // : SizedBox(
-                          //     height: 200,
-                          //     child: Image(
-                          //       image: NetworkImage(urlDownload),
-                          //       width: MediaQuery.of(context).size.width * 0.3,
-                          //       fit: BoxFit.cover,
-                          //     ),
-                          //   ),
+                          : ImageCachedFullscreen(
+                              imageUrl: urlDownload,
+                              imageBorderRadius: 20,
+                              imageWidth: 200,
+                              imageHeight: 200,
+                              imageDetailsHeight: 450,
+                              imageDetailsWidth: 400,
+                              withHeroAnimation: true,
+                              placeholder: Container(
+                                child: Icon(Icons.check),
+                              ),
+                              errorWidget: Container(
+                                child: Icon(Icons.error),
+                              ),
+                              placeholderDetails: Container(),
+                            ),
+                      // : SizedBox(
+                      //     height: 200,
+                      //     child: Image(
+                      //       image: NetworkImage(urlDownload),
+                      //       width: MediaQuery.of(context).size.width * 0.3,
+                      //       fit: BoxFit.cover,
+                      //     ),
+                      //   ),
                     ),
                   ),
                   Text(
@@ -104,22 +105,6 @@ class ChatBubble extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: 10),
-                        // Container(
-                        //   decoration: BoxDecoration(
-                        //     shape: BoxShape.circle,
-                        //     boxShadow: [
-                        //       BoxShadow(
-                        //         color: Colors.grey.withOpacity(0.5),
-                        //         spreadRadius: 2,
-                        //         blurRadius: 5,
-                        //       ),
-                        //     ],
-                        //   ),
-                        //   child: CircleAvatar(
-                        //     radius: 15,
-                        //     backgroundImage: NetworkImage(avatar),
-                        //   ),
-                        // ),
                       ],
                     )
                   : Container(
@@ -153,14 +138,29 @@ class ChatBubble extends StatelessWidget {
                           message,
                           style: const TextStyle(color: Colors.purple),
                         )
-
-                      : SizedBox(
-                          height: 200,
-                          child: Image(
-                            image: NetworkImage(urlDownload),
-                            width: MediaQuery.of(context).size.width * 0.3,
-                            fit: BoxFit.cover,
+                      // : SizedBox(
+                      //     height: 200,
+                      //     child: Image(
+                      //       image: NetworkImage(urlDownload),
+                      //       width: MediaQuery.of(context).size.width * 0.3,
+                      //       fit: BoxFit.cover,
+                      //     ),
+                      //   ),
+                      : ImageCachedFullscreen(
+                          imageUrl: urlDownload,
+                          imageBorderRadius: 20,
+                          imageWidth: 200,
+                          imageHeight: 200,
+                          imageDetailsHeight: 450,
+                          imageDetailsWidth: 400,
+                          withHeroAnimation: true,
+                          placeholder: Container(
+                            child: Icon(Icons.check),
                           ),
+                          errorWidget: Container(
+                            child: Icon(Icons.error),
+                          ),
+                          placeholderDetails: Container(),
                         ),
                 ),
               ),

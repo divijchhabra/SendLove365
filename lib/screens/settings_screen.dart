@@ -1,13 +1,22 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:temp/constants.dart';
+import 'package:temp/helpers/validators.dart';
 import 'package:temp/screens/phoneno_screen.dart';
 import 'package:temp/models/user_details_model.dart';
 import 'package:flutter/services.dart';
+import 'package:temp/services/firebase_upload.dart';
+import 'package:path/path.dart' as path;
+import 'package:temp/services/store_user_details.dart';
+
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
 
@@ -18,25 +27,40 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   bool showSpinner = false;
 
+  // image source
+  File? _image;
+
+  // upload task
+  UploadTask? task;
+
+  String? urlDownload;
+
+  bool isText = true;
+
+  TextEditingController nameController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.dark,
-        child : Scaffold(
-      body: ModalProgressHUD(
-        inAsyncCall: showSpinner,
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(kDefaultPadding),
-            child: SingleChildScrollView(
+      value: SystemUiOverlayStyle.dark,
+      child: Scaffold(
+        body: ModalProgressHUD(
+          inAsyncCall: showSpinner,
+          child: SafeArea(
+            bottom: false,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
               child: Column(
                 children: [
                   Row(
                     children: [
-                      Image.asset(
-                        'assets/Send LOve Icon envelope.png',
-                        height: 68,
-                        width: 68,
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.asset(
+                          'assets/logo1.jpg',
+                          height: 68,
+                          width: 68,
+                        ),
                       ),
                     ],
                   ),
@@ -47,7 +71,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         "Settings",
                         textAlign: TextAlign.start,
                         style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w500),
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ],
                   ),
@@ -68,26 +94,79 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                       ],
                     ),
-                    child: CircleAvatar(
-                      radius: 56,
-                      backgroundImage:
-                          NetworkImage(UserDetailsModel.imageUrl.toString()),
+                    child: InkWell(
+                      onTap: () async {
+                        setState(() {
+                          showSpinner = true;
+                        });
+                        await getImage();
+                        setState(() {
+                          showSpinner = false;
+                        });
+                      },
+                      child: CircleAvatar(
+                        radius: 56,
+                        backgroundImage: NetworkImage(
+                          UserDetailsModel.imageUrl.toString(),
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 10),
-                  Text(UserDetailsModel.name.toString(), style: kTextStyle),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      !isText
+                          ? SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.35,
+                              child: Form(
+                                child: TextFormField(
+                                  controller: nameController,
+                                  onSaved: (name) {
+                                    nameController.value = nameController.value
+                                        .copyWith(text: name);
+                                  },
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 10.0,
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    labelText: "Name",
+                                  ),
+                                  validator: userNameValidator,
+                                ),
+                              ),
+                            )
+                          : Text(UserDetailsModel.name.toString()),
+                      SizedBox(width: 10),
+                      InkWell(
+                        onTap: () async {
+                          if (!isText) {
+                            await StoreUserInfo().updateUserDetails(
+                              UserDetailsModel.imageUrl,
+                              nameController.text,
+                            );
+                            setState(() {
+                              UserDetailsModel.name = nameController.text;
+                            });
+                          }
+
+                          setState(() {
+                            isText = !isText;
+                          });
+                        },
+                        child: isText
+                            ? Icon(Icons.edit)
+                            : Icon(Icons.done, color: Colors.green),
+                      ),
+                    ],
+                  ),
                   const SizedBox(height: 10),
-                  SizedBox(
-                    height: 500,
+                  Expanded(
                     child: ListView(
                       children: [
-                        // ListTile(
-                        //   leading: Icon(
-                        //     Icons.person,
-                        //     color: kPrimaryColor,
-                        //   ),
-                        //   title: Text("Profile"),
-                        // ),
                         Divider(),
                         ListTile(
                           leading: Icon(
@@ -124,7 +203,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
         ),
       ),
-    ) ) ;
+    );
   }
 
   Future<void> logOut() async {
@@ -149,5 +228,53 @@ class _SettingsScreenState extends State<SettingsScreen> {
       });
       Fluttertoast();
     }
+  }
+
+  // Pick image
+  Future getImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+      if (image == null) return;
+
+      final imgTemp = File(image.path);
+
+      setState(() {
+        _image = imgTemp;
+      });
+
+      await uploadImage();
+
+      await StoreUserInfo()
+          .updateUserDetails(urlDownload, UserDetailsModel.name);
+      setState(() {
+        showSpinner = false;
+      });
+
+      UserDetailsModel.imageUrl = urlDownload;
+    } on PlatformException catch (e) {
+      setState(() {
+        showSpinner = false;
+      });
+      Fluttertoast.showToast(msg: 'Failed to pick image $e');
+    }
+  }
+
+  // Upload image
+  Future uploadImage() async {
+    // print('image $_image');
+    if (_image == null) return;
+
+    final imageName = path.basename(_image!.path);
+    final destination = 'files/$imageName';
+
+    task = FirebaseUpload.uploadFile(destination, _image!);
+
+    if (task == null) return null;
+
+    final snapshot = await task!.whenComplete(() {});
+    urlDownload = await snapshot.ref.getDownloadURL();
+
+    // print('urlDownload $urlDownload');
   }
 }

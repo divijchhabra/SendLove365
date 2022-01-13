@@ -12,6 +12,7 @@ import 'package:temp/models/user_details_model.dart';
 import 'package:temp/screens/invite_friends_screen.dart';
 import 'package:temp/screens/message_sent_screen.dart';
 import 'dart:io';
+
 class SendImageScreen extends StatefulWidget {
   const SendImageScreen({
     Key? key,
@@ -105,9 +106,10 @@ class _SendImageScreen extends State<SendImageScreen> {
     setState(() {
       showSpinner = true;
     });
-    if (Platform.isIOS ? await Permission.contacts.request().isGranted
-        : await Permission.phone.request().isGranted
-        && await Permission.contacts.request().isGranted) {
+    if (Platform.isIOS
+        ? await Permission.contacts.request().isGranted
+        : await Permission.phone.request().isGranted &&
+            await Permission.contacts.request().isGranted) {
       await getContacts();
       setState(() {
         showSpinner = false;
@@ -117,9 +119,9 @@ class _SendImageScreen extends State<SendImageScreen> {
       setState(() {
         showSpinner = false;
       });
-      if( Platform.isIOS )
+      if (Platform.isIOS)
         await Permission.contacts.request();
-      else{
+      else {
         await Permission.phone.request();
         await Permission.contacts.request();
       }
@@ -186,7 +188,9 @@ class _SendImageScreen extends State<SendImageScreen> {
         title: const Text("Send To"),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         actions: [
           IconButton(

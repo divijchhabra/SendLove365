@@ -19,6 +19,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:temp/components/gradient_button.dart';
+import 'package:temp/components/likeu_appbar.dart';
 import 'package:temp/constants.dart';
 import 'package:temp/models/user_details_model.dart';
 import 'package:temp/providers/bottom_nav_provider.dart';
@@ -39,9 +40,10 @@ class _HomeScreenState extends State<HomeScreen> {
   int _choice = 0;
 
   Future<void> checkPermissionPhoneLogs() async {
-    if (Platform.isIOS ? await Permission.contacts.request().isGranted
-        : await Permission.phone.request().isGranted
-        && await Permission.contacts.request().isGranted) {
+    if (Platform.isIOS
+        ? await Permission.contacts.request().isGranted
+        : await Permission.phone.request().isGranted &&
+            await Permission.contacts.request().isGranted) {
       await getContacts();
       // print('Hello ${contacts.length}');
       print('_index');
@@ -73,9 +75,9 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         showSpinner = false;
       });
-      if( Platform.isIOS )
+      if (Platform.isIOS)
         await Permission.contacts.request();
-      else{
+      else {
         await Permission.phone.request();
         await Permission.contacts.request();
       }
@@ -101,10 +103,12 @@ class _HomeScreenState extends State<HomeScreen> {
     for (var queryDocumentSnapshot in querySnapshot.docs) {
       Map<String, dynamic> data = queryDocumentSnapshot.data();
       var phone = data['phoneNo'].toString();
+      var dp = data['imageUrl'].toString();
 
       int pn = phone.length;
       setState(() {
         UserDetailsModel.firebaseUsersPhone.add(phone.substring(pn - 10));
+        UserDetailsModel.firebaseUsersDp.add(dp);
       });
     }
   }
@@ -124,9 +128,6 @@ class _HomeScreenState extends State<HomeScreen> {
         Text("Love", style: kBottomText),
         Text("Friends", style: kBottomText),
       ],
-
-
-
       onClose: () {
         print('value');
         Provider.of<BottomNavProvider>(context, listen: false)
@@ -352,18 +353,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Scaffold(
             appBar: PreferredSize(
               preferredSize: const Size.fromHeight(110),
-              child: AppBar(
-                centerTitle: true,
-                flexibleSpace: Container(
-
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('assets/homeAppbar.jpg'),
-                      fit: BoxFit.fitWidth,
-                    ),
-                  ),
-                ),
-              ),
+              child: LikeuAppbar(),
             ),
             body: SafeArea(
               child: SingleChildScrollView(
@@ -561,6 +551,11 @@ class _ImagesState extends State<Images> {
   Widget build(BuildContext context) {
     return Swipable(
       child: InkWell(
+        onTap: () async {
+          Provider.of<BottomNavProvider>(context, listen: false)
+              .changeNavStatus();
+          _openItemPickerForDownload(context);
+        },
         onLongPress: () async {
           print('long');
           Provider.of<BottomNavProvider>(context, listen: false)

@@ -1,3 +1,4 @@
+import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
@@ -9,16 +10,26 @@ import 'package:temp/screens/reminder_screen.dart';
 import 'package:temp/screens/settings_screen.dart';
 
 class BottomNav extends StatefulWidget {
-  const BottomNav({Key? key}) : super(key: key);
+  const BottomNav({Key? key, this.index = 0}) : super(key: key);
+
+  final int index;
 
   @override
   _BottomNavState createState() => _BottomNavState();
 }
 
 class _BottomNavState extends State<BottomNav> {
-  //int _currentIndex = 0;
-  final PersistentTabController _controller =
-      PersistentTabController(initialIndex: 0);
+  int _currentIndex = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _currentIndex = widget.index;
+  }
+
+  // final PersistentTabController _controller =
+  //     PersistentTabController(initialIndex: _currentIndex);
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
@@ -53,15 +64,15 @@ class _BottomNavState extends State<BottomNav> {
     ];
   }
 
-  final List<Widget> _widgetOptions = <Widget>[
-    const HomeScreen(),
-    const ChatScreen(),
-    const ReminderScreen(),
-    const SettingsScreen()
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final List<Widget> _widgetOptions = <Widget>[
+      const HomeScreen(),
+      const ChatScreen(),
+      const ReminderScreen(),
+      const SettingsScreen()
+    ];
+
     bool showNav = Provider.of<BottomNavProvider>(context).isNav;
 
     return Container(
@@ -70,11 +81,10 @@ class _BottomNavState extends State<BottomNav> {
         top: false,
         bottom: true,
         child: Scaffold(
-
           body: PersistentTabView(
             context,
             navBarHeight: 55,
-            controller: _controller,
+            controller: PersistentTabController(initialIndex: _currentIndex),
             screens: _widgetOptions,
             items: _navBarsItems(),
             // popAllScreensOnTapOfSelectedTab: true,

@@ -71,14 +71,14 @@ class _OtpScreenState extends State<OtpScreen> {
         inAsyncCall: showSpinner,
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(kDefaultPadding),
+            padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
             child: SingleChildScrollView(
               child: Column(
                 children: [
                   Row(
                     children: [
                       Image.asset(
-                        'assets/Send LOve Icon envelope.png',
+                        'assets/logo1.jpg',
                         height: 68,
                         width: 68,
                       ),

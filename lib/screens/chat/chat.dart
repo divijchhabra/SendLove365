@@ -6,10 +6,12 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swipable/flutter_swipable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:temp/components/bottom_nav.dart';
 import 'package:temp/constants.dart';
-import 'package:temp/models/UserLastMessage.dart';
 import 'package:temp/models/user_details_model.dart';
 import 'package:temp/screens/chat/chat_bubble.dart';
+import 'package:temp/screens/chat/chat_screen.dart';
 import 'package:temp/screens/send_a_gift_screen.dart';
 
 class Chat extends StatefulWidget {
@@ -19,9 +21,10 @@ class Chat extends StatefulWidget {
     required this.contact,
     required this.isOnline,
     required this.friendName,
+    required this.dp,
   }) : super(key: key);
 
-  final String friendPhoneUid, friendName;
+  final String friendPhoneUid, friendName, dp;
   Contact contact;
   final bool isOnline;
 
@@ -34,8 +37,6 @@ int _index = 2;
 class _ChatState extends State<Chat> {
   // image source
   // File? _image;
-  List<Map<String, String>> lastMsg = [];
-
   // upload task
   UploadTask? task;
 
@@ -117,124 +118,148 @@ class _ChatState extends State<Chat> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: chats
-          .doc(chatDocId)
-          .collection('messages')
-          .orderBy('createdOn', descending: true)
-          .snapshots(),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.hasError) {
-          return Center(
-            child: Text("Something went wrong"),
-          );
-        }
+    return WillPopScope(
+      onWillPop: () {
+        pushNewScreen(
+          context,
+          screen: BottomNav(index: 1),
+          withNavBar: false,
+          // OPTIONAL VALUE. True by default.
+          pageTransitionAnimation: PageTransitionAnimation.cupertino,
+        );
 
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Container(
-            color: Colors.white,
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        }
+        return Future.value(false);
+      },
+      child: StreamBuilder<QuerySnapshot>(
+        stream: chats
+            .doc(chatDocId)
+            .collection('messages')
+            .orderBy('createdOn', descending: true)
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text("Something went wrong"),
+            );
+          }
 
-        if (snapshot.hasData) {
-          dynamic data;
-          return Scaffold(
-            appBar: AppBar(
-              toolbarHeight: 90,
-              flexibleSpace: Container(
-                decoration: BoxDecoration(
-                  gradient: gradient2,
-                  borderRadius: BorderRadius.circular(15.0),
-                ),
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Container(
+              color: Colors.white,
+              child: Center(
+                child: CircularProgressIndicator(),
               ),
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(
-                  bottom: Radius.circular(30),
+            );
+          }
+
+          if (snapshot.hasData) {
+            dynamic data;
+            return Scaffold(
+              appBar: AppBar(
+                toolbarHeight: 90,
+                flexibleSpace: Container(
+                  decoration: BoxDecoration(
+                    gradient: gradient2,
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
                 ),
-              ),
-              centerTitle: true,
-              title: RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: widget.friendName,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(30),
+                  ),
+                ),
+                centerTitle: true,
+                title: RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: widget.friendName,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
+                    ],
+                  ),
+                ),
+                leadingWidth: MediaQuery.of(context).size.width * 0.25,
+                leading: Row(
+                  children: [
+                    IconButton(
+                        icon: const Icon(Icons.arrow_back_ios),
+                        color: Colors.white,
+                        onPressed: () {
+                          pushNewScreen(
+                            context,
+                            screen: BottomNav(index: 1),
+                            withNavBar: false,
+                            // OPTIONAL VALUE. True by default.
+                            pageTransitionAnimation:
+                                PageTransitionAnimation.cupertino,
+                          );
+                          // Navigator.pop(context);
+                        }),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: Colors.white, width: 1),
+                        shape: BoxShape.circle,
+                      ),
+                      child: CircleAvatar(
+                        backgroundImage: NetworkImage(widget.dp),
+                      ),
+                      // (widget.contact.avatar != null &&
+                      //         widget.contact.avatar!.isNotEmpty)
+                      //     ? CircleAvatar(
+                      //         backgroundImage:
+                      //             MemoryImage(widget.contact.avatar!),
+                      //       )
+                      //     : CircleAvatar(
+                      //         child: Text(widget.contact.initials()),
+                      //       ),
                     ),
                   ],
                 ),
               ),
-              leadingWidth: MediaQuery.of(context).size.width * 0.25,
-              leading: Row(
-                children: [
-                  IconButton(
-                      icon: const Icon(Icons.arrow_back_ios),
-                      color: Colors.white,
-                      onPressed: () {
-                        Navigator.pop(context);
-                      }),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: Colors.white, width: 1),
-                      shape: BoxShape.circle,
+              body: SafeArea(
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: ListView(
+                        reverse: true,
+                        children: snapshot.data!.docs.map(
+                          (DocumentSnapshot document) {
+                            data = document.data()!;
+                            // print(document.toString());
+                            // print(data['msg']);
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 18.0),
+                              child: ChatBubble(
+                                message: data['message'],
+                                isMe: isSender(data['senderPhoneId']),
+                                isSameUser: isSender(data['senderPhoneId']),
+                                createdOn: data['createdOn'] == null
+                                    ? DateTime.now().toString()
+                                    : data['createdOn'].toDate().toString(),
+                                isMsg: data['isMsg'],
+                                urlDownload: data['message'].toString(),
+                              ),
+                            );
+                          },
+                        ).toList(),
+                      ),
                     ),
-                    child: (widget.contact.avatar != null &&
-                            widget.contact.avatar!.isNotEmpty)
-                        ? CircleAvatar(
-                            backgroundImage:
-                                MemoryImage(widget.contact.avatar!),
-                          )
-                        : CircleAvatar(
-                            child: Text(widget.contact.initials()),
-                          ),
-                  ),
-                ],
+                    _sendMessageArea()
+                  ],
+                ),
               ),
-            ),
-            body: SafeArea(
-              child: Column(
-                children: [
-                  Expanded(
-                    child: ListView(
-                      reverse: true,
-                      children: snapshot.data!.docs.map(
-                        (DocumentSnapshot document) {
-                          data = document.data()!;
-                          // print(document.toString());
-                          // print(data['msg']);
-                          return Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 18.0),
-                            child: ChatBubble(
-                              message: data['message'],
-                              isMe: isSender(data['senderPhoneId']),
-                              isSameUser: isSender(data['senderPhoneId']),
-                              createdOn: data['createdOn'] == null
-                                  ? DateTime.now().toString()
-                                  : data['createdOn'].toDate().toString(),
-                              isMsg: data['isMsg'],
-                              urlDownload: data['message'].toString(),
-                            ),
-                          );
-                        },
-                      ).toList(),
-                    ),
-                  ),
-                  _sendMessageArea()
-                ],
-              ),
-            ),
-          );
-        } else {
-          return Container();
-        }
-      },
+            );
+          } else {
+            return Container();
+          }
+        },
+      ),
     );
   }
 
@@ -368,10 +393,6 @@ class _ChatState extends State<Chat> {
             iconSize: 25,
             color: Theme.of(context).primaryColor,
             onPressed: () async {
-              // todo shared preference
-              lastMsg.add(
-                  {widget.friendPhoneUid.toString(): _textController.text});
-              await UserLastMessage.setLastMsg(lastMsg);
               await _sendMessage(_textController.text, true);
             },
           ),
