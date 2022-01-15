@@ -356,132 +356,131 @@ class _HomeScreenState extends State<HomeScreen> {
               child: LikeuAppbar(),
             ),
             body: SafeArea(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(kDefaultPadding),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          WillPopScope(
-                            onWillPop: () {
-                              print('Pressed');
-                              // ToDo implement willPop
-                              Provider.of<BottomNavProvider>(context,
-                                      listen: false)
-                                  .changeNavStatus();
-                              return Future.value(true);
-                            },
-                            child: Container(
-                              height: 40,
-                              width: 40,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50.0),
-                                color: kPrimaryColor,
-                              ),
-                              child: IconButton(
-                                // alignment: const Alignment(85, 3),
-                                onPressed: () {
-                                  Provider.of<BottomNavProvider>(context,
-                                          listen: false)
-                                      .changeNavStatus();
-
-                                  _openSimpleItemPicker(
-                                    context,
-                                  );
-                                },
-                                highlightColor: kPrimaryColor,
-
-                                icon: const Icon(
-                                  Icons.menu_rounded,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      Container(
-                        alignment: Alignment.center,
-                        height: size.height * 0.45,
-                        width: 368,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: kPrimaryColor,
-                        ),
-                        child: (valentine.isEmpty ||
-                                holiday.isEmpty ||
-                                birthday.isEmpty ||
-                                anniversary.isEmpty ||
-                                all.isEmpty)
-                            ? CircularProgressIndicator(color: Colors.white)
-                            : Stack(children: cards),
-                      ),
-                      const SizedBox(height: 20),
-                      // GradientIconButton(
-                      //     onPressed: () {},
-                      //     child: const Text("Send to friend"),
-                      //     gradient: gradient1,
-                      //     icon: Icon(Icons.arrow_forward)),
-                      SizedBox(
-                        height: 48,
-                        width: 223.5,
-                        child: GradientButton(
-                          onPressed: () async {
-                            setState(() {
-                              showSpinner = true;
-                            });
-                            print('_index1');
-                            print(_index);
-                            await checkPermissionPhoneLogs();
-                            setState(() {
-                              showSpinner = false;
-                            });
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                child: Column(
+                  children: [
+                    SizedBox(height:10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        WillPopScope(
+                          onWillPop: () {
+                            print('Pressed');
+                            // ToDo implement willPop
+                            Provider.of<BottomNavProvider>(context,
+                                    listen: false)
+                                .changeNavStatus();
+                            return Future.value(true);
                           },
-                          child: const Text(
-                            "Send postcard",
-                            style: kButtonTextStyle,
-                          ),
-                          gradient: gradient1,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      SizedBox(
-                        height: 48,
-                        width: 223.5,
-                        child: OutlinedButton.icon(
-                          style: OutlinedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            side: const BorderSide(
-                              width: 2,
+                          child: Container(
+                            height: 40,
+                            width: 40,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50.0),
                               color: kPrimaryColor,
-                              style: BorderStyle.solid,
+                            ),
+                            child: IconButton(
+                              // alignment: const Alignment(85, 3),
+                              onPressed: () {
+                                Provider.of<BottomNavProvider>(context,
+                                        listen: false)
+                                    .changeNavStatus();
+
+                                _openSimpleItemPicker(
+                                  context,
+                                );
+                              },
+                              highlightColor: kPrimaryColor,
+
+                              icon: const Icon(
+                                Icons.menu_rounded,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
-                          onPressed: () {
-                            pushNewScreen(
-                              context,
-                              screen: SendAGift(),
-                              withNavBar: false,
-                              // OPTIONAL VALUE. True by default.
-                              pageTransitionAnimation:
-                                  PageTransitionAnimation.cupertino,
-                            );
-                          },
-                          icon: const Icon(Icons.card_giftcard),
-                          label: const Text(
-                            "Send a gift",
-                            style: TextStyle(fontSize: 20),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Container(
+                      alignment: Alignment.center,
+                      height: size.height * 0.45,
+                      width: 368,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: kPrimaryColor,
+                      ),
+                      child: (valentine.isEmpty ||
+                              holiday.isEmpty ||
+                              birthday.isEmpty ||
+                              anniversary.isEmpty ||
+                              all.isEmpty)
+                          ? CircularProgressIndicator(color: Colors.white)
+                          : Stack(children: cards),
+                    ),
+                    const SizedBox(height: 20),
+                    // GradientIconButton(
+                    //     onPressed: () {},
+                    //     child: const Text("Send to friend"),
+                    //     gradient: gradient1,
+                    //     icon: Icon(Icons.arrow_forward)),
+                    SizedBox(
+                      height: 48,
+                      width: 223.5,
+                      child: GradientButton(
+                        onPressed: () async {
+                          setState(() {
+                            showSpinner = true;
+                          });
+                          print('_index1');
+                          print(_index);
+                          await checkPermissionPhoneLogs();
+                          setState(() {
+                            showSpinner = false;
+                          });
+                        },
+                        child: const Text(
+                          "Send postcard",
+                          style: kButtonTextStyle,
+                        ),
+                        gradient: gradient1,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      height: 48,
+                      width: 223.5,
+                      child: OutlinedButton.icon(
+                        style: OutlinedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          side: const BorderSide(
+                            width: 2,
+                            color: kPrimaryColor,
+                            style: BorderStyle.solid,
                           ),
                         ),
+                        onPressed: () {
+                          pushNewScreen(
+                            context,
+                            screen: SendAGift(),
+                            withNavBar: false,
+                            // OPTIONAL VALUE. True by default.
+                            pageTransitionAnimation:
+                                PageTransitionAnimation.cupertino,
+                          );
+                        },
+                        icon: const Icon(Icons.card_giftcard),
+                        label: const Text(
+                          "Send a gift",
+                          style: TextStyle(fontSize: 20),
+                        ),
                       ),
-                      // BottomNav(),
-                    ],
-                  ),
+                    ),
+                    // BottomNav(),
+                  ],
                 ),
               ),
             ),
