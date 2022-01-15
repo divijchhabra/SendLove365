@@ -107,15 +107,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
       int pn = phone.length;
       setState(() {
-        UserDetailsModel.firebaseUsersPhone.add(phone.substring(pn - 10));
+        UserDetailsModel.firebaseUsersPhone
+            .add(phone.substring(pn - kCountryNumberLength));
         UserDetailsModel.firebaseUsersDp.add(dp);
       });
     }
   }
-
-  List<Contact> friendUser = [];
-
-  int selectedItem = 0;
 
   _openSimpleItemPicker(BuildContext context) {
     BottomPicker(
@@ -168,13 +165,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   getImageData() async {
     var valentineCollection =
-        FirebaseFirestore.instance.collection('valentines');
+        FirebaseFirestore.instance.collection('Valentines');
     var anniversaryCollection =
-        FirebaseFirestore.instance.collection('anniversary');
-    var birthdayCollection = FirebaseFirestore.instance.collection('birthday');
-    var holidaysCollection = FirebaseFirestore.instance.collection('holidays');
-    var loveCollection = FirebaseFirestore.instance.collection('love');
-    var friendCollection = FirebaseFirestore.instance.collection('friends');
+        FirebaseFirestore.instance.collection('Anniversary');
+    var birthdayCollection = FirebaseFirestore.instance.collection('Birthday');
+    var holidaysCollection = FirebaseFirestore.instance.collection('Holidays');
+    var loveCollection = FirebaseFirestore.instance.collection('Love');
+    var friendCollection = FirebaseFirestore.instance.collection('Friends');
 
     var querySnapshot1 = await valentineCollection.get();
     var querySnapshot2 = await anniversaryCollection.get();
@@ -357,17 +354,17 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             body: SafeArea(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: kDefaultPadding),
                 child: Column(
                   children: [
-                    SizedBox(height:10),
+                    SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         WillPopScope(
                           onWillPop: () {
                             print('Pressed');
-                            // ToDo implement willPop
                             Provider.of<BottomNavProvider>(context,
                                     listen: false)
                                 .changeNavStatus();
@@ -408,6 +405,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: size.height * 0.45,
                       width: 368,
                       decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/Untitled.png'),
+                        ),
                         borderRadius: BorderRadius.circular(15),
                         color: kPrimaryColor,
                       ),
@@ -562,6 +562,7 @@ class _ImagesState extends State<Images> {
           _openItemPickerForDownload(context);
         },
         child: Container(
+          alignment: Alignment.center,
           height: MediaQuery.of(context).size.height * 0.45,
           width: 368,
           decoration: BoxDecoration(

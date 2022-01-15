@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../constants.dart';
+
 class StoreUserInfo {
   //getUserDetails
   Future<void> storeUserDetails(
@@ -12,7 +14,7 @@ class StoreUserInfo {
 
     String phone = phoneNo.toString();
     int n = phone.length;
-    phone = phone.substring(n - 10);
+    phone = phone.substring(n - kCountryNumberLength);
 
     userCollection.doc(uid).set({
       "userName": userName,

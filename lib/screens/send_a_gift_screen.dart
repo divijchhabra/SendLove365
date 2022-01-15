@@ -53,14 +53,13 @@ class _SendAGiftState extends State<SendAGift> {
                 ),
                 body: SafeArea(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 20),
                     child: Center(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-
-
                           // SizedBox(
                           //   // color: Colors.red,
                           //   height: 500,
@@ -85,56 +84,67 @@ class _SendAGiftState extends State<SendAGift> {
                           //   width: 400,
                           // ),
 
-                          Text('Now is the perfect time to send a thoughtful gift.',
-                            textAlign : TextAlign.center , style: TextStyle(
-                            fontSize: 20
-                          ),),
-                          SizedBox(height: 20,),
+                          Text(
+                            'Now is the perfect time to send a thoughtful gift.',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 20),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
                           Expanded(
                             child: ListView.builder(
                                 itemCount: snapshot.data!.docs.length,
-                                itemBuilder: (c,i){
-                                 var docs =  snapshot.data!.docs;
+                                itemBuilder: (c, i) {
+                                  var docs = snapshot.data!.docs;
 
-                               return Column(
-                                 children: [
-                                   Row(
-                                     children: [
-                                       SizedBox(width: 15,),
-                                       Align(
-                                         alignment : Alignment.centerLeft,
-                                         child: Text(docs[i]['name'],
-                                           textAlign: TextAlign.left,
-                                           style: TextStyle(
-                                           fontSize: 16,
-                                           fontWeight: FontWeight.bold
-                                         ),),
-                                       ),
-                                     ],
-                                   ),
-                                   SizedBox(height: 10,),
-                                   InkWell(
-                                    onTap: () async {
-                                      if (!await launch(docs[i]['imageSrc'])) {
-                                        throw 'Could not launch';
-                                      }
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 18.0),
-                                      child: Image(
-                                        height: 300,
-                                        width: 400,
-                                        image: NetworkImage(docs[i]['image']),
-                                        fit: BoxFit.cover,
+                                  return Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            width: 15,
+                                          ),
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              docs[i]['name'],
+                                              textAlign: TextAlign.left,
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                              ),
-                                   SizedBox(height: 20,),
-
-                                 ],
-                               );
-                            }),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      InkWell(
+                                        onTap: () async {
+                                          if (!await launch(
+                                              docs[i]['imageSrc'])) {
+                                            throw 'Could not launch';
+                                          }
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 18.0),
+                                          child: Image(
+                                            height: 300,
+                                            width: 400,
+                                            image:
+                                                NetworkImage(docs[i]['image']),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                    ],
+                                  );
+                                }),
                           ),
                           const SizedBox(height: 20),
                           SizedBox(

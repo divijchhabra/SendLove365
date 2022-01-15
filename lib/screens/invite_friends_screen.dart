@@ -3,6 +3,7 @@
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:temp/constants.dart';
 import 'package:temp/models/user_details_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -53,7 +54,9 @@ class _InviteFriendScreen extends State<InviteFriendScreen> {
           String invalidNumber = number;
           number = number.replaceAll(' ', '');
           int n = number.length;
-          n >= 10 ? number = number.substring(n - 10) : number = invalidNumber;
+          n >= 10
+              ? number = number.substring(n - kCountryNumberLength)
+              : number = invalidNumber;
 
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -78,7 +81,8 @@ class _InviteFriendScreen extends State<InviteFriendScreen> {
                           numTp = numTp.replaceAll(' ', '');
                           int n = numTp.length;
                           n >= 10
-                              ? number = number.substring(n - 10)
+                              ? number =
+                                  number.substring(n - kCountryNumberLength)
                               : number = invalidNumber2;
                           sendSms(numTp);
                         } // sendSms();

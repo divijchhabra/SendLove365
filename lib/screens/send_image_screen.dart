@@ -161,7 +161,9 @@ class _SendImageScreen extends State<SendImageScreen> {
       String invalidNumber = number;
       number = number.replaceAll(' ', '');
       int n = number.length;
-      n >= 10 ? number = number.substring(n - 10) : number = invalidNumber;
+      n >= 10
+          ? number = number.substring(n - kCountryNumberLength)
+          : number = invalidNumber;
 
       if (UserDetailsModel.firebaseUsersPhone.contains(number) &&
           number != UserDetailsModel.phone) {
@@ -229,59 +231,72 @@ class _SendImageScreen extends State<SendImageScreen> {
                             number = number.replaceAll(' ', '');
                             int n = number.length;
                             n >= 10
-                                ? number = number.substring(n - 10)
+                                ? number =
+                                    number.substring(n - kCountryNumberLength)
                                 : number = invalidNumber;
 
                             Color myColor = Colors.transparent;
 
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20.0),
-                              child: Column(
-                                children: [
-                                  if (firebaseUserPhone.contains(number) &&
-                                      number != UserDetailsModel.phone)
-                                    ListTile(
-                                      tileColor: myColor,
-                                      onTap: () async {
-                                        setState(() {
-                                          friendPhoneUid = number;
-                                          showSpinner2 = true;
-                                        });
-                                        await checkUser();
-                                        _sendMessage(widget.imageUrl, false);
+                            int idx = -1;
 
-                                        Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const MessageSent()),
-                                        );
-                                      },
-                                      title: Text(contact.displayName ??
-                                          'Contact Name'),
-                                      subtitle: Text(number),
-                                      leading: (contact.avatar != null &&
-                                              contact.avatar!.isNotEmpty)
-                                          ? CircleAvatar(
-                                              backgroundImage:
-                                                  MemoryImage(contact.avatar!),
-                                            )
-                                          : CircleAvatar(
-                                              child: Text(contact.initials()),
-                                            ),
-                                    ),
-                                  if (UserDetailsModel.firebaseUsersPhone
-                                          .contains(number) &&
-                                      number != UserDetailsModel.phone)
-                                    Divider(
-                                      thickness: 2,
-                                      indent: 20,
-                                      endIndent: 10,
-                                    ),
-                                ],
-                              ),
-                            );
+                            for (int k = 0; k < myFriends.length; k++) {
+                              if (number == myFriends[k]) {
+                                idx = k;
+                                myFriends[k] = "-1";
+                              }
+                            }
+                            if (idx == -1) {
+                              return Container();
+                            } else {
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20.0),
+                                child: Column(
+                                  children: [
+                                    if (firebaseUserPhone.contains(number) &&
+                                        number != UserDetailsModel.phone)
+                                      ListTile(
+                                        tileColor: myColor,
+                                        onTap: () async {
+                                          setState(() {
+                                            friendPhoneUid = number;
+                                            showSpinner2 = true;
+                                          });
+                                          await checkUser();
+                                          _sendMessage(widget.imageUrl, false);
+
+                                          Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const MessageSent()),
+                                          );
+                                        },
+                                        title: Text(contact.displayName ??
+                                            'Contact Name'),
+                                        subtitle: Text(number),
+                                        leading: (contact.avatar != null &&
+                                                contact.avatar!.isNotEmpty)
+                                            ? CircleAvatar(
+                                                backgroundImage: MemoryImage(
+                                                    contact.avatar!),
+                                              )
+                                            : CircleAvatar(
+                                                child: Text(contact.initials()),
+                                              ),
+                                      ),
+                                    if (UserDetailsModel.firebaseUsersPhone
+                                            .contains(number) &&
+                                        number != UserDetailsModel.phone)
+                                      Divider(
+                                        thickness: 2,
+                                        indent: 20,
+                                        endIndent: 10,
+                                      ),
+                                  ],
+                                ),
+                              );
+                            }
                           },
                         )
                       : SizedBox(

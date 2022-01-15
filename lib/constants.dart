@@ -32,3 +32,5 @@ const kTextFieldDecoration = InputDecoration(
 );
 
 const kDefaultPadding = 22.0;
+
+int kCountryNumberLength = 10; // Length of number in specific country
