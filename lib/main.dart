@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:temp/providers/bottom_nav_provider.dart';
 import 'package:temp/providers/check_box_provider.dart';
+import 'package:temp/providers/home_index_provider.dart';
 import 'package:temp/screens/splash_screen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
@@ -28,9 +29,11 @@ void main() async {
     MultiProvider(providers: [
       ChangeNotifierProvider(create: (_) => BottomNavProvider()),
       ChangeNotifierProvider(create: (_) => CheckBoxProvider()),
+      ChangeNotifierProvider(create: (_) => HomeIndexProvider()),
     ], child: const MyApp()),
   );
 }
+
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call `initializeApp` before using other Firebase services.

@@ -405,15 +405,6 @@ class _ChatState extends State<Chat> {
                       child: CircleAvatar(
                         backgroundImage: NetworkImage(widget.dp),
                       ),
-                      // (widget.contact.avatar != null &&
-                      //         widget.contact.avatar!.isNotEmpty)
-                      //     ? CircleAvatar(
-                      //         backgroundImage:
-                      //             MemoryImage(widget.contact.avatar!),
-                      //       )
-                      //     : CircleAvatar(
-                      //         child: Text(widget.contact.initials()),
-                      //       ),
                     ),
                   ],
                 ),
@@ -606,6 +597,18 @@ class _ChatState extends State<Chat> {
                                 const SizedBox(height: 20),
                                 InkWell(
                                   onTap: () async {
+                                    if (_choice == 0 && _index == 0) {
+                                      Fluttertoast.showToast(
+                                          msg:
+                                              'Please select another category');
+                                      return;
+                                    }
+                                    if (_index == -1) {
+                                      Fluttertoast.showToast(
+                                          msg:
+                                              'Please select another category');
+                                      return;
+                                    }
                                     await _sendMessage(
                                         _choice == 0
                                             ? all[_index]
@@ -639,116 +642,6 @@ class _ChatState extends State<Chat> {
                           );
                         }
                       },
-                      // child: Container(
-                      //   height: MediaQuery.of(context).size.height * 0.6,
-                      //   padding: const EdgeInsets.all(8),
-                      //   child: Column(
-                      //     children: [
-                      //       const SizedBox(height: 5),
-                      //       const Text(
-                      //         "Select an image to send to your loved ones",
-                      //         textAlign: TextAlign.center,
-                      //         style: TextStyle(fontSize: 14),
-                      //       ),
-                      //       const SizedBox(height: 20),
-                      //       Container(
-                      //         width: MediaQuery.of(context).size.width * 0.6,
-                      //         alignment: Alignment.topRight,
-                      //         child: Container(
-                      //           height: 40,
-                      //           width: 40,
-                      //           decoration: BoxDecoration(
-                      //             borderRadius: BorderRadius.circular(50.0),
-                      //             color: kPrimaryColor,
-                      //           ),
-                      //           child: IconButton(
-                      //             // alignment: const Alignment(85, 3),
-                      //             onPressed: () {
-                      //               // _openSimpleItemPicker(
-                      //               //   context,
-                      //               // );
-                      //               BottomPicker(
-                      //                 items: const [
-                      //                   Text("See All", style: kBottomText),
-                      //                   Text("Valentine", style: kBottomText),
-                      //                   Text("Anniversary", style: kBottomText),
-                      //                   Text("Birthdays", style: kBottomText),
-                      //                   Text("Holidays", style: kBottomText),
-                      //                   Text("Love", style: kBottomText),
-                      //                   Text("Friends", style: kBottomText),
-                      //                 ],
-                      //                 selectedItemIndex: _choice,
-                      //                 title: 'Choose something',
-                      //                 titleStyle: const TextStyle(
-                      //                   fontWeight: FontWeight.bold,
-                      //                   fontSize: 15,
-                      //                   color: Colors.white,
-                      //                 ),
-                      //                 backgroundColor: Color(0xFF7A3496),
-                      //                 bottomPickerTheme:
-                      //                     BOTTOM_PICKER_THEME.plumPlate,
-                      //                 onSubmit: (index) {
-                      //                   print('index $index');
-                      //                   setState(() {
-                      //                     _choice = index;
-                      //                     changeData(index);
-                      //                     _index = cards.length - 1;
-                      //                   });
-                      //                 },
-                      //               ).show(context);
-                      //             },
-                      //             highlightColor: kPrimaryColor,
-                      //
-                      //             icon: const Icon(
-                      //               Icons.menu_rounded,
-                      //               color: Colors.white,
-                      //             ),
-                      //           ),
-                      //         ),
-                      //       ),
-                      //       const SizedBox(height: 5),
-                      //       Container(
-                      //         height: MediaQuery.of(context).size.height * 0.38,
-                      //         width: MediaQuery.of(context).size.width * 0.6,
-                      //         decoration: BoxDecoration(
-                      //           borderRadius: BorderRadius.circular(16.0),
-                      //           color: kPrimaryColor,
-                      //         ),
-                      //         child: Stack(children: cards),
-                      //       ),
-                      //       const SizedBox(height: 20),
-                      //       InkWell(
-                      //         onTap: () async {
-                      //           await _sendMessage(
-                      //               _choice == 0
-                      //                   ? all[_index]
-                      //                   : _choice == 1
-                      //                       ? valentine[_index]
-                      //                       : _choice == 2
-                      //                           ? anniversary[_index]
-                      //                           : _choice == 3
-                      //                               ? birthday[_index]
-                      //                               : _choice == 4
-                      //                                   ? holiday[_index]
-                      //                                   : _choice == 5
-                      //                                       ? love[_index]
-                      //                                       : friend[_index],
-                      //               false);
-                      //           Navigator.pop(context);
-                      //         },
-                      //         child: Container(
-                      //           height: 47,
-                      //           width: 47,
-                      //           decoration: BoxDecoration(
-                      //             borderRadius: BorderRadius.circular(50.0),
-                      //             color: kPrimaryColor,
-                      //           ),
-                      //           child: Image.asset('assets/Group 229.png'),
-                      //         ),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
                     );
                   });
                 },
@@ -859,7 +752,6 @@ class _ImagesState extends State<Images> {
             fit: BoxFit.fill,
           ),
         ),
-        child: Text('Choose another category'),
       ),
       onSwipeEnd: (offSet, value) {
         print('_index');
@@ -867,6 +759,10 @@ class _ImagesState extends State<Images> {
         setState(() {
           _index -= 1;
         });
+        if (_index == -1) {
+          Fluttertoast.showToast(msg: 'Please select another category');
+          return;
+        }
       },
     );
   }
