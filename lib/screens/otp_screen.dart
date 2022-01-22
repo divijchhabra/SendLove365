@@ -91,13 +91,13 @@ class _OtpScreenState extends State<OtpScreen> {
                         "Enter Verification Code",
                         textAlign: TextAlign.start,
                         style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w500),
+                            fontSize: 16, fontWeight: FontWeight.w500),
                       ),
                     ],
                   ),
                   const SizedBox(height: 90),
                   const Text(
-                    "We have sent an OTP code to your phone number.",
+                    "We have sent a verification code to your phone number.",
                     textAlign: TextAlign.center,
                     style: kTextStyle,
                   ),

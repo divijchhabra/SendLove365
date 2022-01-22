@@ -129,7 +129,7 @@ class _ChatScreenState extends State<ChatScreen> {
       isMessage = snapshot.docs[0]['isMsg'];
       return snapshot.docs[0]['message'].toString();
     });
-    return isMessage ? lastMsg : 'image';
+    return isMessage ? lastMsg : 'Photo';
   }
 
   String dpS = '';
@@ -202,16 +202,16 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
         ),
         title: const Text("Chats"),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.search, size: 30),
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.person, size: 30),
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     onPressed: () {},
+        //     icon: const Icon(Icons.search, size: 30),
+        //   ),
+        //   IconButton(
+        //     onPressed: () {},
+        //     icon: const Icon(Icons.person, size: 30),
+        //   ),
+        // ],
       ),
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
@@ -285,7 +285,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                               AsyncSnapshot snapshot) {
                                             if (snapshot.connectionState ==
                                                 ConnectionState.waiting) {
-                                              return Text('loading');
+                                              return Text('');
                                             }
                                             if (snapshot.data == null) {
                                               return Text(number);

@@ -116,11 +116,13 @@ class _PhoneNoState extends State<PhoneNo> {
                                   onChanged: (c) {
                                     // print(c.dialCode);
                                     dialCode = c.dialCode!;
-                                  },
+                                    setState(() {
 
+                                    });
+                                  },
                                   // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
-                                  initialSelection: 'IN',
-                                  favorite: const ['+91', 'IN'],
+                                  initialSelection: 'US',
+                                  favorite: const ['+1', 'US'],
                                   // optional. Shows only country name and flag
                                   showCountryOnly: false,
                                   // optional. Shows only country name and flag when popup is closed.

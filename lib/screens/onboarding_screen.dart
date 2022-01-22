@@ -16,7 +16,7 @@ class _OnBoardingState extends State<OnBoarding> {
   int activeIndex = 0;
   final urlImages = [
     'assets/2 screen postcards 10 sec.gif',
-    'assets/3 screen gifts 10 sec.gif',
+    'assets/onboarding2.gif',
     'assets/4 Screen reminders Jpeg.jpg'
   ];
 
@@ -60,7 +60,7 @@ class _OnBoardingState extends State<OnBoarding> {
                 itemBuilder: (c, i) {
                   return Image.asset(
                     urlImages[i],
-                    fit: BoxFit.fitWidth,
+                    fit: BoxFit.fitHeight,
                   );
                 }),
           ),

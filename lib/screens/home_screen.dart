@@ -1,5 +1,5 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
+import 'package:url_launcher/url_launcher.dart';
 import 'dart:async';
 import 'dart:io' show Platform;
 import 'dart:typed_data';
@@ -14,7 +14,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_swipable/flutter_swipable.dart';
 import 'package:flutter_wallpaper_manager/flutter_wallpaper_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
+// import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -27,6 +27,7 @@ import 'package:temp/providers/home_index_provider.dart';
 import 'package:temp/screens/send_image_screen.dart';
 import 'package:temp/screens/send_a_gift_screen.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -118,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
   _openSimpleItemPicker(BuildContext context) {
     BottomPicker(
       items: const [
-        Text("See All", style: kBottomText),
+        Text("All Postcards", style: kBottomText),
         Text("Valentine", style: kBottomText),
         Text("Anniversary", style: kBottomText),
         Text("Birthdays", style: kBottomText),
@@ -132,12 +133,14 @@ class _HomeScreenState extends State<HomeScreen> {
             .changeNavStatus();
       },
       selectedItemIndex: _choice,
-      title: 'Choose something',
+      title: 'Choose a category',
       titleStyle: const TextStyle(
         fontWeight: FontWeight.bold,
         fontSize: 15,
         color: Colors.white,
       ),
+      iconColor: Colors.black,
+      buttonSingleColor: Colors.white,
       backgroundColor: Color(0xFF7A3496),
       bottomPickerTheme: BOTTOM_PICKER_THEME.plumPlate,
       onSubmit: (index) {
@@ -372,29 +375,43 @@ class _HomeScreenState extends State<HomeScreen> {
                                   .changeNavStatus();
                               return Future.value(true);
                             },
-                            child: Container(
-                              height: 40,
-                              width: 40,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50.0),
-                                color: kPrimaryColor,
-                              ),
-                              child: IconButton(
-                                // alignment: const Alignment(85, 3),
-                                onPressed: () {
-                                  Provider.of<BottomNavProvider>(context,
-                                          listen: false)
-                                      .changeNavStatus();
+                            child: GestureDetector(
+                              onTap: () {
+                                Provider.of<BottomNavProvider>(context,
+                                    listen: false)
+                                    .changeNavStatus();
 
-                                  _openSimpleItemPicker(
-                                    context,
-                                  );
-                                },
-                                highlightColor: kPrimaryColor,
+                                _openSimpleItemPicker(
+                                  context,
+                                );
+                              },
+                              child: Container(
+                                height: 40,
 
-                                icon: const Icon(
-                                  Icons.menu_rounded,
-                                  color: Colors.white,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  color: kPrimaryColor,
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    children: [
+                                      Text(_choice==0? 'All Postcards' :_choice==1 ? 'Valentine' :_choice==2? 'Anniversary'
+                                      :_choice==3 ? 'Birthdays' : _choice==4 ?'Holidays' : _choice ==5 ? 'Love' :
+                                      _choice==6 ? 'Friends' :
+                                      '',style: TextStyle(
+                                        color: Colors.white
+                                      ),),
+                                       SizedBox(width: 5,),
+
+
+                                       Icon(
+                                          Icons.menu_rounded,
+                                          color: Colors.white,
+                                        ),
+
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -467,15 +484,17 @@ class _HomeScreenState extends State<HomeScreen> {
                               style: BorderStyle.solid,
                             ),
                           ),
-                          onPressed: () {
-                            pushNewScreen(
-                              context,
-                              screen: SendAGift(),
-                              withNavBar: false,
-                              // OPTIONAL VALUE. True by default.
-                              pageTransitionAnimation:
-                                  PageTransitionAnimation.cupertino,
-                            );
+                          onPressed: () async {
+                            await launch(
+                                'https://likeu.app/');
+                            // pushNewScreen(
+                            //   context,
+                            //   screen: SendAGift(),
+                            //   withNavBar: false,
+                            //   // OPTIONAL VALUE. True by default.
+                            //   pageTransitionAnimation:
+                            //       PageTransitionAnimation.cupertino,
+                            // );
                           },
                           icon: const Icon(Icons.card_giftcard),
                           label: const Text(
@@ -532,6 +551,8 @@ class _ImagesState extends State<Images> {
         color: Colors.white,
       ),
       backgroundColor: Color(0xFF7A3496),
+      iconColor: Colors.black,
+      buttonSingleColor: Colors.white,
       bottomPickerTheme: BOTTOM_PICKER_THEME.plumPlate,
       onSubmit: (index) async {
         Provider.of<BottomNavProvider>(context, listen: false)
@@ -542,7 +563,11 @@ class _ImagesState extends State<Images> {
           _choice2 = index;
         });
         if (_choice2 == 0) {
+          if(Platform.isAndroid)
           await setWallpaper(WallpaperManager.HOME_SCREEN);
+          else{
+            await _checkStoragePermission();
+          }
         } else if (_choice2 == 1) {
           await setWallpaper(WallpaperManager.LOCK_SCREEN);
         } else {

@@ -29,7 +29,7 @@ class _InviteFriendScreen extends State<InviteFriendScreen> {
     String link = 'www.google.com';
 
     var uri =
-        'sms:$phone?body=Hello there! Download the app SendLove365 by using this $link';
+        'sms:$phone?body=${UserDetailsModel.name} has invited you to Likeu. Download the app Likeu by using this $link';
     await launch(uri);
   }
 
