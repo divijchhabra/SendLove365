@@ -169,13 +169,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   getImageData() async {
     var valentineCollection =
-        FirebaseFirestore.instance.collection('Valentines');
+        FirebaseFirestore.instance.collection('valentine');
     var anniversaryCollection =
-        FirebaseFirestore.instance.collection('Anniversary');
-    var birthdayCollection = FirebaseFirestore.instance.collection('Birthday');
-    var holidaysCollection = FirebaseFirestore.instance.collection('Holidays');
-    var loveCollection = FirebaseFirestore.instance.collection('Love');
-    var friendCollection = FirebaseFirestore.instance.collection('Friends');
+        FirebaseFirestore.instance.collection('anniversary');
+    var birthdayCollection = FirebaseFirestore.instance.collection('birthday');
+    var holidaysCollection = FirebaseFirestore.instance.collection('holiday');
+    var loveCollection = FirebaseFirestore.instance.collection('love');
+    var friendCollection = FirebaseFirestore.instance.collection('friends');
 
     var querySnapshot1 = await valentineCollection.get();
     var querySnapshot2 = await anniversaryCollection.get();
@@ -378,7 +378,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: GestureDetector(
                               onTap: () {
                                 Provider.of<BottomNavProvider>(context,
-                                    listen: false)
+                                        listen: false)
                                     .changeNavStatus();
 
                                 _openSimpleItemPicker(
@@ -387,7 +387,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               },
                               child: Container(
                                 height: 40,
-
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20.0),
                                   color: kPrimaryColor,
@@ -396,20 +395,31 @@ class _HomeScreenState extends State<HomeScreen> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: Row(
                                     children: [
-                                      Text(_choice==0? 'All Postcards' :_choice==1 ? 'Valentine' :_choice==2? 'Anniversary'
-                                      :_choice==3 ? 'Birthdays' : _choice==4 ?'Holidays' : _choice ==5 ? 'Love' :
-                                      _choice==6 ? 'Friends' :
-                                      '',style: TextStyle(
-                                        color: Colors.white
-                                      ),),
-                                       SizedBox(width: 5,),
-
-
-                                       Icon(
-                                          Icons.menu_rounded,
-                                          color: Colors.white,
-                                        ),
-
+                                      Text(
+                                        _choice == 0
+                                            ? 'All Postcards'
+                                            : _choice == 1
+                                                ? 'Valentine'
+                                                : _choice == 2
+                                                    ? 'Anniversary'
+                                                    : _choice == 3
+                                                        ? 'Birthdays'
+                                                        : _choice == 4
+                                                            ? 'Holidays'
+                                                            : _choice == 5
+                                                                ? 'Love'
+                                                                : _choice == 6
+                                                                    ? 'Friends'
+                                                                    : '',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Icon(
+                                        Icons.menu_rounded,
+                                        color: Colors.white,
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -485,8 +495,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           onPressed: () async {
-                            await launch(
-                                'https://likeu.app/');
+                            await launch('https://likeu.app/');
                             // pushNewScreen(
                             //   context,
                             //   screen: SendAGift(),
@@ -563,9 +572,9 @@ class _ImagesState extends State<Images> {
           _choice2 = index;
         });
         if (_choice2 == 0) {
-          if(Platform.isAndroid)
-          await setWallpaper(WallpaperManager.HOME_SCREEN);
-          else{
+          if (Platform.isAndroid)
+            await setWallpaper(WallpaperManager.HOME_SCREEN);
+          else {
             await _checkStoragePermission();
           }
         } else if (_choice2 == 1) {

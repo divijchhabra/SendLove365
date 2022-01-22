@@ -9,6 +9,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:temp/components/gradient_button.dart';
 import 'package:temp/constants.dart';
 import 'package:temp/models/user_details_model.dart';
+import 'package:temp/screens/invite_friend.dart';
 import 'package:temp/screens/invite_friends_screen.dart';
 import 'package:temp/screens/message_sent_screen.dart';
 import 'dart:io';
@@ -325,8 +326,7 @@ class _SendImageScreen extends State<SendImageScreen> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            InviteFriendScreen(
-                                                contacts: contacts),
+                                            InviteFriend(contacts: contacts),
                                       ),
                                     );
                                   },
@@ -355,7 +355,7 @@ class _SendImageScreen extends State<SendImageScreen> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      InviteFriendScreen(contacts: contacts),
+                                      InviteFriend(contacts: contacts),
                                 ),
                               );
                             },
@@ -363,7 +363,8 @@ class _SendImageScreen extends State<SendImageScreen> {
                                 ? Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: CircularProgressIndicator(
-                                        color: Colors.white),
+                                      color: Colors.white,
+                                    ),
                                   )
                                 : Text('Invite +', style: kButtonTextStyle),
                             gradient: gradient1,

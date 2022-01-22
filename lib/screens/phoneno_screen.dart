@@ -67,12 +67,10 @@ class _PhoneNoState extends State<PhoneNo> {
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-            child: SingleChildScrollView(
-              physics: ClampingScrollPhysics(),
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height - 100,
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height,
+              child: SingleChildScrollView(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
                       children: [
@@ -116,9 +114,7 @@ class _PhoneNoState extends State<PhoneNo> {
                                   onChanged: (c) {
                                     // print(c.dialCode);
                                     dialCode = c.dialCode!;
-                                    setState(() {
-
-                                    });
+                                    setState(() {});
                                   },
                                   // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
                                   initialSelection: 'US',
@@ -181,6 +177,7 @@ class _PhoneNoState extends State<PhoneNo> {
                         ),
                       ],
                     ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.25),
                     Column(
                       children: [
                         Padding(

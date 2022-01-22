@@ -54,7 +54,7 @@ class _InviteFriendScreen extends State<InviteFriendScreen> {
           String invalidNumber = number;
           number = number.replaceAll(' ', '');
           int n = number.length;
-          n >= 10
+          n >= kCountryNumberLength
               ? number = number.substring(n - kCountryNumberLength)
               : number = invalidNumber;
 

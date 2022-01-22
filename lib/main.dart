@@ -6,6 +6,7 @@ import 'package:temp/providers/check_box_provider.dart';
 import 'package:temp/providers/home_index_provider.dart';
 import 'package:temp/screens/splash_screen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:temp/screens/video_splash.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -54,7 +55,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.purple,
         fontFamily: 'ComicSansMS3',
       ),
-      home: const Splash(),
+      home: const VideoSplash(),
     );
   }
 }

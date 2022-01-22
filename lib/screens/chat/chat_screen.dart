@@ -12,6 +12,7 @@ import 'package:temp/components/gradient_button.dart';
 import 'package:temp/constants.dart';
 import 'package:temp/models/user_details_model.dart';
 import 'package:temp/screens/chat/chat.dart';
+import 'package:temp/screens/invite_friend.dart';
 import '../invite_friends_screen.dart';
 import 'dart:io';
 
@@ -370,7 +371,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      InviteFriendScreen(contacts: contacts),
+                                      InviteFriend(contacts: contacts),
                                 ),
                               );
                             },
