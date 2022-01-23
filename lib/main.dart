@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.purple,
         fontFamily: 'ComicSansMS3',
       ),
-      home: const Splash(),
+      home: const VideoSplash(),
     );
   }
 }
