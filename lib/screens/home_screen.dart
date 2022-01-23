@@ -169,13 +169,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   getImageData() async {
     var valentineCollection =
-        FirebaseFirestore.instance.collection('valentine');
+        FirebaseFirestore.instance.collection('Valentines');
     var anniversaryCollection =
-        FirebaseFirestore.instance.collection('anniversary');
-    var birthdayCollection = FirebaseFirestore.instance.collection('birthday');
-    var holidaysCollection = FirebaseFirestore.instance.collection('holiday');
-    var loveCollection = FirebaseFirestore.instance.collection('love');
-    var friendCollection = FirebaseFirestore.instance.collection('friends');
+        FirebaseFirestore.instance.collection('Anniversary');
+    var birthdayCollection = FirebaseFirestore.instance.collection('Birthday');
+    var holidaysCollection = FirebaseFirestore.instance.collection('Holidays');
+    var loveCollection = FirebaseFirestore.instance.collection('Love');
+    var friendCollection = FirebaseFirestore.instance.collection('Friends');
 
     var querySnapshot1 = await valentineCollection.get();
     var querySnapshot2 = await anniversaryCollection.get();

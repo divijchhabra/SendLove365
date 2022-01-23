@@ -6,18 +6,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_swipable/flutter_swipable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-import 'package:provider/provider.dart';
 import 'package:temp/components/bottom_nav.dart';
 import 'package:temp/constants.dart';
 import 'package:temp/models/user_details_model.dart';
-import 'package:temp/providers/bottom_nav_provider.dart';
 import 'package:temp/screens/chat/chat_bubble.dart';
-import 'package:temp/screens/chat/chat_screen.dart';
 import 'package:temp/screens/send_a_gift_screen.dart';
 
 class Chat extends StatefulWidget {

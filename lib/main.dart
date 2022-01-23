@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -55,7 +57,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.purple,
         fontFamily: 'ComicSansMS3',
       ),
-      home: const VideoSplash(),
+      home: const Splash(),
     );
   }
 }

@@ -151,7 +151,8 @@ class _InviteFriendState extends State<InviteFriend> {
                       false) {
                     return SizedBox();
                   } else {
-                    return searchField == ''
+                    return searchField == '' ||
+                            UserDetailsModel.firebaseUsersPhone.contains(number)
                         ? SizedBox()
                         : ListTile(
                             title: Text(contact.displayName ?? 'Contact Name'),
