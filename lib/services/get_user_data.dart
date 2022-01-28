@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:temp/components/bottom_nav.dart';
 import 'package:temp/models/user_details_model.dart';
+import 'package:temp/services/get_images.dart';
 
 class GetUserData extends StatelessWidget {
   const GetUserData({Key? key}) : super(key: key);
@@ -39,7 +40,7 @@ class GetUserData extends StatelessWidget {
           UserDetailsModel.uid = data['uid'];
           UserDetailsModel.imageUrl = data['imageUrl'];
 
-          return const BottomNav();
+          return const GetImages();
         }
         return const Scaffold(
           body: Center(

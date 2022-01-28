@@ -124,8 +124,7 @@ class _ChatState extends State<Chat> {
         print('index $index');
         setState(() {
           _choice = index;
-          changeData(index);
-          _index = cards.length - 1;
+          _index = changeData(index);
         });
       },
     ).show(context);
@@ -133,182 +132,87 @@ class _ChatState extends State<Chat> {
 
   bool showSpinner = false;
 
-  List<String> valentine = [];
-  List<String> anniversary = [];
-  List<String> birthday = [];
-  List<String> holiday = [];
-  List<String> love = [];
-  List<String> friend = [];
-  List<String> all = [];
-
-  getImageData() async {
-    var valentineCollection =
-        FirebaseFirestore.instance.collection('Valentines');
-    var anniversaryCollection =
-        FirebaseFirestore.instance.collection('Anniversary');
-    var birthdayCollection = FirebaseFirestore.instance.collection('Birthday');
-    var holidaysCollection = FirebaseFirestore.instance.collection('Holidays');
-    var loveCollection = FirebaseFirestore.instance.collection('Love');
-    var friendCollection = FirebaseFirestore.instance.collection('Friends');
-
-    var querySnapshot1 = await valentineCollection.get();
-    var querySnapshot2 = await anniversaryCollection.get();
-    var querySnapshot3 = await birthdayCollection.get();
-    var querySnapshot4 = await holidaysCollection.get();
-    var querySnapshot5 = await loveCollection.get();
-    var querySnapshot6 = await friendCollection.get();
-
-    for (var queryDocumentSnapshot in querySnapshot1.docs) {
-      Map<String, dynamic> data = queryDocumentSnapshot.data();
-      var image = data['image'].toString();
-
-      print('Valentine $image');
-
-      setState(() {
-        valentine.add(image);
-        all.add(image);
-      });
-    }
-    for (var queryDocumentSnapshot in querySnapshot2.docs) {
-      Map<String, dynamic> data = queryDocumentSnapshot.data();
-      var image = data['image'].toString();
-
-      print('Anniversary $image');
-
-      setState(() {
-        anniversary.add(image);
-        all.add(image);
-      });
-    }
-    for (var queryDocumentSnapshot in querySnapshot3.docs) {
-      Map<String, dynamic> data = queryDocumentSnapshot.data();
-      var image = data['image'].toString();
-
-      print('Birthday $image');
-
-      setState(() {
-        birthday.add(image);
-        all.add(image);
-      });
-    }
-    for (var queryDocumentSnapshot in querySnapshot4.docs) {
-      Map<String, dynamic> data = queryDocumentSnapshot.data();
-      var image = data['image'].toString();
-
-      print('Holiday $image');
-
-      setState(() {
-        holiday.add(image);
-        all.add(image);
-      });
-    }
-    for (var queryDocumentSnapshot in querySnapshot5.docs) {
-      Map<String, dynamic> data = queryDocumentSnapshot.data();
-      var image = data['image'].toString();
-
-      print('Love $image');
-
-      setState(() {
-        love.add(image);
-        all.add(image);
-      });
-    }
-    for (var queryDocumentSnapshot in querySnapshot6.docs) {
-      Map<String, dynamic> data = queryDocumentSnapshot.data();
-      var image = data['image'].toString();
-
-      print('Friend $image');
-
-      setState(() {
-        friend.add(image);
-        all.add(image);
-      });
-    }
-  }
-
-  void changeData(int ch) {
-    print('dkf $ch');
+  int changeData(int ch) {
     switch (ch) {
       case 0:
         {
           cards.clear();
-          for (int i = 0; i < all.length; i++) {
-            cards.add(Images(imageLink: all[i]));
+          for (var image in PostCards.allPostCard) {
+            cards.add(Images(imageLink: image));
           }
+          setState(() {});
         }
         break;
       case 1:
         {
           cards.clear();
-          for (int i = 0; i < valentine.length; i++) {
-            cards.add(Images(imageLink: valentine[i]));
+          for (var image in PostCards.valentinePostCard) {
+            cards.add(Images(imageLink: image));
           }
+          setState(() {});
         }
         break;
       case 2:
         {
           cards.clear();
-          for (int i = 0; i < anniversary.length; i++) {
-            cards.add(Images(imageLink: anniversary[i]));
+          for (var image in PostCards.anniversaryPostCard) {
+            cards.add(Images(imageLink: image));
           }
+          setState(() {});
         }
         break;
       case 3:
         {
           cards.clear();
-          for (int i = 0; i < birthday.length; i++) {
-            cards.add(Images(imageLink: birthday[i]));
+          for (var image in PostCards.birthdayPostCard) {
+            cards.add(Images(imageLink: image));
           }
+          setState(() {});
         }
         break;
       case 4:
         {
           cards.clear();
-          for (int i = 0; i < holiday.length; i++) {
-            cards.add(Images(imageLink: holiday[i]));
+          for (var image in PostCards.holidayPostCard) {
+            cards.add(Images(imageLink: image));
           }
+          setState(() {});
         }
         break;
       case 5:
         {
           cards.clear();
-          for (int i = 0; i < love.length; i++) {
-            cards.add(Images(imageLink: love[i]));
+          for (var image in PostCards.lovePostCard) {
+            cards.add(Images(imageLink: image));
           }
+          setState(() {});
         }
         break;
       case 6:
         {
           cards.clear();
-          for (int i = 0; i < friend.length; i++) {
-            cards.add(Images(imageLink: friend[i]));
+          for (var image in PostCards.friendPostCard) {
+            cards.add(Images(imageLink: image));
           }
+          setState(() {});
         }
         break;
     }
-
-    print('cards ${cards.length}');
-    if (_index == 0 && cards.isNotEmpty) {
-      setState(() {
-        _index = cards.length - 1;
-      });
-    }
-    print('indexS $_index');
+    return cards.length - 1;
   }
 
   List<Images> cards = [];
 
   @override
   void initState() {
-    // getImageData();
     super.initState();
-    _index = 0;
+    _index = PostCards.allPostCard.length - 1;
     checkUser();
   }
 
   @override
   Widget build(BuildContext context) {
-    changeData(_choice);
+    _index = changeData(_choice);
 
     return WillPopScope(
       onWillPop: () {
@@ -488,157 +392,138 @@ class _ChatState extends State<Chat> {
                 ),
                 builder: (context) {
                   return StatefulBuilder(
-                      builder: (BuildContext context, StateSetter setState) {
-                    return FutureBuilder(
-                      future: getImageData(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<dynamic> snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Container(
-                              alignment: Alignment.center,
-                              height: MediaQuery.of(context).size.height * 0.6,
-                              // width: 40,
-                              child:
-                                  CircularProgressIndicator() // Text('Loading...'),
-                              );
-                        } else {
-                          return Container(
-                            height: MediaQuery.of(context).size.height * 0.6,
-                            padding: const EdgeInsets.all(8),
-                            child: Column(
-                              children: [
-                                const SizedBox(height: 5),
-                                const Text(
-                                  "Select an image to send to your loved ones",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(fontSize: 14),
+                    builder: (BuildContext context, StateSetter setState) {
+                      return Container(
+                        height: MediaQuery.of(context).size.height * 0.6,
+                        padding: const EdgeInsets.all(8),
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 5),
+                            const Text(
+                              "Select an image to send to your loved ones",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 14),
+                            ),
+                            const SizedBox(height: 20),
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.7,
+                              alignment: Alignment.topRight,
+                              child: Container(
+                                height: 40,
+                                width: 40,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50.0),
+                                  color: kPrimaryColor,
                                 ),
-                                const SizedBox(height: 20),
-                                Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.7,
-                                  alignment: Alignment.topRight,
-                                  child: Container(
-                                    height: 40,
-                                    width: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(50.0),
-                                      color: kPrimaryColor,
-                                    ),
-                                    child: IconButton(
-                                      // alignment: const Alignment(85, 3),
-                                      onPressed: () {
-                                        // _openSimpleItemPicker(
-                                        //   context,
-                                        // );
-                                        BottomPicker(
-                                          items: const [
-                                            Text("See All", style: kBottomText),
-                                            Text("Valentine",
-                                                style: kBottomText),
-                                            Text("Anniversary",
-                                                style: kBottomText),
-                                            Text("Birthdays",
-                                                style: kBottomText),
-                                            Text("Holidays",
-                                                style: kBottomText),
-                                            Text("Love", style: kBottomText),
-                                            Text("Friends", style: kBottomText),
-                                          ],
-                                          selectedItemIndex: _choice,
-                                          title: 'Choose something',
-                                          titleStyle: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 15,
-                                            color: Colors.white,
-                                          ),
-                                          backgroundColor: Color(0xFF7A3496),
-                                          bottomPickerTheme:
-                                              BOTTOM_PICKER_THEME.plumPlate,
-                                          onSubmit: (index) {
-                                            print('index $index');
-                                            setState(() {
-                                              _choice = index;
-                                              changeData(index);
-                                              _index = cards.length - 1;
-                                            });
-                                          },
-                                        ).show(context);
-                                      },
-                                      highlightColor: kPrimaryColor,
-
-                                      icon: const Icon(
-                                        Icons.menu_rounded,
+                                child: IconButton(
+                                  // alignment: const Alignment(85, 3),
+                                  onPressed: () {
+                                    // _openSimpleItemPicker(context);
+                                    BottomPicker(
+                                      items: const [
+                                        Text("See All", style: kBottomText),
+                                        Text("Valentine", style: kBottomText),
+                                        Text("Anniversary", style: kBottomText),
+                                        Text("Birthdays", style: kBottomText),
+                                        Text("Holidays", style: kBottomText),
+                                        Text("Love", style: kBottomText),
+                                        Text("Friends", style: kBottomText),
+                                      ],
+                                      selectedItemIndex: _choice,
+                                      title: 'Choose something',
+                                      titleStyle: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
                                         color: Colors.white,
                                       ),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 5),
-                                Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.38,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.7,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(16.0),
-                                    color: kPrimaryColor,
-                                  ),
-                                  child: cards.isEmpty
-                                      ? Text('Choose another category')
-                                      : Stack(children: cards),
-                                ),
-                                const SizedBox(height: 20),
-                                InkWell(
-                                  onTap: () async {
-                                    if (_choice == 0 && _index == 0) {
-                                      Fluttertoast.showToast(
-                                          msg:
-                                              'Please select another category');
-                                      return;
-                                    }
-                                    if (_index == -1) {
-                                      Fluttertoast.showToast(
-                                          msg:
-                                              'Please select another category');
-                                      return;
-                                    }
-                                    await _sendMessage(
-                                        _choice == 0
-                                            ? all[_index]
-                                            : _choice == 1
-                                                ? valentine[_index]
-                                                : _choice == 2
-                                                    ? anniversary[_index]
-                                                    : _choice == 3
-                                                        ? birthday[_index]
-                                                        : _choice == 4
-                                                            ? holiday[_index]
-                                                            : _choice == 5
-                                                                ? love[_index]
-                                                                : friend[
-                                                                    _index],
-                                        false);
-                                    Navigator.pop(context);
+                                      backgroundColor: Color(0xFF7A3496),
+                                      bottomPickerTheme:
+                                          BOTTOM_PICKER_THEME.plumPlate,
+                                      onSubmit: (index) {
+                                        print('index $index');
+                                        setState(() {
+                                          _choice = index;
+                                          _index = changeData(index);
+                                        });
+                                      },
+                                    ).show(context);
                                   },
-                                  child: Container(
-                                    height: 47,
-                                    width: 47,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(50.0),
-                                      color: kPrimaryColor,
-                                    ),
-                                    child: Image.asset('assets/Group 229.png'),
+                                  highlightColor: kPrimaryColor,
+
+                                  icon: const Icon(
+                                    Icons.menu_rounded,
+                                    color: Colors.white,
                                   ),
                                 ),
-                              ],
+                              ),
                             ),
-                          );
-                        }
-                      },
-                    );
-                  });
+                            const SizedBox(height: 5),
+                            Container(
+                              height: MediaQuery.of(context).size.height * 0.38,
+                              width: MediaQuery.of(context).size.width * 0.7,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16.0),
+                                color: kPrimaryColor,
+                              ),
+                              child: cards.isEmpty
+                                  ? Text('Choose another category')
+                                  : Stack(children: cards),
+                            ),
+                            const SizedBox(height: 20),
+                            InkWell(
+                              onTap: () async {
+                                if (_choice == 0 && _index == 0) {
+                                  Fluttertoast.showToast(
+                                      msg: 'Please select another category');
+                                  return;
+                                }
+                                if (_index == -1) {
+                                  Fluttertoast.showToast(
+                                      msg: 'Please select another category');
+                                  return;
+                                }
+                                await _sendMessage(
+                                    _choice == 0
+                                        ? PostCards.allPostCard[_index]
+                                        : _choice == 1
+                                            ? PostCards
+                                                .valentinePostCard[_index]
+                                            : _choice == 2
+                                                ? PostCards
+                                                    .anniversaryPostCard[_index]
+                                                : _choice == 3
+                                                    ? PostCards
+                                                            .birthdayPostCard[
+                                                        _index]
+                                                    : _choice == 4
+                                                        ? PostCards
+                                                                .holidayPostCard[
+                                                            _index]
+                                                        : _choice == 5
+                                                            ? PostCards
+                                                                    .lovePostCard[
+                                                                _index]
+                                                            : PostCards
+                                                                    .friendPostCard[
+                                                                _index],
+                                    false);
+                                Navigator.pop(context);
+                              },
+                              child: Container(
+                                height: 47,
+                                width: 47,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50.0),
+                                  color: kPrimaryColor,
+                                ),
+                                child: Image.asset('assets/Group 229.png'),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
                 },
               );
             },

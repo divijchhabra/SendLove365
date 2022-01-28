@@ -22,7 +22,6 @@ class _BottomNavState extends State<BottomNav> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _currentIndex = widget.index;
   }

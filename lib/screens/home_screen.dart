@@ -14,6 +14,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_swipable/flutter_swipable.dart';
 import 'package:flutter_wallpaper_manager/flutter_wallpaper_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
 // import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -37,11 +38,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 int _index = 0;
+int _choice = 0;
+
+List<Images> cards = [];
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _choice = 0;
-
-  Future<void> checkPermissionPhoneLogs() async {
+  Future<void> checkPermissionPhoneLogs(int ind) async {
     if (Platform.isIOS
         ? await Permission.contacts.request().isGranted
         : await Permission.phone.request().isGranted &&
@@ -49,25 +51,25 @@ class _HomeScreenState extends State<HomeScreen> {
       await getContacts();
       // print('Hello ${contacts.length}');
       print('_index');
-      print(_index.toString());
+      print(ind);
 
       pushNewScreen(
         context,
         screen: SendImageScreen(
           contacts: contacts,
           imageUrl: _choice == 0
-              ? all[_index]
+              ? PostCards.allPostCard[ind]
               : _choice == 1
-                  ? valentine[_index]
+                  ? PostCards.valentinePostCard[ind]
                   : _choice == 2
-                      ? anniversary[_index]
+                      ? PostCards.anniversaryPostCard[ind]
                       : _choice == 3
-                          ? birthday[_index]
+                          ? PostCards.birthdayPostCard[ind]
                           : _choice == 4
-                              ? holiday[_index]
+                              ? PostCards.holidayPostCard[ind]
                               : _choice == 5
-                                  ? love[_index]
-                                  : friend[_index],
+                                  ? PostCards.lovePostCard[ind]
+                                  : PostCards.friendPostCard[ind],
         ),
         withNavBar: false,
         // OPTIONAL VALUE. True by default.
@@ -147,202 +149,100 @@ class _HomeScreenState extends State<HomeScreen> {
         Provider.of<BottomNavProvider>(context, listen: false)
             .changeNavStatus();
 
-        print('index $index');
+        print('indexSubmit $index');
         setState(() {
           _choice = index;
-          changeData(index);
-          _index = cards.length - 1;
+          _index = changeData(index);
         });
       },
     ).show(context);
   }
 
-  bool showSpinner = false;
-
-  List<String> valentine = [];
-  List<String> anniversary = [];
-  List<String> birthday = [];
-  List<String> holiday = [];
-  List<String> love = [];
-  List<String> friend = [];
-  List<String> all = [];
-
-  getImageData() async {
-    var valentineCollection =
-        FirebaseFirestore.instance.collection('Valentines');
-    var anniversaryCollection =
-        FirebaseFirestore.instance.collection('Anniversary');
-    var birthdayCollection = FirebaseFirestore.instance.collection('Birthday');
-    var holidaysCollection = FirebaseFirestore.instance.collection('Holidays');
-    var loveCollection = FirebaseFirestore.instance.collection('Love');
-    var friendCollection = FirebaseFirestore.instance.collection('Friends');
-
-    var querySnapshot1 = await valentineCollection.get();
-    var querySnapshot2 = await anniversaryCollection.get();
-    var querySnapshot3 = await birthdayCollection.get();
-    var querySnapshot4 = await holidaysCollection.get();
-    var querySnapshot5 = await loveCollection.get();
-    var querySnapshot6 = await friendCollection.get();
-
-    for (var queryDocumentSnapshot in querySnapshot1.docs) {
-      Map<String, dynamic> data = queryDocumentSnapshot.data();
-      var image = data['image'].toString();
-
-      print('Valentine $image');
-
-      setState(() {
-        valentine.add(image);
-        all.add(image);
-      });
-    }
-    for (var queryDocumentSnapshot in querySnapshot2.docs) {
-      Map<String, dynamic> data = queryDocumentSnapshot.data();
-      var image = data['image'].toString();
-
-      print('Anniversary $image');
-
-      setState(() {
-        anniversary.add(image);
-        all.add(image);
-      });
-    }
-    for (var queryDocumentSnapshot in querySnapshot3.docs) {
-      Map<String, dynamic> data = queryDocumentSnapshot.data();
-      var image = data['image'].toString();
-
-      print('Birthday $image');
-
-      setState(() {
-        birthday.add(image);
-        all.add(image);
-      });
-    }
-    for (var queryDocumentSnapshot in querySnapshot4.docs) {
-      Map<String, dynamic> data = queryDocumentSnapshot.data();
-      var image = data['image'].toString();
-
-      print('Holiday $image');
-
-      setState(() {
-        holiday.add(image);
-        all.add(image);
-      });
-    }
-    for (var queryDocumentSnapshot in querySnapshot5.docs) {
-      Map<String, dynamic> data = queryDocumentSnapshot.data();
-      var image = data['image'].toString();
-
-      print('Love $image');
-
-      setState(() {
-        love.add(image);
-        all.add(image);
-      });
-    }
-    for (var queryDocumentSnapshot in querySnapshot6.docs) {
-      Map<String, dynamic> data = queryDocumentSnapshot.data();
-      var image = data['image'].toString();
-
-      print('Friend $image');
-
-      setState(() {
-        friend.add(image);
-        all.add(image);
-      });
-    }
-  }
-
-  void changeData(int ch) {
-    print('dkf $ch');
+  int changeData(int ch) {
     switch (ch) {
       case 0:
         {
           cards.clear();
-          for (int i = 0; i < all.length; i++) {
-            cards.add(Images(imageLink: all[i]));
+          for (var image in PostCards.allPostCard) {
+            cards.add(Images(imageLink: image));
           }
+          setState(() {});
         }
         break;
       case 1:
         {
           cards.clear();
-          for (int i = 0; i < valentine.length; i++) {
-            cards.add(Images(imageLink: valentine[i]));
+          for (var image in PostCards.valentinePostCard) {
+            cards.add(Images(imageLink: image));
           }
+          setState(() {});
         }
         break;
       case 2:
         {
           cards.clear();
-          for (int i = 0; i < anniversary.length; i++) {
-            cards.add(Images(imageLink: anniversary[i]));
+          for (var image in PostCards.anniversaryPostCard) {
+            cards.add(Images(imageLink: image));
           }
+          setState(() {});
         }
         break;
       case 3:
         {
           cards.clear();
-          for (int i = 0; i < birthday.length; i++) {
-            cards.add(Images(imageLink: birthday[i]));
+          for (var image in PostCards.birthdayPostCard) {
+            cards.add(Images(imageLink: image));
           }
+          setState(() {});
         }
         break;
       case 4:
         {
           cards.clear();
-          for (int i = 0; i < holiday.length; i++) {
-            cards.add(Images(imageLink: holiday[i]));
+          for (var image in PostCards.holidayPostCard) {
+            cards.add(Images(imageLink: image));
           }
+          setState(() {});
         }
         break;
       case 5:
         {
           cards.clear();
-          for (int i = 0; i < love.length; i++) {
-            cards.add(Images(imageLink: love[i]));
+          for (var image in PostCards.lovePostCard) {
+            cards.add(Images(imageLink: image));
           }
+          setState(() {});
         }
         break;
       case 6:
         {
           cards.clear();
-          for (int i = 0; i < friend.length; i++) {
-            cards.add(Images(imageLink: friend[i]));
+          for (var image in PostCards.friendPostCard) {
+            cards.add(Images(imageLink: image));
           }
+          setState(() {});
         }
         break;
     }
-
-    print('cards ${cards.length}');
-    if (_index == 0 && cards.isNotEmpty) {
-      setState(() {
-        _index = cards.length - 1;
-      });
-    }
+    return cards.length - 1;
   }
 
-  List<Images> cards = [];
+  bool showSpinner = false;
 
   @override
   void initState() {
     super.initState();
     getData();
-    getImageData();
-    _index = 0;
+    _index = PostCards.allPostCard.length - 1;
   }
 
   @override
   Widget build(BuildContext context) {
-    changeData(_choice);
+    _index = changeData(_choice);
 
-    print('valentine ${valentine.length}');
-    print('anniversary ${anniversary.length}');
-    print('birthday ${birthday.length}');
-    print('holiday ${holiday.length}');
-    print('love ${love.length}');
-    print('friend ${friend.length}');
-
-    Size size = MediaQuery.of(context).size;
+    print('_index');
+    print(_index);
+    print(cards.length);
 
     return ModalProgressHUD(
       inAsyncCall: showSpinner,
@@ -381,9 +281,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         listen: false)
                                     .changeNavStatus();
 
-                                _openSimpleItemPicker(
-                                  context,
-                                );
+                                _openSimpleItemPicker(context);
                               },
                               child: Container(
                                 height: 40,
@@ -438,19 +336,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           borderRadius: BorderRadius.circular(15),
                           color: kPrimaryColor,
                         ),
-                        child: (valentine.isEmpty ||
-                                holiday.isEmpty ||
-                                birthday.isEmpty ||
-                                anniversary.isEmpty ||
-                                all.isEmpty)
-                            ? CircularProgressIndicator(color: Colors.white)
-                            : Stack(children: cards),
+                        child: Stack(children: cards),
                       ),
                       const SizedBox(height: 20),
 
                       GradientButton(
                         width: 223.5,
                         onPressed: () async {
+                          print("onta[p $_index");
                           if (_choice == 0 && _index == 0) {
                             Fluttertoast.showToast(
                                 msg: 'Please select another category');
@@ -465,7 +358,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             setState(() {
                               showSpinner = true;
                             });
-                            await checkPermissionPhoneLogs();
+                            await checkPermissionPhoneLogs(_index);
                             setState(() {
                               showSpinner = false;
                             });
@@ -479,7 +372,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       const SizedBox(height: 20),
                       SizedBox(
-
                         width: 240,
                         child: OutlinedButton.icon(
                           style: OutlinedButton.styleFrom(
@@ -505,7 +397,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           },
                           icon: const Icon(Icons.card_giftcard),
                           label: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 10),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 10),
                             child: const Text(
                               "Send a gift",
                               style: TextStyle(fontSize: 20),
@@ -573,9 +466,9 @@ class _ImagesState extends State<Images> {
           _choice2 = index;
         });
         if (_choice2 == 0) {
-          if (Platform.isAndroid)
+          if (Platform.isAndroid) {
             await setWallpaper(WallpaperManager.HOME_SCREEN);
-          else {
+          } else {
             await _checkStoragePermission();
           }
         } else if (_choice2 == 1) {
@@ -617,7 +510,6 @@ class _ImagesState extends State<Images> {
       ),
       onSwipeEnd: (offSet, value) {
         // print(_index);
-
         setState(() {
           _index -= 1;
         });
@@ -625,6 +517,7 @@ class _ImagesState extends State<Images> {
         if (_index == -1) {
           Fluttertoast.showToast(msg: 'Please select another category');
         }
+        print('Index $_index');
       },
     );
   }
