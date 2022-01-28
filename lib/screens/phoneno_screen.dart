@@ -25,7 +25,7 @@ class _PhoneNoState extends State<PhoneNo> {
   final GlobalKey<FormState> _formFieldKey = GlobalKey();
 
   TextEditingController mobileController = TextEditingController();
-  String dialCode = '+91';
+  String dialCode = '+1';
 
   Future<void> checkPermissionPhoneLogs() async {
     if (_formFieldKey.currentState!.validate()) {
@@ -152,54 +152,51 @@ class _PhoneNoState extends State<PhoneNo> {
                         ),
                         const SizedBox(height: 30),
                         // const SizedBox(height: 30),
-                        SizedBox(
-                          height: 48,
-                          width: 168.5,
-                          child: GradientButton(
-                              onPressed: () async {
-                                if (isChecked) {
-                                  await checkPermissionPhoneLogs();
-                                } else if (!isChecked) {
-                                  try {
-                                    Fluttertoast.showToast(
-                                        msg:
-                                            'Please agree to the terms and conditions');
-                                  } catch (e, s) {
-                                    print(s);
-                                  }
+                        GradientButton(
+                            width: 168.5,
+                            onPressed: () async {
+                              if (isChecked) {
+                                await checkPermissionPhoneLogs();
+                              } else if (!isChecked) {
+                                try {
+                                  Fluttertoast.showToast(
+                                      msg:
+                                          'Please agree to the terms and conditions');
+                                } catch (e, s) {
+                                  print(s);
                                 }
-                              },
-                              child: const Text(
-                                "Next",
-                                style: kButtonTextStyle,
-                              ),
-                              gradient: gradient1),
-                        ),
+                              }
+                            },
+                            child: const Text(
+                              "Next",
+                              style: kButtonTextStyle,
+                            ),
+                            gradient: gradient1),
                       ],
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.25),
+                    SizedBox(height: 30),
                     Column(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20.0),
-                          child: Row(
-                            children: [
-                              InkWell(
-                                onTap: () async {
-                                  if (!await launch(
-                                      'https://www.iubenda.com/terms-and-conditions/98376270')) {
-                                    Fluttertoast.showToast(
-                                        msg: 'Something went wrong');
-                                  }
-                                },
-                                child: Text(
-                                  'Terms and conditions',
-                                  style: TextStyle(color: kSecondaryColor),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.only(left: 20.0),
+                        //   child: Row(
+                        //     children: [
+                        //       InkWell(
+                        //         onTap: () async {
+                        //           if (!await launch(
+                        //               'https://www.iubenda.com/terms-and-conditions/98376270')) {
+                        //             Fluttertoast.showToast(
+                        //                 msg: 'Something went wrong');
+                        //           }
+                        //         },
+                        //         child: Text(
+                        //           'Terms and conditions',
+                        //           style: TextStyle(color: kSecondaryColor),
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
                         Padding(
                           padding: const EdgeInsets.only(left: 8.0),
                           child: Row(
@@ -223,7 +220,7 @@ class _PhoneNoState extends State<PhoneNo> {
                                     }
                                   },
                                   child: Text(
-                                    'I agree to the Likeu Terms of Service and Privacy Policy',
+                                    'I agree to Likeu’s Terms and Conditions and Privacy Policy',
                                     style: TextStyle(color: kSecondaryColor),
                                   ),
                                 ),

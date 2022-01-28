@@ -20,21 +20,70 @@ class _ReminderScreenState extends State<ReminderScreen> {
   bool isCheckedValentines = false;
   bool isCheckedHolidays = false;
   bool isCheckedCustom = false;
+
+
+
   FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
+  Future selectNotification(String? payload) async {
+    //Handle notification tapped logic here
+  }
+  void onDidReceiveLocalNotification(
+      int id, String? title, String? body, String? payload) async {
 
-  showNotification(DateTime date, String name, String occasion) async {
+  }
+
+
+  showNotification(DateTime selectedDateTime, String name, String occasion) async {
+    final AndroidInitializationSettings initializationSettingsAndroid =
+    AndroidInitializationSettings('app_icon');
+
+    final IOSInitializationSettings initializationSettingsIOS =
+    IOSInitializationSettings(
+      requestSoundPermission: false,
+      requestBadgePermission: false,
+      requestAlertPermission: false,
+      onDidReceiveLocalNotification: onDidReceiveLocalNotification,
+    );
+    final InitializationSettings initializationSettings =
+    InitializationSettings(
+        android: initializationSettingsAndroid,
+        iOS: initializationSettingsIOS,
+        macOS: null);
+
+    await flutterLocalNotificationsPlugin!.initialize(initializationSettings,
+        onSelectNotification: selectNotification);
+
+
+
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
         'your channel id', 'your channel name',
         importance: Importance.max, priority: Priority.high, ticker: 'ticker');
-    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails(
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: true
+    );
     var platformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics,
         iOS: iOSPlatformChannelSpecifics);
 
     // await flutterLocalNotificationsPlugin!.showWeeklyAtDayAndTime(2, '${document['showname']} is Live!', '',Day(dayNumber),Time(document['starttime'],0,0), platformChannelSpecifics);
-    // await flutterLocalNotificationsPlugin!.periodicallyShow(2, '', '',Day(date.day),Time(date.hour,date.minute,0), platformChannelSpecifics);
+    if(selectedDateTime.day== DateTime.now().day && selectedDateTime.year== DateTime.now().year &&
+        selectedDateTime.month== DateTime.now().month){
 
+      print('reminding today');
+      await flutterLocalNotificationsPlugin!.show(
+          0, 'It\'s $name\'s $occasion ${selectedDate.month} ${selectedDateTime.day}', 'Send a gift now!', platformChannelSpecifics,
+        payload: 'Default_Sound',);
+
+
+    }else {
+      await flutterLocalNotificationsPlugin!.schedule(2, 'It\'s $name\'s $occasion ${selectedDate.month} ${selectedDateTime.day}'
+          , 'Send a gift now!',
+          DateTime(selectedDateTime.year, selectedDateTime.month,
+              selectedDateTime.day, 12, 0), platformChannelSpecifics);
+    }
     final snackBar = SnackBar(content: Text('Reminder Added!'));
 
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -63,6 +112,24 @@ class _ReminderScreenState extends State<ReminderScreen> {
 
   TextEditingController occasionController = TextEditingController();
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    request();
+
+  }
+
+  request()async {
+    await flutterLocalNotificationsPlugin!
+        .resolvePlatformSpecificImplementation<
+        IOSFlutterLocalNotificationsPlugin>()
+        ?.requestPermissions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -229,28 +296,51 @@ class _ReminderScreenState extends State<ReminderScreen> {
                           const SizedBox(height: 20),
                           GradientButton(
                             onPressed: () {
-                              // showNotification(selectedDate,nameController.text,occasionController.text);
+                              showNotification(selectedDate,nameController.text,occasionController.text);
                             },
                             child: const Text(
                               "Remind me on this date",
+                              textAlign: TextAlign.center,
                               style: kButtonTextStyle,
                             ),
                             gradient: gradient1,
                           ),
                           const SizedBox(height: 15),
                           GradientButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              DateTime originalDate = selectedDate;
+
+                              selectedDate.subtract(Duration(days: 7));
+                              setState(() {
+
+                              });
+                              showNotification(selectedDate,nameController.text,occasionController.text + '(7 Days left!)');
+                              showNotification(originalDate,nameController.text,occasionController.text);
+                            },
                             child: const Text(
                               "Remind me 7 days before",
+                              textAlign: TextAlign.center,
                               style: kButtonTextStyle,
                             ),
                             gradient: gradient1,
                           ),
                           const SizedBox(height: 15),
                           GradientButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              DateTime originalDate = selectedDate;
+
+                              selectedDate.subtract(Duration(days: 14));
+                              setState(() {
+
+                              });
+
+                              showNotification(selectedDate,nameController.text,occasionController.text + '(14 Days left!)');
+
+                              showNotification(originalDate,nameController.text,occasionController.text);
+                            },
                             child: const Text(
                               "Remind me 14 days before",
+                              textAlign: TextAlign.center,
                               style: kButtonTextStyle,
                             ),
                             gradient: gradient1,
@@ -292,8 +382,8 @@ class _ReminderScreenState extends State<ReminderScreen> {
         );
       },
       initialDate: initialDate,
-      firstDate: DateTime(1900, 1, 1),
-      lastDate: DateTime.now(),
+      firstDate: DateTime(2000, 1, 1),
+      lastDate:DateTime(2050, 1, 1),
     );
 
     if (newDate == null) return;

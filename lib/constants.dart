@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
-const kPrimaryColor = Color(0xFF7A3496);
-const kSecondaryColor = Color(0xFFC267E7);
+const kPrimaryColor = Color(0xFF4a215d);
+const kSecondaryColor = Color(0xFFb34fd6);
 const kTertiaryColor = Color.fromRGBO(100, 34, 126, 0.18);
 const kTextColor = Color(0xFF3C4046);
-
+// 0xFFC267E7
 Gradient gradient1 = const LinearGradient(
   colors: [kSecondaryColor, kPrimaryColor],
-  begin: Alignment.centerLeft,
-  end: Alignment.centerRight,
+  begin: Alignment.topCenter,
+  end: Alignment.center,
 );
 
 Gradient gradient2 = const LinearGradient(
-    colors: [kSecondaryColor, kPrimaryColor],
+    colors: [Color(0xFFAE33E0), kPrimaryColor],
     begin: Alignment.topCenter,
-    end: Alignment.bottomCenter);
+    end: Alignment.center);
 
 final kElevatedButtonStyle = ElevatedButton.styleFrom(
     primary: kPrimaryColor,

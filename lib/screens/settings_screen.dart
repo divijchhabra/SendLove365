@@ -16,7 +16,7 @@ import 'package:flutter/services.dart';
 import 'package:temp/services/firebase_upload.dart';
 import 'package:path/path.dart' as path;
 import 'package:temp/services/store_user_details.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
 
@@ -168,20 +168,40 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     child: ListView(
                       children: [
                         Divider(),
-                        ListTile(
-                          leading: Icon(
-                            Icons.headphones,
-                            color: kPrimaryColor,
+                        GestureDetector(
+                          onTap: () async {
+                            var url = 'https://likeu.app/pages/contact';
+                            if (await canLaunch(url)) {
+                              await launch(url);
+                            } else {
+                              throw 'Could not launch ';
+                            }
+                          },
+                          child: ListTile(
+                            leading: Icon(
+                              Icons.mail,
+                              color: kPrimaryColor,
+                            ),
+                            title: Text("Contact Us"),
                           ),
-                          title: Text("Contact Us"),
                         ),
                         Divider(),
-                        ListTile(
-                          leading: Icon(
-                            Icons.info,
-                            color: kPrimaryColor,
+                        GestureDetector(
+                          onTap: () async {
+                            var url = 'https://likeu.app/pages/about';
+                            if (await canLaunch(url)) {
+                              await launch(url);
+                            } else {
+                              throw 'Could not launch ';
+                            }
+                          },
+                          child: ListTile(
+                            leading: Icon(
+                              Icons.info,
+                              color: kPrimaryColor,
+                            ),
+                            title: Text("About Likeu"),
                           ),
-                          title: Text("About Likeu"),
                         ),
                         Divider(),
                         ListTile(

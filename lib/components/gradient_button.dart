@@ -4,10 +4,12 @@ class GradientButton extends StatelessWidget {
   final Widget child;
   final Function()? onPressed;
   final Gradient gradient;
+  final double width;
   const GradientButton(
       {Key? key,
       required this.onPressed,
       required this.child,
+        this.width=290,
       required this.gradient})
       : super(key: key);
 
@@ -20,10 +22,17 @@ class GradientButton extends StatelessWidget {
           gradient: gradient,
           borderRadius: BorderRadius.circular(10.0),
         ),
-        child: Container(
-            constraints: const BoxConstraints(maxWidth: 290.0, minHeight: 50.0),
-            alignment: Alignment.center,
-            child: child),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 10),
+          child: Container(
+              constraints:  BoxConstraints(maxWidth: width,),
+              alignment: Alignment.center,
+              child: Column(
+                children: [
+                  child,
+                ],
+              )),
+        ),
       ),
       splashColor: Colors.black12,
       padding: const EdgeInsets.all(0),

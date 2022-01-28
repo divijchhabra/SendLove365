@@ -317,59 +317,53 @@ class _SendImageScreen extends State<SendImageScreen> {
                                 ),
                               ),
                               SizedBox(height: 15),
-                              SizedBox(
-                                height: 48,
+                              GradientButton(
                                 width: 149.85,
-                                child: GradientButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            InviteFriend(contacts: contacts),
-                                      ),
-                                    );
-                                  },
-                                  child: showSpinner2
-                                      ? Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: CircularProgressIndicator(
-                                              color: Colors.white),
-                                        )
-                                      : Text('Invite +',
-                                          style: kButtonTextStyle),
-                                  gradient: gradient1,
-                                ),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          InviteFriend(contacts: contacts),
+                                    ),
+                                  );
+                                },
+                                child: showSpinner2
+                                    ? Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: CircularProgressIndicator(
+                                            color: Colors.white),
+                                      )
+                                    : Text('Invite +',
+                                        style: kButtonTextStyle),
+                                gradient: gradient1,
                               ),
                             ],
                           ),
                         ),
                   SizedBox(height: 35),
                   (contacts.isNotEmpty && myFriends.isNotEmpty)
-                      ? SizedBox(
-                          height: 48,
-                          width: 149.85,
-                          child: GradientButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      InviteFriend(contacts: contacts),
+                      ? GradientButton(
+                    width: 149.85,
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  InviteFriend(contacts: contacts),
+                            ),
+                          );
+                        },
+                        child: showSpinner2
+                            ? Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
                                 ),
-                              );
-                            },
-                            child: showSpinner2
-                                ? Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: CircularProgressIndicator(
-                                      color: Colors.white,
-                                    ),
-                                  )
-                                : Text('Invite +', style: kButtonTextStyle),
-                            gradient: gradient1,
-                          ),
-                        )
+                              )
+                            : Text('Invite +', style: kButtonTextStyle),
+                        gradient: gradient1,
+                      )
                       : Container(),
                 ],
               ),

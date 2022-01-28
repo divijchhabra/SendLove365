@@ -138,55 +138,52 @@ class _OtpScreenState extends State<OtpScreen> {
                     child: const Text("Send Again"),
                   ),
                   const SizedBox(height: 8),
-                  SizedBox(
-                    height: 48,
-                    width: 168.5,
-                    child: GradientButton(
-                        onPressed: () async {
-                          setState(() {
-                            showSpinner = true;
+                  GradientButton(
+                      width: 168.5,
+                      onPressed: () async {
+                        setState(() {
+                          showSpinner = true;
+                        });
+                        // print('otp1 $_verificationCode');
+                        // print('otp2 $otp');
+                        try {
+                          await _auth
+                              .signInWithCredential(
+                                  PhoneAuthProvider.credential(
+                                      verificationId: _verificationCode!,
+                                      smsCode: otp!))
+                              .then((value) async {
+                            // print('User Logged In');
+                            if (value.additionalUserInfo!.isNewUser) {
+                              // print('New User');
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      ProfileScreen(phoneNo: widget.phoneNo),
+                                ),
+                                (route) => false,
+                              );
+                            } else {
+                              // print('Old User');
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => GetUserData(),
+                                ),
+                              );
+                            }
                           });
-                          // print('otp1 $_verificationCode');
-                          // print('otp2 $otp');
-                          try {
-                            await _auth
-                                .signInWithCredential(
-                                    PhoneAuthProvider.credential(
-                                        verificationId: _verificationCode!,
-                                        smsCode: otp!))
-                                .then((value) async {
-                              // print('User Logged In');
-                              if (value.additionalUserInfo!.isNewUser) {
-                                // print('New User');
-                                Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProfileScreen(phoneNo: widget.phoneNo),
-                                  ),
-                                  (route) => false,
-                                );
-                              } else {
-                                // print('Old User');
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => GetUserData(),
-                                  ),
-                                );
-                              }
-                            });
-                          } catch (e) {
-                            setState(() {
-                              showSpinner = false;
-                            });
-                            FocusScope.of(context).unfocus();
-                            Fluttertoast.showToast(msg: 'Invalid Otp');
-                          }
-                        },
-                        child: const Text("Submit", style: kButtonTextStyle),
-                        gradient: gradient1),
-                  ),
+                        } catch (e) {
+                          setState(() {
+                            showSpinner = false;
+                          });
+                          FocusScope.of(context).unfocus();
+                          Fluttertoast.showToast(msg: 'Invalid Otp');
+                        }
+                      },
+                      child: const Text("Submit", style: kButtonTextStyle),
+                      gradient: gradient1),
                 ],
               ),
             ),
@@ -201,6 +198,7 @@ class _OtpScreenState extends State<OtpScreen> {
       showSpinner = true;
     });
 
+    print(widget.phoneNo);
     await _auth.verifyPhoneNumber(
         phoneNumber: widget.phoneNo,
         verificationCompleted: (PhoneAuthCredential credential) async {
@@ -241,7 +239,7 @@ class _OtpScreenState extends State<OtpScreen> {
           );
         },
         codeSent: (String verficationID, int? resendToken) {
-          Fluttertoast.showToast(msg: 'OTP Sent successfully');
+          Fluttertoast.showToast(msg: 'Verification code sent successfully');
           setState(() {
             _verificationCode = verficationID;
           });

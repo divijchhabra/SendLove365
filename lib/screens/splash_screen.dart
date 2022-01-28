@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:temp/constants.dart';
 import 'package:temp/screens/onboarding_screen.dart';
+import 'package:temp/screens/video_splash.dart';
 import 'package:temp/services/get_user_data.dart';
 
 class Splash extends StatefulWidget {
@@ -23,7 +25,7 @@ class _SplashState extends State<Splash> {
     await Future.delayed(const Duration(milliseconds: 2000), () {});
     if (user == null) {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const OnBoarding()));
+          context, MaterialPageRoute(builder: (context) => const VideoSplash()));
     } else {
       Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (context) => const GetUserData()));
@@ -32,12 +34,19 @@ class _SplashState extends State<Splash> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      child: Image.asset(
-        'assets/Splash Screen-1.jpg',
-        fit: BoxFit.cover,
+    return Scaffold(
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        // decoration: BoxDecoration(
+        //   gradient: gradient1
+        // ),
+        child: Image.asset(
+          'assets/splash.png',
+          // width: 200,
+          // height: 200,
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }

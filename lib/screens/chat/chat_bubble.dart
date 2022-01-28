@@ -58,9 +58,9 @@ class ChatBubble extends StatelessWidget {
                           : ImageCachedFullscreen(
                               imageUrl: urlDownload,
                               imageBorderRadius: 20,
-                              imageWidth: 200,
-                              imageHeight: 200,
-                              imageDetailsHeight: 450,
+                              imageWidth: 216,
+                              imageHeight: 384,
+                              imageDetailsHeight: 700,
                               imageDetailsWidth: 400,
                               withHeroAnimation: true,
                               placeholder: Container(

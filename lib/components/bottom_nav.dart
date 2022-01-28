@@ -97,12 +97,17 @@ class _BottomNavState extends State<BottomNav> {
             //backgroundColor: kPrimaryColor,
             decoration: NavBarDecoration(
               adjustScreenBottomPaddingOnCurve: true,
-              gradient: gradient2,
-              borderRadius: const BorderRadius.vertical(
+              // gradient:   LinearGradient(
+              //   colors: [Color(0xff80389d), kPrimaryColor],
+              //   begin: Alignment.topCenter,
+              //   end: Alignment.center,
+              // ),
+              gradient: gradient1,
+              borderRadius: BorderRadius.vertical(
                 top: Radius.circular(0),
                 bottom: Radius.circular(0),
               ),
-              colorBehindNavBar: kPrimaryColor,
+              // colorBehindNavBar: Color(0xff0C267E7),
             ),
             navBarStyle: NavBarStyle.style10,
           ),

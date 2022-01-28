@@ -388,6 +388,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Container(
                                 height: 40,
                                 decoration: BoxDecoration(
+                                  gradient: gradient1,
                                   borderRadius: BorderRadius.circular(20.0),
                                   color: kPrimaryColor,
                                 ),
@@ -431,8 +432,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       const SizedBox(height: 20),
                       Container(
                         alignment: Alignment.center,
-                        height: size.height * 0.45,
-                        width: 368,
+                        height: 384,
+                        width: 216,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
                           color: kPrimaryColor,
@@ -447,42 +448,39 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       const SizedBox(height: 20),
 
-                      SizedBox(
-                        height: 48,
+                      GradientButton(
                         width: 223.5,
-                        child: GradientButton(
-                          onPressed: () async {
-                            if (_choice == 0 && _index == 0) {
-                              Fluttertoast.showToast(
-                                  msg: 'Please select another category');
-                              return;
-                            }
-                            if (_index == -1) {
-                              Fluttertoast.showToast(
-                                  msg: 'Please select another category');
-                              return;
-                            }
-                            if (!showSpinner) {
-                              setState(() {
-                                showSpinner = true;
-                              });
-                              await checkPermissionPhoneLogs();
-                              setState(() {
-                                showSpinner = false;
-                              });
-                            }
-                          },
-                          child: const Text(
-                            "Send postcard",
-                            style: kButtonTextStyle,
-                          ),
-                          gradient: gradient1,
+                        onPressed: () async {
+                          if (_choice == 0 && _index == 0) {
+                            Fluttertoast.showToast(
+                                msg: 'Please select another category');
+                            return;
+                          }
+                          if (_index == -1) {
+                            Fluttertoast.showToast(
+                                msg: 'Please select another category');
+                            return;
+                          }
+                          if (!showSpinner) {
+                            setState(() {
+                              showSpinner = true;
+                            });
+                            await checkPermissionPhoneLogs();
+                            setState(() {
+                              showSpinner = false;
+                            });
+                          }
+                        },
+                        child: const Text(
+                          "Send a postcard",
+                          style: kButtonTextStyle,
                         ),
+                        gradient: gradient1,
                       ),
                       const SizedBox(height: 20),
                       SizedBox(
-                        height: 48,
-                        width: 223.5,
+
+                        width: 240,
                         child: OutlinedButton.icon(
                           style: OutlinedButton.styleFrom(
                             shape: RoundedRectangleBorder(
@@ -506,9 +504,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             // );
                           },
                           icon: const Icon(Icons.card_giftcard),
-                          label: const Text(
-                            "Send a gift",
-                            style: TextStyle(fontSize: 20),
+                          label: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 10),
+                            child: const Text(
+                              "Send a gift",
+                              style: TextStyle(fontSize: 20),
+                            ),
                           ),
                         ),
                       ),
@@ -590,21 +591,21 @@ class _ImagesState extends State<Images> {
   Widget build(BuildContext context) {
     return Swipable(
       child: InkWell(
-        onTap: () async {
-          Provider.of<BottomNavProvider>(context, listen: false)
-              .changeNavStatus();
-          _openItemPickerForDownload(context);
-        },
-        onLongPress: () async {
-          print('long');
-          Provider.of<BottomNavProvider>(context, listen: false)
-              .changeNavStatus();
-          _openItemPickerForDownload(context);
-        },
+        // onTap: () async {
+        //   Provider.of<BottomNavProvider>(context, listen: false)
+        //       .changeNavStatus();
+        //   _openItemPickerForDownload(context);
+        // },
+        // onLongPress: () async {
+        //   print('long');
+        //   Provider.of<BottomNavProvider>(context, listen: false)
+        //       .changeNavStatus();
+        //   _openItemPickerForDownload(context);
+        // },
         child: Container(
           alignment: Alignment.center,
-          height: MediaQuery.of(context).size.height * 0.45,
-          width: 368,
+          height: 384,
+          width: 216,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16.0),
             image: DecorationImage(

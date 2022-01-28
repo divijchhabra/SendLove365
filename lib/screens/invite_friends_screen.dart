@@ -39,7 +39,7 @@ class _InviteFriendScreen extends State<InviteFriendScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Invite friends'),
+        title: const Text('+Invite friends'),
       ),
       body: ListView.builder(
         physics: BouncingScrollPhysics(),
