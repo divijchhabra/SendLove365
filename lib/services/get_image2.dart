@@ -11,7 +11,6 @@ class GetImage22 extends StatelessWidget {
   Widget build(BuildContext context) {
     print('length');
     print(PostCards.allPostCard.length);
-    List<dynamic> tp = PostCards.allPostCard;
 
     PostCards.allPostCard = PostCards.allPostCard +
         PostCards.allPostCard +

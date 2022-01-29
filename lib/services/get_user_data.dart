@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:temp/components/bottom_nav.dart';
+import 'package:temp/constants.dart';
 import 'package:temp/models/user_details_model.dart';
 import 'package:temp/services/get_images.dart';
 
@@ -43,8 +44,9 @@ class GetUserData extends StatelessWidget {
           return const GetImages();
         }
         return const Scaffold(
+          backgroundColor: Colors.white,
           body: Center(
-            child: CircularProgressIndicator(),
+            child: CircularProgressIndicator(color: kPrimaryColor),
           ),
         );
       },

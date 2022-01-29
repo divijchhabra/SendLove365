@@ -33,9 +33,9 @@ class GetImages extends StatelessWidget {
       stream: valentineCollection.snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator(color: kPrimaryColor));
+          return MyCircular();
         } else if (!snapshot.hasData) {
-          return Center(child: CircularProgressIndicator(color: kPrimaryColor));
+          return MyCircular();
         } else {
           final images = snapshot.data!.docs;
           int x = 10;
@@ -67,9 +67,9 @@ class GetImage2 extends StatelessWidget {
       stream: anniversaryCollection.snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator(color: kPrimaryColor));
+          return MyCircular();
         } else if (!snapshot.hasData) {
-          return Center(child: CircularProgressIndicator(color: kPrimaryColor));
+          return MyCircular();
         } else {
           final images = snapshot.data!.docs;
 
@@ -102,9 +102,9 @@ class GetImage3 extends StatelessWidget {
       stream: birthdayCollection.snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator(color: kPrimaryColor));
+          return MyCircular();
         } else if (!snapshot.hasData) {
-          return Center(child: CircularProgressIndicator(color: kPrimaryColor));
+          return MyCircular();
         } else {
           final images = snapshot.data!.docs;
           int x = 10;
@@ -136,9 +136,9 @@ class GetImage4 extends StatelessWidget {
       stream: holidaysCollection.snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator(color: kPrimaryColor));
+          return MyCircular();
         } else if (!snapshot.hasData) {
-          return Center(child: CircularProgressIndicator(color: kPrimaryColor));
+          return MyCircular();
         } else {
           final images = snapshot.data!.docs;
 
@@ -172,9 +172,9 @@ class GetImage5 extends StatelessWidget {
       stream: loveCollection.snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator(color: kPrimaryColor));
+          return MyCircular();
         } else if (!snapshot.hasData) {
-          return Center(child: CircularProgressIndicator(color: kPrimaryColor));
+          return MyCircular();
         } else {
           final images = snapshot.data!.docs;
 
@@ -208,9 +208,9 @@ class GetImage6 extends StatelessWidget {
       stream: friendCollection.snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator(color: kPrimaryColor));
+          return MyCircular();
         } else if (!snapshot.hasData) {
-          return Center(child: CircularProgressIndicator(color: kPrimaryColor));
+          return MyCircular();
         } else {
           final images = snapshot.data!.docs;
           int x = 10;
@@ -231,6 +231,24 @@ class GetImage6 extends StatelessWidget {
         }
         return GetImage22();
       },
+    );
+  }
+}
+
+class MyCircular extends StatelessWidget {
+  const MyCircular({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      color: Colors.white,
+      child: Center(
+        child: Icon(Icons.circle_outlined, size: 45, color: kPrimaryColor),
+      ),
     );
   }
 }
