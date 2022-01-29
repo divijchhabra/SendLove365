@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:temp/components/bottom_nav.dart';
 import 'package:temp/constants.dart';
 import 'package:temp/models/user_details_model.dart';
+import 'package:temp/screens/home_screen.dart';
 import 'package:temp/services/get_images.dart';
 
 class GetUserData extends StatelessWidget {

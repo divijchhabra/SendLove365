@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+import 'package:temp/screens/new_send_gift_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:async';
 import 'dart:io' show Platform;
@@ -339,7 +340,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Stack(children: cards),
                       ),
                       const SizedBox(height: 20),
-
                       GradientButton(
                         width: 223.5,
                         onPressed: () async {
@@ -385,15 +385,15 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           onPressed: () async {
-                            await launch('https://likeu.app/');
-                            // pushNewScreen(
-                            //   context,
-                            //   screen: SendAGift(),
-                            //   withNavBar: false,
-                            //   // OPTIONAL VALUE. True by default.
-                            //   pageTransitionAnimation:
-                            //       PageTransitionAnimation.cupertino,
-                            // );
+                            // await launch('https://likeu.app/');
+
+                            pushNewScreen(
+                              context,
+                              screen: NewSendGiftScreen(),
+                              withNavBar: false,
+                              pageTransitionAnimation:
+                                  PageTransitionAnimation.cupertino,
+                            );
                           },
                           icon: const Icon(Icons.card_giftcard),
                           label: Padding(
@@ -406,7 +406,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                       ),
-                      // BottomNav(),
                     ],
                   ),
                 ),
