@@ -4,6 +4,8 @@ import 'package:temp/constants.dart';
 import 'package:temp/screens/onboarding_screen.dart';
 import 'package:temp/screens/video_splash.dart';
 import 'package:temp/services/get_user_data.dart';
+import 'package:assets_audio_player/assets_audio_player.dart';
+
 
 class Splash extends StatefulWidget {
   const Splash({Key? key}) : super(key: key);
@@ -18,7 +20,16 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     super.initState();
+    init();
     _navigateToOnBoarding();
+  }
+
+  init(){
+    AssetsAudioPlayer.newPlayer().open(
+      Audio("assets/blank.mp3"),
+
+      showNotification: false,
+    );
   }
 
   _navigateToOnBoarding() async {

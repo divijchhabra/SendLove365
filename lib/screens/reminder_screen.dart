@@ -7,6 +7,9 @@ import 'package:temp/constants.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:assets_audio_player/assets_audio_player.dart';
+
+List<bool> holidaysList = [false,false,false,false,false,false,false,false,false,false,];
 
 class ReminderScreen extends StatefulWidget {
   const ReminderScreen({Key? key}) : super(key: key);
@@ -86,7 +89,13 @@ class _ReminderScreenState extends State<ReminderScreen> {
     }
     final snackBar = SnackBar(content: Text('Reminder Added!'));
 
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    AssetsAudioPlayer.newPlayer().open(
+      Audio("assets/ding.mp3"),
+      volume: 0.1,
+
+      showNotification: false,
+    );
+    // ScaffoldMessenger.of(context).showSnackBar(snackBar);
     /*
     tz.initializeTimeZones();
     tz.setLocalLocation(tz.getLocation(timeZoneName));
@@ -130,6 +139,80 @@ class _ReminderScreenState extends State<ReminderScreen> {
       sound: true,
     );
   }
+
+
+  _showDialog(context){
+    showDialog(
+      context: context,
+      builder:(c){
+        return Padding(
+          padding:  EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.1,
+            vertical:   MediaQuery.of(context).size.width*0.55,),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Colors.white,
+            ),
+
+
+            child:  Padding(
+              padding: const EdgeInsets.all(30.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Align(
+                      alignment: Alignment.centerRight,
+                      child: GestureDetector(
+                          onTap: (){
+                            Navigator.pop(c);
+                          },
+                          child: Icon(Icons.close,size: 30,))),
+                  Container(
+
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        color: Colors.green,
+                      ),
+                      height: 100,
+                      width: 100,
+                      child: Icon(Icons.check,color: Colors.white,size: 50,)),
+                  Text('Reminder Added Successfully!',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold
+                    ),),
+
+                  GradientButton(
+                      onPressed: (){
+
+                        Navigator.pop(c);
+                      }, child: Text('Set Another Reminder',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.white
+                    ),), gradient: gradient1)
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+    }
+
+  List holidaysNames=[
+    'Valentine’s Day',
+    'Easter',
+    'Mother’s Day',
+    'Father’s Day',
+    'Independence Day',
+    'Halloween',
+    'Thanksgiving',
+    'Christmas',
+    'Kwanzaa',
+    'New Years Eve'
+  ];
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -168,23 +251,23 @@ class _ReminderScreenState extends State<ReminderScreen> {
                       style: kTextStyle,
                     ),
                     const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        Checkbox(
-                          checkColor: Colors.white,
-                          value: isCheckedValentines,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              isCheckedValentines = value!;
-                            });
-                          },
-                        ),
-                        const Text(
-                          "Valentines Day",
-                          style: kTextStyle,
-                        ),
-                      ],
-                    ),
+                    // Row(
+                    //   children: [
+                    //     Checkbox(
+                    //       checkColor: Colors.white,
+                    //       value: isCheckedValentines,
+                    //       onChanged: (bool? value) {
+                    //         setState(() {
+                    //           isCheckedValentines = value!;
+                    //         });
+                    //       },
+                    //     ),
+                    //     const Text(
+                    //       "Valentines Day",
+                    //       style: kTextStyle,
+                    //     ),
+                    //   ],
+                    // ),
                     Row(
                       children: [
                         Checkbox(
@@ -197,11 +280,84 @@ class _ReminderScreenState extends State<ReminderScreen> {
                           },
                         ),
                         const Text(
-                          "All Holidays",
+                          "Holidays",
                           style: kTextStyle,
                         ),
                       ],
                     ),
+
+                    if(isCheckedHolidays)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 40),
+                        child: Column(
+                          children: [
+                            for(int i=0;i<holidaysNames.length;i++)
+                           ReusableCheckbox(index: i,text: holidaysNames[i]),
+                            SizedBox(height: 15,),
+                            GradientButton(
+                              onPressed: () {
+                                DateTime todayDate = DateTime.now();
+
+
+
+                                _showDialog(context);
+
+                                  if(holidaysList[0]){
+                                   selectedDate = DateTime(todayDate.isAfter(DateTime(todayDate.year,2,14))? todayDate.year+1 : todayDate.year,
+                                        2 , 14, 0, 0);
+                                    showNotification(selectedDate,'Don\'t forget','Valentine’s Day');
+                                  } else if(holidaysList[1]){
+
+                                  } else if (holidaysList[2] ){
+
+                                  }else if (holidaysList[3] ){
+
+                                  }else if (holidaysList[4] ){
+                                    selectedDate = DateTime(todayDate.isAfter(DateTime(todayDate.year,7,4))? todayDate.year+1 : todayDate.year,
+                                        7 , 4, 0, 0);
+                                    showNotification(selectedDate,'Don\'t forget','Independence Day');
+                                  }else if (holidaysList[5] ){
+                                    selectedDate = DateTime(todayDate.isAfter(DateTime(todayDate.year,10,31))? todayDate.year+1 : todayDate.year,
+                                        10 , 31, 0, 0);
+                                    showNotification(selectedDate,'Don\'t forget','Halloween Day');
+                                  }else if (holidaysList[6] ){
+
+                                  }else if (holidaysList[7] ){
+                                    selectedDate = DateTime(todayDate.isAfter(DateTime(todayDate.year,12,25))? todayDate.year+1 : todayDate.year,
+                                        12 , 25, 0, 0);
+                                    showNotification(selectedDate,'Don\'t forget','Christmas Day');
+                                  }else if (holidaysList[8] ){
+                                    selectedDate = DateTime(todayDate.isAfter(DateTime(todayDate.year,12,26))? todayDate.year+1 : todayDate.year,
+                                        12 , 26, 0, 0);
+                                    showNotification(selectedDate,'Don\'t forget','Kwanzaa');
+                                  }else if (holidaysList[9] ){
+                                    selectedDate = DateTime(todayDate.isAfter(DateTime(todayDate.year,12,31))? todayDate.year+1 : todayDate.year,
+                                        12 , 31, 0, 0);
+                                    showNotification(selectedDate,'Don\'t forget','New Years Eve');
+                                  }
+                                  setState(() {
+                                    isCheckedHolidays=false;
+                                   holidaysList = [false,false,false,false,false,false,false,false,false,false,];
+                                  });
+                                AssetsAudioPlayer.newPlayer().open(
+                                  Audio("assets/ding.mp3"),
+                                  volume: 0.1,
+
+                                  showNotification: false,
+                                );
+
+                              },
+                              child: const Text(
+                                "Set Reminder",
+                                textAlign: TextAlign.center,
+                                style: kButtonTextStyle,
+                              ),
+                              gradient: gradient1,
+                            ),
+                            SizedBox(height: 25,),
+                          ],
+                        ),
+                      ),
                     Row(
                       children: [
                         Checkbox(
@@ -296,8 +452,13 @@ class _ReminderScreenState extends State<ReminderScreen> {
                           const SizedBox(height: 20),
                           GradientButton(
                             onPressed: () {
+
+
+
+                              _showDialog(context);
                               showNotification(selectedDate,nameController.text,occasionController.text);
-                            },
+
+                              },
                             child: const Text(
                               "Remind me on this date",
                               textAlign: TextAlign.center,
@@ -392,5 +553,41 @@ class _ReminderScreenState extends State<ReminderScreen> {
       date = newDate;
       dateController.text = '${date?.day}-${date?.month}-${date?.year}';
     });
+  }
+}
+
+
+class ReusableCheckbox extends StatefulWidget {
+  ReusableCheckbox({this.index=0,this.text=""});
+  final int index;
+  final String text;
+
+  @override
+  State<ReusableCheckbox> createState() => _ReusableCheckboxState();
+}
+
+class _ReusableCheckboxState extends State<ReusableCheckbox> {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Checkbox(
+          checkColor: Colors.white,
+          value: holidaysList[widget.index],
+          onChanged: (bool? value) {
+            if(holidaysList[widget.index]){
+              holidaysList[widget.index]=false;
+            }else{
+              holidaysList[widget.index]=true;
+            }
+            setState(() {});
+          },
+        ),
+         Text(
+          widget.text,
+          style: kTextStyle,
+        ),
+      ],
+    );
   }
 }

@@ -178,9 +178,9 @@ class _MessageSentState extends State<MessageSent> {
                           const SizedBox(height: 20),
                           Expanded(
                             child: ListView.builder(
-                                itemCount: snapshot.data!.docs.length,
+                                itemCount: 1,
                                 itemBuilder: (c, i) {
-                                  var docs = snapshot.data!.docs;
+                                  // var docs = snapshot.data!.docs;
 
                                   return Column(
                                     children: [
@@ -192,7 +192,7 @@ class _MessageSentState extends State<MessageSent> {
                                           Align(
                                             alignment: Alignment.centerLeft,
                                             child: Text(
-                                              docs[i]['name'],
+                                              'Likeu',
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                   fontSize: 16,
@@ -206,20 +206,24 @@ class _MessageSentState extends State<MessageSent> {
                                       ),
                                       InkWell(
                                         onTap: () async {
-                                          if (!await launch(
-                                              docs[i]['imageSrc'])) {
+                                          if (!await launch('https://likeu.app/')) {
                                             throw 'Could not launch';
                                           }
                                         },
                                         child: Padding(
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 18.0),
-                                          child: Image(
-                                            height: 300,
-                                            width: 400,
-                                            image:
-                                                NetworkImage(docs[i]['image']),
-                                            fit: BoxFit.cover,
+                                          child: ClipRRect(
+                                             borderRadius : BorderRadius.circular(20),
+                                            child: Container(
+                                              child: Image(
+                                                height: 300,
+                                                width: 400,
+                                                image:
+                                                   AssetImage('assets/logo1.jpg'),
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
                                           ),
                                         ),
                                       ),

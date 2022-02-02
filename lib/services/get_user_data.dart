@@ -31,6 +31,7 @@ class GetUserData extends StatelessWidget {
 
           return const Center(child: CircularProgressIndicator());
         }
+
         if (snapshot.connectionState == ConnectionState.done) {
           print('All ok');
 

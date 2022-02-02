@@ -175,6 +175,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
       String invalidNumber = number;
       number = number.replaceAll(' ', '');
+      number = number.replaceAll(new RegExp(r'[^0-9]'),'');
       int n = number.length;
       n >= 10 ? number = number.substring(n - 10) : number = invalidNumber;
 
@@ -202,7 +203,26 @@ class _ChatScreenState extends State<ChatScreen> {
             borderRadius: BorderRadius.circular(15.0),
           ),
         ),
-        title: const Text("Chats"),
+        title: GestureDetector(
+            onTap: (){
+              Contact contact = Contact();
+              pushNewScreen(
+                context,
+                screen: Chat(
+                    friendPhoneUid: '+11234567890',
+                    contact: contact,
+                    dp: '',
+                isOnline: true,
+                friendName:
+                'dede',
+              ),
+              withNavBar: false,
+              // OPTIONAL VALUE. True by default.
+              pageTransitionAnimation:
+              PageTransitionAnimation.cupertino,
+              );
+            },
+            child: const Text("Chats")),
         // actions: [
         //   IconButton(
         //     onPressed: () {},
@@ -237,6 +257,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
                         String invalidNumber = number;
                         number = number.replaceAll(' ', '');
+                        number = number.replaceAll(new RegExp(r'[^0-9]'),'');
                         int n = number.length;
                         n >= 10
                             ? number = number.substring(n - 10)
@@ -279,7 +300,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                         );
                                       },
                                       title: Text(contact.displayName ??
-                                          'Contact Name'),
+                                          contact.phones!.elementAt(0).value.toString()),
                                       subtitle: FutureBuilder(
                                           future: getLastMessage(number),
                                           builder: (context,

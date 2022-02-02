@@ -9,6 +9,7 @@ class UserDetailsModel {
 }
 
 class PostCards {
+
   static List allPostCard = [];
   static List valentinePostCard = [];
   static List anniversaryPostCard = [];
@@ -16,4 +17,5 @@ class PostCards {
   static List holidayPostCard = [];
   static List lovePostCard = [];
   static List friendPostCard = [];
+
 }

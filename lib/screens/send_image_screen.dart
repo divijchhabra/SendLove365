@@ -1,5 +1,5 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
+import 'new_send_gift_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +13,7 @@ import 'package:temp/screens/invite_friend.dart';
 import 'package:temp/screens/invite_friends_screen.dart';
 import 'package:temp/screens/message_sent_screen.dart';
 import 'dart:io';
-
+import 'package:assets_audio_player/assets_audio_player.dart';
 class SendImageScreen extends StatefulWidget {
   const SendImageScreen({
     Key? key,
@@ -87,6 +87,13 @@ class _SendImageScreen extends State<SendImageScreen> {
       'message': msg,
       'isMsg': isMsg,
     }).then((value) {
+
+      AssetsAudioPlayer.newPlayer().open(
+        Audio("assets/postcard.mp4"),
+        volume: 0.2,
+
+        showNotification: false,
+      );
       // print(value);
     }).catchError((error) {
       Fluttertoast.showToast(msg: error.message);
@@ -146,7 +153,7 @@ class _SendImageScreen extends State<SendImageScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // print('contacts');
+    // print(contacts.length);
     // print(contacts.length);
 
     Size size = MediaQuery.of(context).size;
@@ -161,7 +168,9 @@ class _SendImageScreen extends State<SendImageScreen> {
 
       String invalidNumber = number;
       number = number.replaceAll(' ', '');
+      number = number.replaceAll(new RegExp(r'[^0-9]'),'');
       int n = number.length;
+
       n >= 10
           ? number = number.substring(n - kCountryNumberLength)
           : number = invalidNumber;
@@ -230,15 +239,22 @@ class _SendImageScreen extends State<SendImageScreen> {
 
                             String invalidNumber = number;
                             number = number.replaceAll(' ', '');
+                            number = number.replaceAll(new RegExp(r'[^0-9]'),'');
+
                             int n = number.length;
+
+                            print(number );
+
                             n >= 10
-                                ? number =
-                                    number.substring(n - kCountryNumberLength)
+                                ? number = number.substring(n - kCountryNumberLength)
                                 : number = invalidNumber;
 
                             Color myColor = Colors.transparent;
 
                             int idx = -1;
+                            // number.replaceAll('(', '');
+                            // number.replaceAll(')', '');
+                            // number.trim();
 
                             for (int k = 0; k < myFriends.length; k++) {
                               if (number == myFriends[k]) {
@@ -270,7 +286,7 @@ class _SendImageScreen extends State<SendImageScreen> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    const MessageSent()),
+                                                     NewSendGiftScreen(messageSentScreen: true,)),
                                           );
                                         },
                                         title: Text(contact.displayName ??
@@ -306,6 +322,7 @@ class _SendImageScreen extends State<SendImageScreen> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
+                              if(!showSpinner)
                               Center(
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -317,6 +334,7 @@ class _SendImageScreen extends State<SendImageScreen> {
                                 ),
                               ),
                               SizedBox(height: 15),
+                              if(!showSpinner)
                               GradientButton(
                                 width: 149.85,
                                 onPressed: () {

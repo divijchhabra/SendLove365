@@ -15,7 +15,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_swipable/flutter_swipable.dart';
 import 'package:flutter_wallpaper_manager/flutter_wallpaper_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
+import 'package:assets_audio_player/assets_audio_player.dart';
 // import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -234,8 +234,12 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     getData();
+
     _index = PostCards.allPostCard.length - 1;
+
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -268,6 +272,21 @@ class _HomeScreenState extends State<HomeScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
+
+                          // InkWell(
+                          //   onTap: (){
+                          //     _index += 1;
+                          //     setState(() {
+                          //
+                          //     });
+                          //   },
+                          //   child: Container(
+                          //     height: 30,
+                          //     width: 30,
+                          //     color: Colors.green,
+                          //   ),
+                          // ),
+
                           WillPopScope(
                             onWillPop: () {
                               print('Pressed');
@@ -512,6 +531,12 @@ class _ImagesState extends State<Images> {
         setState(() {
           _index -= 1;
         });
+        AssetsAudioPlayer.defaultVolume;
+        AssetsAudioPlayer.newPlayer().open(
+          Audio("assets/home.mp4"),
+          showNotification: false,
+          volume: 0.2
+        );
         print('Index $_index');
         if (_index == -1) {
           Fluttertoast.showToast(msg: 'Please select another category');

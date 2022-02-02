@@ -1,5 +1,5 @@
 // ignore_for_file: prefer_const_constructors
-
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:bottom_picker/bottom_picker.dart';
 import 'package:bottom_picker/resources/arrays.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,7 +14,7 @@ import 'package:temp/constants.dart';
 import 'package:temp/models/user_details_model.dart';
 import 'package:temp/screens/chat/chat_bubble.dart';
 import 'package:temp/screens/send_a_gift_screen.dart';
-
+import 'package:temp/screens/new_send_gift_screen.dart';
 class Chat extends StatefulWidget {
   Chat({
     Key? key,
@@ -269,7 +269,7 @@ class _ChatState extends State<Chat> {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: widget.friendName,
+                        text: widget.friendName=="null" ? "" :widget.friendName ,
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w400,
@@ -371,7 +371,7 @@ class _ChatState extends State<Chat> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => const SendAGift(),
+                  builder: (_) => NewSendGiftScreen(),
                 ),
               );
             },
@@ -400,7 +400,7 @@ class _ChatState extends State<Chat> {
                           children: [
                             const SizedBox(height: 5),
                             const Text(
-                              "Select an image to send to your loved ones",
+                              "Send a Postcard",
                               textAlign: TextAlign.center,
                               style: TextStyle(fontSize: 14),
                             ),
@@ -459,15 +459,14 @@ class _ChatState extends State<Chat> {
                             ),
                             const SizedBox(height: 5),
                             Container(
-                              height: MediaQuery.of(context).size.height * 0.38,
-                              width: MediaQuery.of(context).size.width * 0.7,
+                              alignment: Alignment.center,
+                              height: 384,
+                              width: 216,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16.0),
+                                borderRadius: BorderRadius.circular(15),
                                 color: kPrimaryColor,
                               ),
-                              child: cards.isEmpty
-                                  ? Text('Choose another category')
-                                  : Stack(children: cards),
+                              child: Stack(children: cards),
                             ),
                             const SizedBox(height: 20),
                             InkWell(
@@ -606,6 +605,15 @@ class _ChatState extends State<Chat> {
     }).catchError((error) {
       Fluttertoast.showToast(msg: error.message);
     });
+
+
+    AssetsAudioPlayer.newPlayer().open(
+      Audio("assets/swoosh.mp3"),
+      volume: 0.5,
+
+      showNotification: false,
+    );
+
   }
 }
 
