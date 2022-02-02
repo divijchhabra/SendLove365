@@ -13,10 +13,10 @@ import 'package:temp/components/bottom_nav.dart';
 import 'package:temp/constants.dart';
 import 'package:temp/models/user_details_model.dart';
 import 'package:temp/screens/chat/chat_bubble.dart';
-import 'package:temp/screens/send_a_gift_screen.dart';
 import 'package:temp/screens/new_send_gift_screen.dart';
+
 class Chat extends StatefulWidget {
-  Chat({
+  const Chat({
     Key? key,
     required this.friendPhoneUid,
     required this.contact,
@@ -26,7 +26,7 @@ class Chat extends StatefulWidget {
   }) : super(key: key);
 
   final String friendPhoneUid, friendName, dp;
-  Contact contact;
+  final Contact contact;
   final bool isOnline;
 
   @override
@@ -269,7 +269,9 @@ class _ChatState extends State<Chat> {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: widget.friendName=="null" ? "" :widget.friendName ,
+                        text: widget.friendName == "null"
+                            ? ""
+                            : widget.friendName,
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w400,
@@ -404,7 +406,7 @@ class _ChatState extends State<Chat> {
                               textAlign: TextAlign.center,
                               style: TextStyle(fontSize: 14),
                             ),
-                            const SizedBox(height: 20),
+                            // const SizedBox(height: 20),
                             Container(
                               width: MediaQuery.of(context).size.width * 0.7,
                               alignment: Alignment.topRight,
@@ -460,7 +462,7 @@ class _ChatState extends State<Chat> {
                             const SizedBox(height: 5),
                             Container(
                               alignment: Alignment.center,
-                              height: 384,
+                              height: MediaQuery.of(context).size.height * 0.4,
                               width: 216,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15),
@@ -606,14 +608,11 @@ class _ChatState extends State<Chat> {
       Fluttertoast.showToast(msg: error.message);
     });
 
-
     AssetsAudioPlayer.newPlayer().open(
       Audio("assets/swoosh.mp3"),
       volume: 0.5,
-
       showNotification: false,
     );
-
   }
 }
 
@@ -647,6 +646,9 @@ class _ImagesState extends State<Images> {
         setState(() {
           _index -= 1;
         });
+        AssetsAudioPlayer.defaultVolume;
+        AssetsAudioPlayer.newPlayer().open(Audio("assets/home.mp4"),
+            showNotification: false, volume: 0.2);
         if (_index == -1) {
           Fluttertoast.showToast(msg: 'Please select another category');
           return;

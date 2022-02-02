@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'package:temp/screens/new_send_gift_screen.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'dart:async';
 import 'dart:io' show Platform;
 import 'dart:typed_data';
@@ -16,7 +15,6 @@ import 'package:flutter_swipable/flutter_swipable.dart';
 import 'package:flutter_wallpaper_manager/flutter_wallpaper_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
-// import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -25,9 +23,7 @@ import 'package:temp/components/likeu_appbar.dart';
 import 'package:temp/constants.dart';
 import 'package:temp/models/user_details_model.dart';
 import 'package:temp/providers/bottom_nav_provider.dart';
-import 'package:temp/providers/home_index_provider.dart';
 import 'package:temp/screens/send_image_screen.dart';
-import 'package:temp/screens/send_a_gift_screen.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 
@@ -236,10 +232,7 @@ class _HomeScreenState extends State<HomeScreen> {
     getData();
 
     _index = PostCards.allPostCard.length - 1;
-
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -272,7 +265,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-
                           // InkWell(
                           //   onTap: (){
                           //     _index += 1;
@@ -362,7 +354,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       GradientButton(
                         width: 223.5,
                         onPressed: () async {
-                          print("onta[p $_index");
+                          print("onTap $_index");
                           if (_choice == 0 && _index == 0) {
                             Fluttertoast.showToast(
                                 msg: 'Please select another category');
@@ -532,11 +524,8 @@ class _ImagesState extends State<Images> {
           _index -= 1;
         });
         AssetsAudioPlayer.defaultVolume;
-        AssetsAudioPlayer.newPlayer().open(
-          Audio("assets/home.mp4"),
-          showNotification: false,
-          volume: 0.2
-        );
+        AssetsAudioPlayer.newPlayer().open(Audio("assets/home.mp4"),
+            showNotification: false, volume: 0.2);
         print('Index $_index');
         if (_index == -1) {
           Fluttertoast.showToast(msg: 'Please select another category');

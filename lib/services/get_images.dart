@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:temp/components/bottom_nav.dart';
 import 'package:temp/constants.dart';
 import 'package:temp/models/user_details_model.dart';
-import 'package:temp/services/get_image2.dart';
 
 var valentineCollection = FirebaseFirestore.instance.collection('Valentines');
 var anniversaryCollection =
@@ -38,18 +37,11 @@ class GetImages extends StatelessWidget {
           return MyCircular();
         } else {
           final images = snapshot.data!.docs;
-          int x = 10;
-          while (x != 0) {
-            for (int i = 0; i < images.length; i++) {
-              // print(images[i]['image']);
-              // PostCards.allPostCard.add(images[i]['image'].toString());
-              PostCards.valentinePostCard.add(images[i]['image'].toString());
-            }
-            x--;
-          }
+
           for (int i = 0; i < images.length; i++) {
             // print(images[i]['image']);
             PostCards.allPostCard.add(images[i]['image'].toString());
+            PostCards.valentinePostCard.add(images[i]['image'].toString());
           }
         }
         return GetImage2();
@@ -73,18 +65,10 @@ class GetImage2 extends StatelessWidget {
         } else {
           final images = snapshot.data!.docs;
 
-          int x = 10;
-          while (x != 0) {
-            for (int i = 0; i < images.length; i++) {
-              // print(images[i]['image']);
-              // PostCards.allPostCard.add(images[i]['image'].toString());
-              PostCards.anniversaryPostCard.add(images[i]['image'].toString());
-            }
-            x--;
-          }
           for (int i = 0; i < images.length; i++) {
             // print(images[i]['image']);
             PostCards.allPostCard.add(images[i]['image'].toString());
+            PostCards.anniversaryPostCard.add(images[i]['image'].toString());
           }
         }
         return GetImage3();
@@ -107,18 +91,10 @@ class GetImage3 extends StatelessWidget {
           return MyCircular();
         } else {
           final images = snapshot.data!.docs;
-          int x = 10;
-          while (x != 0) {
-            for (int i = 0; i < images.length; i++) {
-              // print(images[i]['image']);
-              // PostCards.allPostCard.add(images[i]['image'].toString());
-              PostCards.birthdayPostCard.add(images[i]['image'].toString());
-            }
-            x--;
-          }
           for (int i = 0; i < images.length; i++) {
             // print(images[i]['image']);
             PostCards.allPostCard.add(images[i]['image'].toString());
+            PostCards.birthdayPostCard.add(images[i]['image'].toString());
           }
         }
         return GetImage4();
@@ -142,19 +118,11 @@ class GetImage4 extends StatelessWidget {
         } else {
           final images = snapshot.data!.docs;
 
-          int x = 10;
-          while (x != 0) {
-            for (int i = 0; i < images.length; i++) {
-              // print(images[i]['image']);
-
-              // PostCards.allPostCard.add(images[i]['image'].toString());
-              PostCards.holidayPostCard.add(images[i]['image'].toString());
-            }
-            x--;
-          }
           for (int i = 0; i < images.length; i++) {
             // print(images[i]['image']);
+
             PostCards.allPostCard.add(images[i]['image'].toString());
+            PostCards.holidayPostCard.add(images[i]['image'].toString());
           }
         }
         return GetImage5();
@@ -178,19 +146,10 @@ class GetImage5 extends StatelessWidget {
         } else {
           final images = snapshot.data!.docs;
 
-          int x = 10;
-          while (x != 0) {
-            for (int i = 0; i < images.length; i++) {
-              // print(images[i]['image']);
-
-              // PostCards.allPostCard.add(images[i]['image'].toString());
-              PostCards.lovePostCard.add(images[i]['image'].toString());
-            }
-            x--;
-          }
           for (int i = 0; i < images.length; i++) {
             // print(images[i]['image']);
             PostCards.allPostCard.add(images[i]['image'].toString());
+            PostCards.lovePostCard.add(images[i]['image'].toString());
           }
         }
         return GetImage6();
@@ -213,23 +172,13 @@ class GetImage6 extends StatelessWidget {
           return MyCircular();
         } else {
           final images = snapshot.data!.docs;
-          int x = 10;
-          while (x != 0) {
-            for (int i = 0; i < images.length; i++) {
-              // print(images[i]['image']);
-
-              // PostCards.allPostCard.add(images[i]['image'].toString());
-              PostCards.friendPostCard.add(images[i]['image'].toString());
-            }
-            x--;
-          }
-
           for (int i = 0; i < images.length; i++) {
             // print(images[i]['image']);
             PostCards.allPostCard.add(images[i]['image'].toString());
+            PostCards.friendPostCard.add(images[i]['image'].toString());
           }
         }
-        return GetImage22();
+        return BottomNav();
       },
     );
   }
